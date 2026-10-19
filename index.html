@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitacion</title>
+</head>
+<body>
+    <div id="pantalla-acceso">
+        <h2>Bienvenido a nuestra boda</h2>
+        <p>Ingresa el código que te enviamos para ver tus pases:</p>
+        <input type="text" id="codigo-input" placeholder="Ej: K9X2P" style="text-transform:uppercase">
+        <button id="btn-consultar">Entrar</button>
+        <p id="error" style="color:red; display:none;">Código no encontrado</p>
+    </div>
+
+    <!-- PANTALLA INVITACIÓN Y FORMULARIO RSVP -->
+    <div id="pantalla-invitacion" style="display: none;">
+        <!-- Información traída desde el Sheet -->
+        <h2 id="nombre-invitado">Cargando...</h2>
+        <p id="info-pases"></p>
+    
+        <hr>
+    
+        <!-- Formulario de Confirmación -->
+        <form id="form-rsvp">
+            <h3>¿Nos acompañarás en este día tan especial?</h3>
+    
+            <!-- Opciones de asistencia -->
+            <div>
+                <label>
+                    <input type="radio" name="asistencia" value="si" required>
+                    ¡Sí, ahí estaré!
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" name="asistencia" value="no" required>
+                    No podré asistir
+                </label>
+            </div>
+    
+            <!-- Desplegable dinámico: solo visible si tiene más de 1 pase y marca "Sí" -->
+            <div id="contenedor-desplegable" style="display: none; margin-top: 15px;">
+                <label for="select-pases">¿Cuántas personas asistirán?</label><br>
+                <select id="select-pases">
+                    <!-- Opciones generadas por JavaScript -->
+                </select>
+            </div>
+    
+            <!-- Campo opcional de mensaje -->
+            <div style="margin-top: 15px;">
+                <label for="mensaje-invitado">Déjales un mensaje a los novios (opcional):</label><br>
+                <textarea id="mensaje-invitado" rows="3" placeholder="¡Felicidades!"></textarea>
+            </div>
+    
+            <button type="submit" id="btn-enviar" style="margin-top: 15px;">
+                Confirmar Respuesta
+            </button>
+        </form>
+    
+        <!-- Mensajes de estado -->
+        <p id="mensaje-feedback" style="display: none; font-weight: bold;"></p>
+    </div>
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxIdCqpiRMw-1J7xlhokVYA_chDmzmEJlnFjpfjeO9TGR6EZHVrcULyl6RYmEzEeFn1/exec";
+
+        document.getElementById("btn-consultar").addEventListener("click", () => {
+            const codigo = document.getElementById("codigo-input").value.trim().toUpperCase();
+            if (!codigo) return;
+
+            fetch(`${API_URL}?id=${encodeURIComponent(codigo)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.encontrado) {
+                        // Ocultas el formulario de acceso y muestras la invitación
+                        document.getElementById("pantalla-acceso").style.display = "none";
+                        document.getElementById("pantalla-invitacion").style.display = "block";
+
+                        // Funcion para RSVP
+                        cargarDatosInvitado(data, codigo);
+                    } else {
+                        document.getElementById("error").style.display = "block";
+                    }
+                })
+                .catch(err => console.error("Error al consultar:", err));
+        });
+
+        // Variables globales para guardar el estado del invitado actual
+        let totalPasesDisponibles = 0;
+        let codigoInvitadoActual = "";
+
+        // Elementos del DOM
+        const formRSVP = document.getElementById("form-rsvp");
+        const radiosAsistencia = document.querySelectorAll('input[name="asistencia"]');
+        const contenedorDesplegable = document.getElementById("contenedor-desplegable");
+        const selectPases = document.getElementById("select-pases");
+        const feedback = document.getElementById("mensaje-feedback");
+
+        /**
+         * Función que se ejecuta cuando el backend devuelve la info del invitado
+         * @param {Object} data - Objeto recibido de Apps Script
+         * @param {string} codigo - Código ingresado por el invitado
+         */
+        function cargarDatosInvitado(data, codigo) {
+            codigoInvitadoActual = codigo;
+            totalPasesDisponibles = parseInt(data.pases, 10);
+
+            document.getElementById("nombre-invitado").textContent = data.invitado;
+            document.getElementById("info-pases").textContent =
+                `Pases asignados: ${totalPasesDisponibles}`;
+
+            // Si tiene más de 1 pase, preparamos las opciones del desplegable
+            if (totalPasesDisponibles > 1) {
+                selectPases.innerHTML = "";
+                for (let i = 1; i <= totalPasesDisponibles; i++) {
+                    const option = document.createElement("option");
+                    option.value = i;
+                    option.textContent = i === 1 ? "1 persona" : `${i} personas`;
+                    // Por defecto seleccionamos el total de pases
+                    if (i === totalPasesDisponibles) option.selected = true;
+                    selectPases.appendChild(option);
+                }
+            }
+        }
+
+        /**
+         * Escucha cambios en los radios "Sí" o "No" para mostrar/ocultar el desplegable
+         */
+        radiosAsistencia.forEach(radio => {
+            radio.addEventListener("change", (e) => {
+                const seleccion = e.target.value;
+
+                // Solo se muestra el desplegable si dijo que SÍ y tiene MÁS de 1 pase
+                if (seleccion === "si" && totalPasesDisponibles > 1) {
+                    contenedorDesplegable.style.display = "block";
+                } else {
+                    contenedorDesplegable.style.display = "none";
+                }
+            });
+        });
+
+        /**
+         * Manejo del envío del formulario
+         */
+        formRSVP.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const asistira = document.querySelector('input[name="asistencia"]:checked').value;
+            const mensaje = document.getElementById("mensaje-invitado").value.trim();
+            let confirmados = 0;
+
+            if (asistira === "si") {
+                // Si tiene más de 1 pase, lee del select; si tiene solo 1 pase, es 1.
+                confirmados = totalPasesDisponibles > 1
+                    ? parseInt(selectPases.value, 10)
+                    : 1;
+            } else {
+                // Si dijo que no irá
+                confirmados = 0;
+            }
+
+            const datosAEnviar = {
+                codigo: codigoInvitadoActual,
+                estado: asistira === "si" ? "Confirmado" : "Declinado",
+                confirmados: confirmados,
+                mensaje: mensaje
+            };
+
+            // Bloquear botón para evitar envíos dobles
+            const btnSubmit = document.getElementById("btn-enviar");
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = "Guardando...";
+
+            // Enviar a Google Apps Script por POST
+            fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8" // Clave para evitar problemas de CORS
+                },
+                body: JSON.stringify(datosAEnviar)
+            })
+                .then(res => res.json())
+                .then(respuesta => {
+                    if (respuesta.exito) {
+                        feedback.style.color = "green";
+                        feedback.textContent = "¡Muchas gracias! Tu respuesta ha sido registrada.";
+                        feedback.style.display = "block";
+                        formRSVP.style.display = "none"; // Ocultamos el form tras confirmar
+                    } else {
+                        throw new Error(respuesta.error || "Ocurrió un error.");
+                    }
+                })
+                .catch(err => {
+                    feedback.style.color = "red";
+                    feedback.textContent = "Hubo un error al guardar tu respuesta. Por favor intenta de nuevo.";
+                    feedback.style.display = "block";
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = "Confirmar Respuesta";
+                    console.error(err);
+                });
+        });
+    </script>
+</body>
+</html>
