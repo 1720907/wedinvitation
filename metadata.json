@@ -1,0 +1,6 @@
+{
+  "name": "Invitación de Boda Fine Stationery",
+  "description": "Invitación de boda digital interactiva de alta gama con estética skeuomórfica, papelería artesanal, sobre con lacre de cera y música.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
