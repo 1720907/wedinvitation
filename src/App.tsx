@@ -514,77 +514,79 @@ export default function App() {
                 />
               </div>
 
-              <div className="deckle-card px-6 pt-12 pb-10 text-center relative overflow-hidden">
+              <div className="relative px-7 sm:px-9 pt-14 pb-16 sm:pb-20 text-center">
+                {/* Imagen del papel */}
+                <img 
+                  src="/assets/aistudio/papel3_clean.png" 
+                  alt="Tarjetón de papel artesanal rasgado" 
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0 filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
+                />
                 
+
                 {/* Flor prensada romántica en la esquina (flor_9aee3096.png) */}
                 <img 
                   src="/assets/aistudio/flor_9aee3096.png" 
                   alt="Flor prensada" 
-                  className="absolute -top-3 -right-3 w-16 h-32 object-contain opacity-75 pointer-events-none rotate-12"
+                  className="absolute -top-2 -right-1 w-16 h-32 object-contain opacity-85 pointer-events-none rotate-12 z-10"
                 />
 
-                <p className="font-display text-[11px] tracking-[0.3em] text-[#5C6B57] uppercase mb-4 font-semibold">
-                  Nuestra Boda
-                </p>
+                <div className="relative z-10">
+                  <p className="font-display text-[11px] tracking-[0.3em] text-[#5C6B57] uppercase mb-4 font-semibold">
+                    Nuestra Boda
+                  </p>
 
-                {/* Mensaje de amor & bendición de los padres */}
-                <p className="font-serif italic text-base text-[#2C2C2A]/90 leading-relaxed max-w-xs mx-auto mb-6">
-                  “{config.novios.frase}”
-                </p>
+                  {/* Mensaje de amor & bendición de los padres */}
+                  <p className="font-serif italic text-base text-[#2C2C2A]/90 leading-relaxed max-w-xs mx-auto mb-6">
+                    “{config.novios.frase}”
+                  </p>
 
-                {/* Nombres Caligráficos de los Novios */}
-                <div className="my-4">
-                  <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
-                    {config.novios.ella}
-                  </h1>
-                  <span className="font-script text-3xl text-[#5A1E28] block my-0.5">&amp;</span>
-                  <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
-                    {config.novios.el}
-                  </h1>
-                </div>
-
-                {/* Separador fino de oro */}
-                <div className="flex items-center justify-center gap-3 my-6">
-                  <span className="h-[1px] w-14 bg-[#C5A059]/50"></span>
-                  <span className="text-[#5A1E28] text-xs">✦</span>
-                  <span className="h-[1px] w-14 bg-[#C5A059]/50"></span>
-                </div>
-
-                {/* Cuadro de bendición de los Padres */}
-                <div className="bg-[#ECE7DF]/85 border border-[#C5A059]/30 rounded-sm py-4 px-4 text-center space-y-3">
-                  <div>
-                    <p className="font-display text-[10px] tracking-[0.2em] text-[#5C6B57] uppercase font-semibold">
-                      Padres del Novio
-                    </p>
-                    <p className="font-serif text-base font-semibold text-[#2C2C2A] mt-0.5">
-                      {config.padres.novio}
-                    </p>
+                  {/* Nombres Caligráficos de los Novios */}
+                  <div className="my-4">
+                    <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
+                      {config.novios.ella}
+                    </h1>
+                    <span className="font-script text-3xl text-[#5A1E28] block my-0.5">&amp;</span>
+                    <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
+                      {config.novios.el}
+                    </h1>
                   </div>
-                  <div className="h-[1px] w-16 bg-[#C5A059]/30 mx-auto" />
-                  <div>
-                    <p className="font-display text-[10px] tracking-[0.2em] text-[#5C6B57] uppercase font-semibold">
-                      Padres de la Novia
-                    </p>
-                    <p className="font-serif text-base font-semibold text-[#2C2C2A] mt-0.5">
-                      {config.padres.novia}
-                    </p>
-                  </div>
-                </div>
 
-                <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-5">
-                  Con la bendición de nuestras familias, tenemos el honor de invitarte a celebrar este día inolvidable.
-                </p>
+                  {/* Separador fino de oro */}
+                  <div className="flex items-center justify-center gap-3 my-6">
+                    <span className="h-[1px] w-14 bg-[#C5A059]/50"></span>
+                    <span className="text-[#5A1E28] text-xs">✦</span>
+                    <span className="h-[1px] w-14 bg-[#C5A059]/50"></span>
+                  </div>
+
+                  {/* Cuadro de bendición de los Padres */}
+                  <div className="bg-[#ECE7DF]/85 border border-[#C5A059]/30 rounded-sm py-4 px-4 text-center space-y-3">
+                    <div>
+                      <p className="font-display text-[10px] tracking-[0.2em] text-[#5C6B57] uppercase font-semibold">
+                        Padres del Novio
+                      </p>
+                      <p className="font-serif text-base font-semibold text-[#2C2C2A] mt-0.5">
+                        {config.padres.novio}
+                      </p>
+                    </div>
+                    <div className="h-[1px] w-16 bg-[#C5A059]/30 mx-auto" />
+                    <div>
+                      <p className="font-display text-[10px] tracking-[0.2em] text-[#5C6B57] uppercase font-semibold">
+                        Padres de la Novia
+                      </p>
+                      <p className="font-serif text-base font-semibold text-[#2C2C2A] mt-0.5">
+                        {config.padres.novia}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-5">
+                    Con la bendición de nuestras familias, tenemos el honor de invitarte a celebrar este día inolvidable.
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Sombra de papel artesanal bajo la tarjeta (sombra_baa5a2e0.png) */}
-            <div className="w-full flex justify-center -mt-3 relative z-10">
-              <img 
-                src="/assets/aistudio/sombra_baa5a2e0.png" 
-                alt="Sombra de papel" 
-                className="w-4/5 h-auto opacity-70"
-              />
-            </div>
+                
 
           </div>
         </section>
