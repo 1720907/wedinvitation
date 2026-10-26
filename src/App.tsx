@@ -481,7 +481,7 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 2: SOBRE ABIERTO + CARTA DE BIENVENIDA (NOS CASAMOS)
              ================================================================= */}
-        <section className="relative px-5 pt-12 pb-10 flex flex-col items-center reveal-item">
+        <section className="relative px-5 pt-12 flex flex-col items-center reveal-item">
           
           <div className="w-full max-w-[400px] relative">
             {/* Contenedor del Sobre Abierto Realista */}
@@ -594,11 +594,11 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 3: MEDALLÓN BARROCO DE FECHA (papel6_03599585.png) & CUENTA REGRESIVA
              ================================================================= */}
-        <section className="relative px-5 py-8 flex flex-col items-center reveal-item">
+        <section className="relative px-5 -mt-10 pb-8 flex flex-col items-center reveal-item">
           <div className="w-full max-w-[360px] flex flex-col items-center">
             
             {/* Medallón Barroco Terracota con texturas talladas en 3D (papel6_03599585.png) */}
-            <div className="relative w-76 h-76 flex items-center justify-center shadow-cameo">
+            <div className="relative w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo">
               {/* Imagen del camafeo real con relieve */}
               <img 
                 src="/assets/aistudio/papel6_03599585.png" 
@@ -621,8 +621,15 @@ export default function App() {
             </div>
 
             {/* Tarjeta de Cuenta Regresiva de Papel Rasgado superpuesta debajo */}
-            <div className="w-full -mt-6 z-30 shadow-torn-paper">
-              <div className="deckle-card px-5 py-6 text-center border border-[#C5A059]/40">
+            <div className="relative z-[-1] w-full -mt-16 shadow-torn-paper">
+              <div className="px-5 py-10 text-center">
+                {/* Imagen del papel */}
+                <img 
+                  src="/assets/aistudio/papel3_clean_rotated.png" 
+                  alt="Tarjetón de papel artesanal rasgado" 
+                  className="absolute w-full h-full inset-0 object-fill pointer-events-none select-none z-[-1] filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
+                />
+                
                 <p className="font-script text-3xl text-[#5A1E28] mb-2 font-normal">
                   Faltan
                 </p>
