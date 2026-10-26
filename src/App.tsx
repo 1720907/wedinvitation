@@ -110,6 +110,40 @@ const DEFAULT_CONFIG: WeddingConfig = {
   albumUrl: "https://photos.google.com/"
 };
 
+// Carrusel de 5 fotos en Polaroid con animación de alejamiento lento (Ken Burns)
+const POLAROID_CAROUSEL_PHOTOS = [
+  {
+    id: 1,
+    src: "/assets/aistudio/couple_photo_1.jpg",
+    alt: "Foto polaroid 1",
+    caption: "“Caminando juntos hacia el mismo sueño”"
+  },
+  {
+    id: 2,
+    src: "/assets/aistudio/couple_photo_2.jpg",
+    alt: "Foto polaroid 2",
+    caption: "“En cada mirada, una promesa de amor eterno”"
+  },
+  {
+    id: 3,
+    src: "/assets/aistudio/couple_photo_3.jpg",
+    alt: "Foto polaroid 3",
+    caption: "“El amor que florece siempre”"
+  },
+  {
+    id: 4,
+    src: "/assets/aistudio/couple_walking_perfect.jpg",
+    alt: "Foto polaroid 4",
+    caption: "“Paso a paso, construyendo nuestro destino”"
+  },
+  {
+    id: 5,
+    src: "/assets/aistudio/couple_clean_portrait.jpg",
+    alt: "Foto polaroid 5",
+    caption: "“Dos almas que Dios unió para siempre”"
+  }
+];
+
 export default function App() {
   const [config, setConfig] = useState<WeddingConfig>(DEFAULT_CONFIG);
   const [countdown, setCountdown] = useState<CountdownResult>(() =>
@@ -138,6 +172,17 @@ export default function App() {
 
   // Hero couple photo zoom-out trigger
   const [heroAnimated, setHeroAnimated] = useState<boolean>(false);
+
+
+  // Sección 4: Carrusel de 5 fotos Polaroid con alejamiento lento cada 4 segundos
+  const [polaroidIdx, setPolaroidIdx] = useState<number>(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPolaroidIdx((prev) => (prev + 1) % POLAROID_CAROUSEL_PHOTOS.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Scroll Reveal observer
   useEffect(() => {
@@ -701,88 +746,126 @@ export default function App() {
         </section>
 
         {/* =================================================================
-             SECCIÓN 4: FOTOGRAFÍA ANDINA DE PAREJA (couple_photo_1.jpg)
+             SECCIÓN 4: FOTOGRAFÍA DE PAREJA (Carrusel Polaroid de 5 fotos con alejamiento lento)
              ================================================================= */}
         <section className="relative px-5 py-6 reveal-item">
           <div className="w-full max-w-[400px] mx-auto relative">
-            
+
             {/* Sello de vintage calligraphy decorativo en la esquina (papel_decoracion_2_6b80d71f.png) */}
-            <div className="absolute -top-3 -right-2 z-20 w-14 h-14 rotate-6 drop-shadow-md pointer-events-none">
-              <img 
-                src="/assets/aistudio/papel_decoracion_2_6b80d71f.png" 
-                alt="Sello vintage" 
+            <div className="absolute -top-3 -right-2 z-40 w-14 h-14 rotate-6 drop-shadow-md pointer-events-none">
+              <img
+                src="/assets/aistudio/papel_decoracion_2_6b80d71f.png"
+                alt="Sello vintage"
                 className="w-full h-full object-contain"
               />
             </div>
 
-            {/* Foto enmarcada en papel con sombra suave */}
-            <div className="bg-[#F7F4EE] p-3 pb-4 shadow-[0_15px_30px_rgba(0,0,0,0.18)] rounded-sm border border-[#C5A059]/25 transform -rotate-0.5">
-              <div className="w-full h-64 overflow-hidden rounded-xs relative">
-                <img 
-                  src="/assets/aistudio/couple_photo_1.jpg" 
-                  alt="Novios en los Andes con ponchos tradicionales" 
-                  className="w-full h-full object-cover object-top hover:scale-102 transition-transform duration-700"
-                />
+            {/* Foto enmarcada en papel artesanal real */}
+            <div className="relative transform -rotate-0.5 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)]">
+              {/* Imagen del Papel Artesanal Real (papel1_14fb074a.png) como fondo del contenedor */}
+              <img
+                src="/assets/aistudio/papel1_14fb074a_limpio.png"
+                alt="Contenedor de papel artesanal"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+              />
+
+              {/* Contenido sobre el papel */}
+              <div className="relative z-10 px-8 pt-7 pb-9 pt-9 sm:px-9 sm:pt-8 sm:pb-10 sm:pt-10 flex flex-col">
+                {/* Marco fotográfico con carrusel de alejamiento lento (Ken Burns zoom-out en bucle continuo) */}
+                <div className="w-full h-56 sm:h-64 overflow-hidden rounded-xs relative bg-[#1D211A] select-none pointer-events-none shadow-md border border-[#C5A059]/25">
+                  {POLAROID_CAROUSEL_PHOTOS.map((photo, idx) => {
+                    const isActive = idx === polaroidIdx;
+                    return (
+                      <div
+                        key={photo.src}
+                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                          }`}
+                      >
+                        <img
+                          key={isActive ? `polaroid-active-${idx}` : `polaroid-idle-${idx}`}
+                          src={photo.src}
+                          alt={photo.alt}
+                          className={`w-full h-full object-cover object-top ${isActive ? 'animate-polaroid-zoomout' : 'scale-100'
+                            }`}
+                          loading="eager"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Frase poética que transiciona suavemente con cada foto sobre el papel */}
+                <div className="relative min-h-[48px] sm:min-h-[52px] flex items-center justify-center mt-4 sm:mt-5 px-3">
+                  {POLAROID_CAROUSEL_PHOTOS.map((photo, idx) => (
+                    <p
+                      key={photo.src}
+                      className={`font-script text-2xl sm:text-[26px] text-center text-[#2C2C2A] absolute inset-x-0 transition-all duration-700 leading-snug ${idx === polaroidIdx
+                        ? 'opacity-100 translate-y-0 scale-100'
+                        : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
+                        }`}
+                    >
+                      {photo.caption}
+                    </p>
+                  ))}
+                </div>
               </div>
-              <p className="font-script text-2xl text-center text-[#2C2C2A] mt-3">
-                “Caminando juntos hacia el mismo sueño”
-              </p>
             </div>
-
-            {/* Sombra de apoyo */}
-            <div className="w-full flex justify-center -mt-2">
-              <img src="/assets/aistudio/sombra_baa5a2e0.png" alt="Sombra" className="w-3/4 opacity-60" />
-            </div>
-
           </div>
         </section>
 
         {/* =================================================================
-             SECCIÓN 5: LUGAR DE LA IGLESIA Y LA RECEPCIÓN (Grabados & Botón Ubicación)
+             SECCIÓN 5: LUGAR DE LA IGLESIA Y LA RECEPCIÓN (Papel Artesanal papel4 & Grabados Finos)
              ================================================================= */}
-        <section className="relative px-5 py-8 space-y-8 reveal-item">
+        <section className="relative px-5 py-8 space-y-10 reveal-item">
           
           {/* Tarjeta 1: CEREMONIA RELIGIOSA */}
-          <div className="max-w-[400px] mx-auto shadow-torn-paper">
-            <div className="deckle-card p-6 text-center relative overflow-hidden">
-              <p className="font-display text-[11px] tracking-[0.25em] text-[#5C6B57] uppercase font-semibold">
-                {config.lugares.ceremonia.titulo}
-              </p>
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
+            {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
+            <img 
+              src="/assets/aistudio/papel4_97b148ae.png" 
+              alt="Papel artesanal Ceremonia" 
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+            />
 
-              {/* Ilustración de arquitectura grabada de la Iglesia */}
-              <div className="my-4 flex justify-center">
-                <svg className="w-36 h-26 text-[#2C2C2A]/80" viewBox="0 0 200 130" fill="none" stroke="currentColor" strokeWidth="1.2">
-                  <path d="M20 120 H180" strokeWidth="1.5"/>
-                  <rect x="55" y="55" width="90" height="65"/>
-                  <polygon points="50,55 100,22 150,55"/>
-                  <rect x="85" y="10" width="30" height="45"/>
-                  <polygon points="82,10 100,2 118,10"/>
-                  <path d="M100 0 V-5 M96 -2 H104"/>
-                  <path d="M88 120 V90 A12 12 0 0 1 112 90 V120"/>
-                  <circle cx="100" cy="68" r="8"/>
-                  <rect x="65" y="75" width="10" height="18" rx="5"/>
-                  <rect x="125" y="75" width="10" height="18" rx="5"/>
-                </svg>
+            {/* Contenido sobre el papel siguiendo la proporción y tipografía de referencia */}
+            <div className="relative z-10 px-7 pt-10 pb-11 sm:px-9 sm:pt-12 sm:pb-12 text-center flex flex-col items-center">
+              {/* Título: CEREMONIA RELIGIOSA en serifa clásica espaciada */}
+              <h3 className="font-serif text-[#4F5E46] tracking-[0.24em] text-base sm:text-[17px] uppercase font-light leading-snug">
+                CEREMONIA<br />RELIGIOSA
+              </h3>
+
+              {/* Grabado arquitectónico auténtico del Templo */}
+              <div className="w-full max-w-[240px] sm:max-w-[260px] my-5 flex justify-center">
+                <img 
+                  src="/assets/aistudio/sketch_iglesia.png" 
+                  alt="Templo de San Pedro Apóstol" 
+                  className="w-full h-auto object-contain mix-blend-multiply opacity-90"
+                />
               </div>
 
-              <p className="font-sans text-xs font-semibold text-[#5A1E28] tracking-widest uppercase">
+              {/* Hora en números romanos con estilo editorial */}
+              <p className="font-serif text-lg sm:text-xl font-normal text-[#384632] tracking-wide mb-1">
                 {config.lugares.ceremonia.hora}
               </p>
-              <h3 className="font-serif text-xl font-bold text-[#2C2C2A] mt-1">
-                {config.lugares.ceremonia.nombre}
-              </h3>
-              <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-1 mb-5">
-                {config.lugares.ceremonia.direccion}
-              </p>
 
-              {/* Botón de Ubicación */}
+              {/* Nombre de la iglesia y localidad en caligrafía cursiva fluida */}
+              <div className="mb-6 space-y-0.5">
+                <p className="font-script text-2xl sm:text-[27px] text-[#2C3827] leading-tight">
+                  {config.lugares.ceremonia.nombre}
+                </p>
+                <p className="font-script text-xl sm:text-2xl text-[#3E4E39] leading-tight">
+                  – Urubamba – Cusco
+                </p>
+              </div>
+
+              {/* Botón verde oliva redondeado para Ver Ubicación */}
               <button 
                 onClick={() => setActiveMapModal({
                   title: config.lugares.ceremonia.nombre,
                   embedUrl: config.lugares.ceremonia.embedUrl,
                   mapsUrl: config.lugares.ceremonia.mapsUrl
                 })}
-                className="btn-tactile bg-[#22281F] text-[#F7F4EE] font-sans text-[11px] tracking-[0.2em] uppercase px-7 py-2.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.25)] hover:bg-[#5C6B57] cursor-pointer"
+                className="btn-tactile bg-[#4E6136] hover:bg-[#41522D] text-white font-serif text-[13px] sm:text-[14px] tracking-wider px-7 py-2.5 sm:px-8 sm:py-2.5 rounded-[9px] shadow-[0_4px_12px_rgba(78,97,54,0.35)] hover:shadow-[0_6px_16px_rgba(78,97,54,0.45)] transition-all duration-300 cursor-pointer inline-flex items-center justify-center underline underline-offset-3 decoration-white/75"
               >
                 Ver ubicación
               </button>
@@ -790,43 +873,50 @@ export default function App() {
           </div>
 
           {/* Tarjeta 2: LA RECEPCIÓN */}
-          <div className="max-w-[400px] mx-auto shadow-torn-paper">
-            <div className="deckle-card p-6 text-center relative overflow-hidden">
-              <p className="font-display text-[11px] tracking-[0.25em] text-[#5C6B57] uppercase font-semibold">
-                {config.lugares.recepcion.titulo}
-              </p>
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
+            {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
+            <img 
+              src="/assets/aistudio/papel4_97b148ae.png" 
+              alt="Papel artesanal Recepción" 
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+            />
 
-              {/* Ilustración de arquitectura grabada de la Casona */}
-              <div className="my-4 flex justify-center">
-                <svg className="w-40 h-26 text-[#2C2C2A]/80" viewBox="0 0 220 130" fill="none" stroke="currentColor" strokeWidth="1.2">
-                  <path d="M10 115 H210" strokeWidth="1.5"/>
-                  <polygon points="25,65 110,32 195,65"/>
-                  <rect x="35" y="65" width="150" height="50"/>
-                  <path d="M55 115 V82 A12 12 0 0 1 79 82 V115"/>
-                  <path d="M98 115 V78 A12 12 0 0 1 122 78 V115"/>
-                  <path d="M141 115 V82 A12 12 0 0 1 165 82 V115"/>
-                  <path d="M20 115 C30 95, 30 95, 35 115 M185 115 C190 95, 200 95, 205 115"/>
-                </svg>
+            {/* Contenido sobre el papel siguiendo la proporción y tipografía de referencia */}
+            <div className="relative z-10 px-7 pt-10 pb-11 sm:px-9 sm:pt-12 sm:pb-12 text-center flex flex-col items-center">
+              {/* Título: RECEPCIÓN en serifa clásica espaciada */}
+              <h3 className="font-serif text-[#4F5E46] tracking-[0.24em] text-base sm:text-[17px] uppercase font-light leading-snug">
+                RECEPCIÓN
+              </h3>
+
+              {/* Grabado arquitectónico auténtico de La Casona */}
+              <div className="w-full max-w-[270px] sm:max-w-[290px] my-5 flex justify-center">
+                <img 
+                  src="/assets/aistudio/sketch_recepcion.png" 
+                  alt="Hotel La Casona de Yucay" 
+                  className="w-full h-auto object-contain mix-blend-multiply opacity-90"
+                />
               </div>
 
-              <p className="font-sans text-xs font-semibold text-[#5A1E28] tracking-widest uppercase">
+              {/* Hora en números romanos con estilo editorial */}
+              <p className="font-serif text-lg sm:text-xl font-normal text-[#384632] tracking-wide mb-1">
                 {config.lugares.recepcion.hora}
               </p>
-              <h3 className="font-serif text-xl font-bold text-[#2C2C2A] mt-1">
-                {config.lugares.recepcion.nombre}
-              </h3>
-              <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-1 mb-5">
-                {config.lugares.recepcion.direccion}
-              </p>
 
-              {/* Botón de Ubicación */}
+              {/* Nombre de la recepción en caligrafía cursiva fluida */}
+              <div className="mb-6 space-y-0.5">
+                <p className="font-script text-2xl sm:text-[27px] text-[#2C3827] leading-tight">
+                  {config.lugares.recepcion.nombre}
+                </p>
+              </div>
+
+              {/* Botón verde oliva redondeado para Ver Ubicación */}
               <button 
                 onClick={() => setActiveMapModal({
                   title: config.lugares.recepcion.nombre,
                   embedUrl: config.lugares.recepcion.embedUrl,
                   mapsUrl: config.lugares.recepcion.mapsUrl
                 })}
-                className="btn-tactile bg-[#22281F] text-[#F7F4EE] font-sans text-[11px] tracking-[0.2em] uppercase px-7 py-2.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.25)] hover:bg-[#5C6B57] cursor-pointer"
+                className="btn-tactile bg-[#4E6136] hover:bg-[#41522D] text-white font-serif text-[13px] sm:text-[14px] tracking-wider px-7 py-2.5 sm:px-8 sm:py-2.5 rounded-[9px] shadow-[0_4px_12px_rgba(78,97,54,0.35)] hover:shadow-[0_6px_16px_rgba(78,97,54,0.45)] transition-all duration-300 cursor-pointer inline-flex items-center justify-center underline underline-offset-3 decoration-white/75"
               >
                 Ver ubicación
               </button>
