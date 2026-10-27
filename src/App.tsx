@@ -528,7 +528,7 @@ export default function App() {
              ================================================================= */}
         <section className="relative px-5 pt-12 flex flex-col items-center reveal-item">
           
-          <div className="w-full max-w-[400px] relative">
+          <div className="w-full max-w-[360px] relative">
             {/* Contenedor del Sobre Abierto Realista */}
             <div className="w-full relative z-10 flex justify-center -mb-10">
               {/* Capa 1: Fondo del sobre con la solapa interior y trasera */}
@@ -643,16 +643,16 @@ export default function App() {
           <div className="w-full max-w-[360px] flex flex-col items-center">
             
             {/* Medallón Barroco Terracota con texturas talladas en 3D (papel6_03599585.png) */}
-            <div className="relative w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo">
+            <div className="relative z-20 w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo pointer-events-none">
               {/* Imagen del camafeo real con relieve */}
               <img 
                 src="/assets/aistudio/papel6_03599585.png" 
                 alt="Camafeo barroco de fecha en terracota" 
-                className="absolute inset-0 w-full h-full object-contain filter drop-shadow-lg"
+                className="absolute inset-0 w-full h-full object-contain filter drop-shadow-lg select-none"
               />
 
               {/* Texto dentro del Camafeo Barroco */}
-              <div className="relative z-10 text-center text-[#F9F6F0] px-8 pt-2">
+              <div className="relative z-10 text-center text-[#F9F6F0] px-8 pt-2 select-none">
                 <p className="font-script text-4xl text-[#D8A7B1] mb-1">
                   {config.fecha.mes}
                 </p>
@@ -666,21 +666,21 @@ export default function App() {
             </div>
 
             {/* Tarjeta de Cuenta Regresiva de Papel Rasgado superpuesta debajo */}
-            <div className="relative z-[-1] w-full -mt-16 shadow-torn-paper">
-              <div className="px-5 py-10 text-center">
+            <div className="relative z-10 w-full -mt-16 shadow-torn-paper">
+              <div className="relative z-10 px-6 py-10 text-center">
                 {/* Imagen del papel */}
                 <img 
                   src="/assets/aistudio/papel3_clean_rotated.png" 
                   alt="Tarjetón de papel artesanal rasgado" 
-                  className="absolute w-full h-full inset-0 object-fill pointer-events-none select-none z-[-1] filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
+                  className="absolute inset-0 w-full h-full inset-0 object-fill pointer-events-none select-none z-10 filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
                 />
                 
-                <p className="font-script text-3xl text-[#5A1E28] mb-2 font-normal">
+                <p className="relative z-20 font-script text-3xl text-[#5A1E28] mb-2 font-normal">
                   Faltan
                 </p>
 
                 {/* Contador regresivo con numerales tabulares */}
-                <div className="grid grid-cols-4 gap-2 tabular-nums max-w-xs mx-auto">
+                <div className="relative z-20 grid grid-cols-4 gap-2 tabular-nums max-w-xs mx-auto">
                   <div className="bg-[#ECE7DF]/70 py-2 rounded border border-[#C5A059]/20">
                     <span className="font-display text-2xl sm:text-3xl font-semibold text-[#2C2C2A] block leading-none">
                       {String(countdown.days).padStart(2, '0')}
@@ -716,7 +716,7 @@ export default function App() {
                 </div>
 
                 {/* Botón para agendar en Google Calendar */}
-                <div className="mt-4">
+                <div className="mt-5 relative z-20 flex justify-center">
                   <a 
                     href={generateGoogleCalendarUrl(
                       `Boda ${config.novios.el} & ${config.novios.ella}`,
@@ -816,10 +816,19 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 5: LUGAR DE LA IGLESIA Y LA RECEPCIÓN (Papel Artesanal papel4 & Grabados Finos)
              ================================================================= */}
-        <section className="relative px-5 py-8 space-y-10 reveal-item">
+        <section className="relative px-5 py-8 reveal-item">
           
           {/* Tarjeta 1: CEREMONIA RELIGIOSA */}
           <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
+
+            {/* Sello de cera verde superior fijando la hoja de itinerario */}
+            <div className="absolute -top-3 -left-1 w-20 h-20 z-30 rotate-[-6deg] pointer-events-none select-none drop-shadow-md">
+              <img 
+                src="/assets/aistudio/imagen_sello_75c97831.png" 
+                alt="Sello J&A" 
+                className="w-full h-full object-contain"
+              />
+            </div>
             {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
             <img 
               src="/assets/aistudio/papel4_97b148ae.png" 
@@ -928,11 +937,11 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 6: ITINERARIO CON ICONOS TRANSPARENTES
              ================================================================= */}
-        <section className="relative px-5 py-10 reveal-item">
+        <section className="relative px-5 py-2 reveal-item">
           <div className="max-w-[400px] mx-auto relative">
             
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
-            <div className="w-16 h-16 mx-auto -mb-8 relative z-30 shadow-wax-seal wax-seal-anim cursor-pointer">
+            <div className="w-20 h-20 mx-auto -mb-15 relative z-30">
               <img 
                 src="/assets/aistudio/imagen_sello_75c97831.png" 
                 alt="Sello J&A" 
@@ -941,15 +950,22 @@ export default function App() {
             </div>
 
             {/* Hoja de Itinerario en papel rasgado */}
-            <div className="shadow-torn-paper relative z-20">
-              <div className="deckle-card px-5 pt-12 pb-10 text-center">
-                
-                <h3 className="font-display text-sm tracking-[0.3em] uppercase text-[#2C2C2A] font-semibold mb-6">
+            <div className="relative z-10">
+              <div className="px-5 pt-16 pb-10 text-center">
+
+                  {/* imagen de fondo hoja */}
+                  <img 
+                    src="/assets/aistudio/papel3_clean_rotated.png" 
+                    alt="Papel rasgado" 
+                    className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none select-none filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
+                  />
+
+                <h3 className="font-display text-sm tracking-[0.3em] uppercase text-[#2C2C2A] font-semibold mb-6 relative z-20">
                   Itinerario
                 </h3>
 
                 {/* Línea de tiempo horizontal con iconos transparentes */}
-                <div className="grid grid-cols-5 gap-1.5 items-start">
+                <div className="grid grid-cols-5 gap-1.5 items-start relative z-20">
                   
                   {/* 1. Anillos / Ceremonia Religiosa */}
                   <div className="flex flex-col items-center">
@@ -960,21 +976,22 @@ export default function App() {
                         className="w-10 h-10 object-contain drop-shadow-sm"
                       />
                     </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">11:00 am</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Ceremonia Religiosa</span>
+                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">11:30 am</span>
+                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Ceremonia Religiosa en Iglesia</span>
                   </div>
 
-                  {/* 2. Cóctel */}
+                  {/* 2. Llegada a recepcion */}
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <img 
-                        src="/assets/aistudio/icono_coctel_2fb88822.png" 
-                        alt="Copas de cóctel" 
-                        className="w-10 h-10 object-contain drop-shadow-sm"
+                      <img
+                        // antes: icono_coctel_2fb88822.png
+                        src="/assets/aistudio/icono_despedida_dcfd3b04.png"
+                        alt="Llegada a Recepción" 
+                        className="w-12 h-5 opacity-80 rotate-y-180"
                       />
                     </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">1:30 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Recepción Cóctel</span>
+                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">3:00 pm</span>
+                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Llegada a Recepción</span>
                   </div>
 
                   {/* 3. Ceremonia Civil */}
@@ -985,11 +1002,27 @@ export default function App() {
                         <circle cx="15" cy="12" r="5"/>
                       </svg>
                     </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">2:30 pm</span>
+                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">3:30 pm</span>
                     <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Ceremonia Civil</span>
                   </div>
 
-                  {/* 4. Cena / Almuerzo */}
+                  
+                  {/* 4. Hora coctel */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 flex items-center justify-center mb-1">
+                      <img
+                        // antes: icono_coctel_2fb88822.png
+                        src="/assets/aistudio/icono_coctel_2fb88822.png"
+                        alt="Hora cóctel" 
+                        className="w-12 h-5 opacity-80 rotate-y-180"
+                      />
+                    </div>
+                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">4:30 pm</span>
+                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Hora Cóctel</span>
+                  </div>
+                  
+
+                  {/* 5. Cena / Almuerzo */}
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 flex items-center justify-center mb-1">
                       <img 
@@ -998,11 +1031,11 @@ export default function App() {
                         className="w-10 h-10 object-contain drop-shadow-sm"
                       />
                     </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">4:00 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Almuerzo de Gala</span>
+                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">5:30 pm</span>
+                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Cena de Gala</span>
                   </div>
 
-                  {/* 5. Fiesta */}
+                  {/* 6. Fiesta */}
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 flex items-center justify-center mb-1">
                       <img 
@@ -1011,21 +1044,21 @@ export default function App() {
                         className="w-10 h-10 object-contain drop-shadow-sm"
                       />
                     </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">5:00 pm</span>
+                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">7:00 pm</span>
                     <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Fiesta y Baile</span>
                   </div>
 
                 </div>
 
                 {/* Despedida de novios con auto clásico */}
-                <div className="mt-6 pt-4 border-t border-[#C5A059]/30 flex items-center justify-center gap-3">
+                <div className="mt-6 pt-4 border-t border-[#C5A059]/30 flex items-center justify-center gap-3 relative z-20">
                   <img 
                     src="/assets/aistudio/icono_despedida_dcfd3b04.png" 
                     alt="Auto recién casados" 
                     className="w-20 h-auto object-contain opacity-80"
                   />
                   <span className="font-serif italic text-xs text-[#2C2C2A]/80">
-                    10:30 PM • Despedida y viaje de luna de miel
+                    12 : 00 am • Despedida y viaje de luna de miel
                   </span>
                 </div>
 
