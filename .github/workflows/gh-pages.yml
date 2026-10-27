@@ -1,15 +1,14 @@
-name: Deploy React Vite to GitHub Pages
+name: Build and Deploy to gh-pages
 
 on:
   push:
-    branches: [ "main" ] # O "master" según tu rama principal
+    branches: [ "main" ] # Se dispara cuando haces push a tu rama principal
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
     permissions:
-      contents: write
+      contents: write # Vital para que la acción pueda escribir/crear la rama gh-pages
 
     steps:
       - name: Checkout repository
@@ -18,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: 20
           cache: 'npm'
 
       - name: Install dependencies
@@ -31,4 +30,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist # La carpeta donde Vite genera los archivos compilados
+          publish_dir: ./dist # Carpeta que genera Vite
+          publish_branch: gh-pages # La rama donde se guardarán los estáticos
