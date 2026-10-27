@@ -935,131 +935,159 @@ export default function App() {
         </section>
 
         {/* =================================================================
-             SECCIÓN 6: ITINERARIO CON ICONOS TRANSPARENTES
+             SECCIÓN 6: ITINERARIO EN LÍNEA DE TIEMPO VERTICAL (papel3_clean)
              ================================================================= */}
-        <section className="relative px-5 py-2 reveal-item">
-          <div className="max-w-[400px] mx-auto relative">
+        <section className="relative px-5 py-6 reveal-item">
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative">
             
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
-            <div className="w-20 h-20 mx-auto -mb-15 relative z-30">
+            <div className="w-20 h-20 mx-auto -mb-10 relative z-30 wax-seal-anim cursor-pointer">
               <img 
                 src="/assets/aistudio/imagen_sello_75c97831.png" 
                 alt="Sello J&A" 
-                className="w-full h-full object-contain filter drop-shadow-md"
+                className="w-full h-full object-contain filter drop-shadow-md hover:scale-105 transition-transform"
               />
             </div>
 
-            {/* Hoja de Itinerario en papel rasgado */}
-            <div className="relative z-10">
-              <div className="px-5 pt-16 pb-10 text-center">
+            {/* Hoja de Itinerario en papel artesanal real vertical (papel3_clean.png) */}
+            <div className="relative z-10 drop-shadow-[0_16px_32px_rgba(20,24,18,0.22)]">
+              {/* Imagen de fondo papel3_clean vertical */}
+              <img 
+                src="/assets/aistudio/papel3_clean.png" 
+                alt="Papel artesanal Itinerario" 
+                className="absolute inset-0 w-full h-full object-fill z-0 pointer-events-none select-none"
+              />
 
-                  {/* imagen de fondo hoja */}
-                  <img 
-                    src="/assets/aistudio/papel3_clean_rotated.png" 
-                    alt="Papel rasgado" 
-                    className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none select-none filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
-                  />
-
-                <h3 className="font-display text-sm tracking-[0.3em] uppercase text-[#2C2C2A] font-semibold mb-6 relative z-20">
-                  Itinerario
+              {/* Contenido sobre el papel */}
+              <div className="relative z-10 px-6 pt-14 pb-12 sm:px-8 sm:pt-16 sm:pb-14">
+                
+                {/* Título: ITINERARIO */}
+                <h3 className="font-serif tracking-[0.26em] text-base sm:text-[17px] uppercase font-normal text-[#384831] text-center mb-7 sm:mb-8">
+                  ITINERARIO
                 </h3>
 
-                {/* Línea de tiempo horizontal con iconos transparentes */}
-                <div className="grid grid-cols-5 gap-1.5 items-start relative z-20">
-                  
-                  {/* 1. Anillos / Ceremonia Religiosa */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <img 
-                        src="/assets/aistudio/icono_anillos_48b04619.png" 
-                        alt="Anillos de boda" 
-                        className="w-10 h-10 object-contain drop-shadow-sm"
-                      />
-                    </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">11:30 am</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Ceremonia Religiosa en Iglesia</span>
-                  </div>
+                {/* Línea de tiempo vertical: iconos grandes y texto compacto en el lado derecho */}
+                <div className="flex flex-col">
+                  {[
+                    {
+                      hora: "11:30 am",
+                      titulo: "Ceremonia religiosa",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_anillos_48b04619.png" 
+                          alt="Ceremonia religiosa" 
+                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
+                        />
+                      )
+                    },
+                    {
+                      hora: "3:00 pm",
+                      titulo: "Llegada a recepcion",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_despedida_dcfd3b04.png" 
+                          alt="Llegada a recepcion" 
+                          className="w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90 rotate-y-180"
+                        />
+                      )
+                    },
+                    {
+                      hora: "3:30 pm",
+                      titulo: "Votos matrimoniales",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_votos.png" 
+                          alt="Votos matrimoniales" 
+                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
+                        />
+                      )
+                    },
+                    {
+                      hora: "4:30 pm",
+                      titulo: "Coctel",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_coctel_2fb88822.png" 
+                          alt="Coctel" 
+                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
+                        />
+                      )
+                    },
+                    {
+                      hora: "6:00 pm",
+                      titulo: "Cena",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_cena_f73c8000.png" 
+                          alt="Cena" 
+                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
+                        />
+                      )
+                    },
+                    {
+                      hora: "8:00 pm",
+                      titulo: "Fiesta",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_fiesta_a951966a.png" 
+                          alt="Fiesta" 
+                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
+                        />
+                      )
+                    },
+                    {
+                      hora: "12:00 am",
+                      titulo: "Fin de fiesta",
+                      icon: (
+                        <img 
+                          src="/assets/aistudio/icono_despedida_dcfd3b04.png" 
+                          alt="Fin de fiesta" 
+                          className="w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90"
+                        />
+                      )
+                    }
+                  ].map((event, idx, arr) => {
+                    const isFirst = idx === 0;
+                    const isLast = idx === arr.length - 1;
+                    return (
+                      <div key={idx} className="grid grid-cols-[1.2fr_34px_1.05fr] items-center min-h-[74px] sm:min-h-[82px]">
+                        {/* Columna 1: Iconos sustancialmente más grandes y alineados hacia el eje */}
+                        <div className="flex items-center justify-end pr-2.5 sm:pr-3.5">
+                          <div className="w-18 h-18 sm:w-20 sm:h-20 flex items-center justify-end">
+                            {event.icon}
+                          </div>
+                        </div>
 
-                  {/* 2. Llegada a recepcion */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <img
-                        // antes: icono_coctel_2fb88822.png
-                        src="/assets/aistudio/icono_despedida_dcfd3b04.png"
-                        alt="Llegada a Recepción" 
-                        className="w-12 h-5 opacity-80 rotate-y-180"
-                      />
-                    </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">3:00 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Llegada a Recepción</span>
-                  </div>
+                        {/* Columna 2: Eje vertical centrado con conector horizontal de topes */}
+                        <div className="w-8.5 h-full flex items-center justify-center relative">
+                          <svg className="w-full h-full overflow-visible" viewBox="0 0 34 80" preserveAspectRatio="none">
+                            {/* Línea vertical superior */}
+                            {!isFirst && (
+                              <line x1="17" y1="0" x2="17" y2="40" stroke="#5C6E52" strokeWidth="1.3" />
+                            )}
+                            {/* Línea vertical inferior */}
+                            {!isLast && (
+                              <line x1="17" y1="40" x2="17" y2="80" stroke="#5C6E52" strokeWidth="1.3" />
+                            )}
+                            {/* Marca horizontal con topes verticales en los extremos */}
+                            <line x1="3" y1="40" x2="31" y2="40" stroke="#5C6E52" strokeWidth="1.3" />
+                            <line x1="3" y1="34" x2="3" y2="46" stroke="#5C6E52" strokeWidth="1.3" />
+                            <line x1="31" y1="34" x2="31" y2="46" stroke="#5C6E52" strokeWidth="1.3" />
+                          </svg>
+                        </div>
 
-                  {/* 3. Ceremonia Civil */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <svg className="w-9 h-9 text-[#3E4A37]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
-                        <circle cx="9" cy="12" r="5"/>
-                        <circle cx="15" cy="12" r="5"/>
-                      </svg>
-                    </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">3:30 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Ceremonia Civil</span>
-                  </div>
-
-                  
-                  {/* 4. Hora coctel */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <img
-                        // antes: icono_coctel_2fb88822.png
-                        src="/assets/aistudio/icono_coctel_2fb88822.png"
-                        alt="Hora cóctel" 
-                        className="w-12 h-5 opacity-80 rotate-y-180"
-                      />
-                    </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">4:30 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Hora Cóctel</span>
-                  </div>
-                  
-
-                  {/* 5. Cena / Almuerzo */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <img 
-                        src="/assets/aistudio/icono_cena_f73c8000.png" 
-                        alt="Plato y cubiertos" 
-                        className="w-10 h-10 object-contain drop-shadow-sm"
-                      />
-                    </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">5:30 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Cena de Gala</span>
-                  </div>
-
-                  {/* 6. Fiesta */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 flex items-center justify-center mb-1">
-                      <img 
-                        src="/assets/aistudio/icono_fiesta_a951966a.png" 
-                        alt="Bola de discoteca" 
-                        className="w-10 h-10 object-contain drop-shadow-sm"
-                      />
-                    </div>
-                    <span className="font-sans text-[10px] font-semibold text-[#5A1E28]">7:00 pm</span>
-                    <span className="font-serif text-[11px] leading-tight text-[#2C2C2A] mt-0.5">Fiesta y Baile</span>
-                  </div>
-
-                </div>
-
-                {/* Despedida de novios con auto clásico */}
-                <div className="mt-6 pt-4 border-t border-[#C5A059]/30 flex items-center justify-center gap-3 relative z-20">
-                  <img 
-                    src="/assets/aistudio/icono_despedida_dcfd3b04.png" 
-                    alt="Auto recién casados" 
-                    className="w-20 h-auto object-contain opacity-80"
-                  />
-                  <span className="font-serif italic text-xs text-[#2C2C2A]/80">
-                    12 : 00 am • Despedida y viaje de luna de miel
-                  </span>
+                        {/* Columna 3: Hora y Nombre del evento compactos, sin ocupar demasiado ancho hacia la derecha */}
+                        <div className="flex flex-col justify-center pl-2.5 sm:pl-3.5 py-1 text-left max-w-[125px] sm:max-w-[140px]">
+                          <p className="font-serif text-[15px] sm:text-[16px] font-medium text-[#384831] leading-tight tracking-wide">
+                            {event.hora}
+                          </p>
+                          <p className="font-serif text-[12.5px] sm:text-[13.5px] text-[#2C3827] leading-snug mt-0.5">
+                            {event.titulo}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
               </div>
@@ -1069,53 +1097,82 @@ export default function App() {
         </section>
 
         {/* =================================================================
-             SECCIÓN 7: FOTOGRAFÍA ANDINA 2 & CÓDIGO DE VESTIMENTA (papel6)
+             SECCIÓN 7: FOTOGRAFÍA & CÓDIGO DE VESTIMENTA (papel6)
              ================================================================= */}
-        <section className="relative px-5 py-8 reveal-item">
-          <div className="max-w-[400px] mx-auto relative flex flex-col items-center">
+        <section className="relative z-20 px-5 py-8 reveal-item">
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative flex flex-col items-center">
             
-            {/* Foto de la pareja en las montañas (couple_photo_2.jpg) */}
-            <div className="w-full bg-[#F7F4EE] p-3 shadow-lg rounded-sm border border-[#C5A059]/20">
-              <div className="w-full h-72 overflow-hidden rounded-xs">
-                <img 
-                  src="/assets/aistudio/couple_photo_2.jpg" 
-                  alt="Abrazo romántico en el Valle Sagrado" 
-                  className="w-full h-full object-cover object-center"
-                />
+            {/* Foto de la pareja enmarcada en papel artesanal real tipo marco/Polaroid */}
+            <div className="relative w-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)] transform -rotate-0.5">
+              {/* Fondo de textura de papel artesanal */}
+              <img 
+                src="/assets/aistudio/papel1_14fb074a_limpio.png" 
+                alt="Fondo textura papel" 
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+              />
+
+              {/* Contenedor de la foto con generoso margen inferior de papel para que el camafeo descanse sobre él */}
+              <div className="relative z-10 px-7 pt-7 pb-20 sm:px-8 sm:pt-8 sm:pb-24">
+                <div className="w-full aspect-[4/3] overflow-hidden rounded-xs border border-[#C5A059]/25 shadow-md bg-[#232920]">
+                  <img 
+                    src="/assets/aistudio/couple_photo_2.jpg" 
+                    alt="Foto momento especial" 
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Camafeo Barroco de Código de Vestimenta superpuesto (papel6_03599585.png) */}
-            <div className="relative w-80 h-80 -mt-20 z-20 flex items-center justify-center shadow-cameo">
+            {/* Camafeo Barroco de Código de Vestimenta superpuesto exactamente sobre el marco inferior de papel */}
+            <div className="relative z-20 w-96 h-96 sm:w-96 sm:h-96 -mt-22 sm:-mt-26 flex items-center justify-center shadow-cameo">
               <img 
                 src="/assets/aistudio/papel6_03599585.png" 
                 alt="Camafeo barroco de vestimenta" 
-                className="absolute inset-0 w-full h-full object-contain filter drop-shadow-md"
+                className="absolute inset-0 w-full h-full object-contain filter drop-shadow-md select-none"
               />
 
-              <div className="relative z-10 text-center text-[#F9F6F0] px-10 pt-2">
-                <h4 className="font-display text-[11px] tracking-[0.25em] uppercase text-[#D8A7B1] mb-2 font-semibold">
-                  Código de Vestimenta
-                </h4>
+              {/* Contenido legible y nítido centrado en la zona interior del camafeo (idéntico a imagen de referencia) */}
+              <div className="relative z-10 text-center text-white px-7 pt-1 flex flex-col items-center max-w-[215px] sm:max-w-[235px]">
+                {/* Título en dos líneas */}
+                <p className="font-serif text-[12px] sm:text-[13px] tracking-[0.24em] uppercase text-white font-normal leading-tight text-center drop-shadow-xs">
+                  CÓDIGO DE<br />VESTIMENTA
+                </p>
 
-                {/* Iconos Traje & Vestido */}
-                <div className="flex justify-center items-center gap-4 my-2 text-[#F7F4EE]">
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
-                    <path d="M6 4l4 2 2-2 2 2 4-2v16H6V4z"/><path d="M12 6v14M9 4l3 5 3-5"/>
+                {/* Iconos de Traje y Vestido en blanco nítido */}
+                <div className="flex justify-center items-center gap-4 my-2 text-white">
+                  {/* Icono Terno / Chaqueta formal */}
+                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-xs" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 7 L10 4 L14 12 L18 4 L22 7 L22 23 L20 24 L14 25 L8 24 L6 23 Z" />
+                    <path d="M10 4 L14 14 L18 4" />
+                    <path d="M14 14 L14 25" />
+                    <polygon points="13,7 15,7 15.5,12 14,14 12.5,12" fill="currentColor" />
+                    <path d="M10 14 L6 23" />
+                    <path d="M18 14 L22 23" />
                   </svg>
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
-                    <path d="M9 3h6l-1.5 6L18 21H6l4.5-12L9 3z"/>
+
+                  {/* Icono Vestido de fiesta largo */}
+                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-xs" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 4 L10 8 Q14 10 18 8 L19 4" />
+                    <path d="M10 8 Q14 11 18 8 L17 14 Q14 16 11 14 Z" fill="currentColor" fillOpacity="0.25" />
+                    <path d="M11 14 Q8 21 6 25 Q14 26.5 22 25 Q20 21 17 14 Z" fill="currentColor" fillOpacity="0.25" />
+                    <path d="M14 15 Q14 20 14 25" strokeWidth="1" strokeOpacity="0.6" />
                   </svg>
+                </div>  
+
+                {/* Categoría: ELEGANTE FORMAL */}
+                <p className="font-serif text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-white font-bold my-1 drop-shadow-xs">
+                  ELEGANTE
+                </p>
+
+                {/* Detalle de vestimenta en serifa blanca de alto contraste y excelente lectura */}
+                <div className="space-y-1.5 mt-1.5 text-center w-[90%]">
+                  <p className="font-serif text-[10px] sm:text-[11px] text-white leading-snug drop-shadow-xs">
+                    <span className="font-semibold">Mujeres:</span> Vestido largo (se sugiere evitar tonos blanco, beige y similares)
+                  </p>
+                  <p className="font-serif text-[10px] sm:text-[11px] text-white leading-snug drop-shadow-xs">
+                    <span className="font-semibold">Hombres:</span> Terno y corbata
+                  </p>
                 </div>
-
-                <p className="font-display text-sm tracking-[0.2em] uppercase text-[#F9F6F0] font-bold mt-1">
-                  Elegante Formal
-                </p>
-
-                <p className="font-serif text-[11px] sm:text-xs text-[#F9F6F0]/90 leading-relaxed mt-2">
-                  <span className="font-semibold text-[#D8A7B1]">Mujeres:</span> Vestido largo (se sugiere evitar tonos blanco, beige y similares a la novia).<br/>
-                  <span className="font-semibold text-[#D8A7B1]">Hombres:</span> Terno oscuro y corbata.
-                </p>
               </div>
             </div>
 
@@ -1125,7 +1182,7 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 8: SUGERENCIA DE REGALOS & LUNA DE MIEL
              ================================================================= */}
-        <section className="relative px-5 py-8 reveal-item">
+        <section className="relative z-10 px-5 py-8 -mt-30 reveal-item">
           <div className="max-w-[400px] mx-auto relative">
             
             <div className="shadow-torn-paper relative z-20">
