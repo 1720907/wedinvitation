@@ -114,32 +114,50 @@ const DEFAULT_CONFIG: WeddingConfig = {
 const POLAROID_CAROUSEL_PHOTOS = [
   {
     id: 1,
-    src: "./assets/aistudio/couple_photo_1.jpg",
+    src: "./assets/aistudio/carrusel1.jpeg",
     alt: "Foto polaroid 1",
     caption: "“Caminando juntos hacia el mismo sueño”"
   },
   {
     id: 2,
-    src: "./assets/aistudio/couple_photo_2.jpg",
+    src: "./assets/aistudio/carrusel2.jpeg",
     alt: "Foto polaroid 2",
     caption: "“En cada mirada, una promesa de amor eterno”"
   },
   {
     id: 3,
-    src: "./assets/aistudio/couple_photo_3.jpg",
+    src: "./assets/aistudio/carrusel3.jpeg",
     alt: "Foto polaroid 3",
     caption: "“El amor que florece siempre”"
   },
   {
     id: 4,
-    src: "./assets/aistudio/couple_walking_perfect.jpg",
+    src: "./assets/aistudio/carrusel4.jpeg",
     alt: "Foto polaroid 4",
     caption: "“Paso a paso, construyendo nuestro destino”"
   },
   {
     id: 5,
-    src: "./assets/aistudio/couple_clean_portrait.jpg",
+    src: "./assets/aistudio/carrusel5.jpeg",
     alt: "Foto polaroid 5",
+    caption: "“Dos aventureros disfrutando momentos”"
+  },
+  {
+    id: 6,
+    src: "./assets/aistudio/carrusel6.jpeg",
+    alt: "Foto polaroid 6",
+    caption: "“Una aventura mágina”"
+  },
+  {
+    id: 7,
+    src: "./assets/aistudio/carrusel7.jpeg",
+    alt: "Foto polaroid 7",
+    caption: "“Aventuras de cuentos de hadas”"
+  },
+  {
+    id: 8,
+    src: "./assets/aistudio/carrusel8.jpeg",
+    alt: "Foto polaroid 8",
     caption: "“Dos almas que Dios unió para siempre”"
   }
 ];
@@ -387,7 +405,7 @@ export default function App() {
       {/* Background Audio Element */}
       <audio
         ref={audioRef}
-        src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3"
+        src="assets/audio/A Thousand years.mp3"
         loop
         preload="auto"
       />
@@ -405,7 +423,7 @@ export default function App() {
           }}
         />
 
-        {/* Botanical leaf vine motifs trailing down the sides matching diseño2 */}
+        {/* Botanical leaf vine motifs trailing down the sides */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-40 select-none z-0"
           style={{
@@ -417,9 +435,7 @@ export default function App() {
         />
 
         {/* =================================================================
-             SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales + Efecto Zoom-Out)
-             En celular: 100dvh para llenar toda la pantalla como portada inmersiva.
-             En PC: formato estilizado centrado con proporción nativa.
+             SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
              ================================================================= */}
         <section 
           id="hero-invitation"
@@ -473,7 +489,7 @@ export default function App() {
                   <img 
                     src="./assets/aistudio/iniciales_ca9ceab3_1.png" 
                     alt="Monograma de los novios" 
-                    className="w-[80%] max-w-[185px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] filter brightness-120 opacity-20"
+                    className="w-[80%] max-w-[185px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] filter brightness-120 opacity-50"
                   />
                 </div>
               </div>
