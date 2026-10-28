@@ -432,7 +432,8 @@ export default function App() {
           >
             {/* Base Hero Frame Background: foto_cover_clean.jpg */}
             <img 
-              src="./assets/aistudio/foto_cover_clean.jpg" 
+              src={`${import.meta.env.BASE_URL}assets/aistudio/foto_cover_clean.jpg`}
+
               alt="Cubierta de invitación fina con marco barroco verde" 
               className="absolute inset-0 w-full h-full object-cover z-0"
             />
