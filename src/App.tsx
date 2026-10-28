@@ -401,7 +401,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#141812] text-[#2C2C2A] flex justify-center py-0 md:py-8 px-0 sm:px-4">
+    <div className="min-h-screen bg-[#141812] text-[#2C2C2A] flex justify-center pt-0 pb-8 px-0 sm:px-4">
       {/* Background Audio Element */}
       <audio
         ref={audioRef}
@@ -436,113 +436,109 @@ export default function App() {
 
         {/* =================================================================
              SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
+             Formato proporcional nativo 100% estable sin saltos de zoom al escrolear
              ================================================================= */}
         <section 
           id="hero-invitation"
-          className="relative w-full h-[100dvh] sm:h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center"
+          className="relative w-full overflow-hidden select-none bg-[#2C3426]"
+          style={{ aspectRatio: '1149 / 1951' }}
         >
-          {/* Contenedor proporcional escalado para llenar el viewport del celular con zoom y centrado perfecto */}
+          {/* Base Hero Frame Background: foto_cover_clean.jpg */}
+          <img 
+            src="/assets/aistudio/foto_cover_clean.jpg" 
+            alt="Cubierta de invitación fina con marco barroco verde" 
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          />
+
+          {/* Oval Cutout Area inside the Ornate Baroque Green Frame */}
+          {/* Exact measured relative bounds: left 26.8%, top 15.2%, width 46.4%, height 39.4% */}
           <div 
-            className="h-full absolute left-1/2 -translate-x-1/2 sm:static sm:translate-x-0 sm:w-full sm:h-auto overflow-hidden flex-shrink-0"
-            style={{ aspectRatio: '1149 / 1951' }}
+            className="absolute z-10 overflow-hidden"
+            style={{
+              left: '26.8%',
+              top: '15.2%',
+              width: '46.4%',
+              height: '39.5%',
+              clipPath: 'ellipse(49.8% 49.8% at 50% 50%)'
+            }}
           >
-            {/* Base Hero Frame Background: foto_cover_clean.jpg */}
-            <img 
-              src={`${import.meta.env.BASE_URL}assets/aistudio/foto_cover_clean.jpg`}
+            {/* Foto de dos personas con efecto de aparición de alejamiento (zoom-out) */}
+            <div className="w-full h-full relative overflow-hidden bg-[#2C3426]">
+              <img 
+                src="./assets/aistudio/portada.jpeg"
+                alt="Foto de la pareja" 
+                onLoad={() => setHeroAnimated(true)}
+                className={`w-full h-full object-cover object-center ${
+                  heroAnimated ? 'animate-zoom-out-appear' : 'scale-125 opacity-0'
+                }`}
+              />
 
-              alt="Cubierta de invitación fina con marco barroco verde" 
-              className="absolute inset-0 w-full h-full object-cover z-0"
-            />
+              {/* Sombra sutil interna tipo viñeta para integrar con el relieve del marco */}
+              <div 
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(30,36,26,0.3) 85%, rgba(18,22,15,0.6) 100%)'
+                }}
+              />
 
-            {/* Oval Cutout Area inside the Ornate Baroque Green Frame */}
-            {/* Exact measured relative bounds: left 26.8%, top 15.2%, width 46.4%, height 39.4% */}
-            <div 
-              className="absolute z-10 overflow-hidden"
-              style={{
-                left: '26.8%',
-                top: '15.2%',
-                width: '46.4%',
-                height: '39.5%',
-                clipPath: 'ellipse(49.8% 49.8% at 50% 50%)'
-              }}
-            >
-              {/* Foto de dos personas con efecto de aparición de alejamiento (zoom-out) */}
-              <div className="w-full h-full relative overflow-hidden bg-[#2C3426]">
+              {/* Iniciales encima de la foto (iniciales_ca9ceab3.png) */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none pb-2">
                 <img 
-                  src="./assets/aistudio/portada.jpeg"
-                  alt="Foto de la pareja" 
-                  className={`w-full h-full object-cover object-center ${
-                    heroAnimated ? 'animate-zoom-out-appear' : 'scale-125 opacity-0'
-                  }`}
+                  src="./assets/aistudio/iniciales_ca9ceab3_1.png" 
+                  alt="Monograma de los novios" 
+                  className="w-[80%] max-w-[185px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] filter brightness-120 opacity-50"
                 />
-
-                {/* Sombra sutil interna tipo viñeta para integrar con el relieve del marco */}
-                <div 
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(30,36,26,0.3) 85%, rgba(18,22,15,0.6) 100%)'
-                  }}
-                />
-
-                {/* Iniciales encima de la foto (iniciales_ca9ceab3.png) */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none pb-2">
-                  <img 
-                    src="./assets/aistudio/iniciales_ca9ceab3_1.png" 
-                    alt="Monograma de los novios" 
-                    className="w-[80%] max-w-[185px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] filter brightness-120 opacity-50"
-                  />
-                </div>
               </div>
             </div>
+          </div>
 
-            {/* Contenido inferior de la cubierta: Fecha + Reproduce Nuestra Canción (fijado bajo el marco barroco) */}
-            <div className="absolute top-[65.5%] inset-x-0 z-20 flex flex-col items-center text-center px-4 sm:px-6">
-              
-              {/* Fecha en tipografía Serif clásica con alto espaciado (permanece estrictamente debajo del marco) */}
-              <p className="font-serif text-[#F7F4EE] text-2xl sm:text-3xl md:text-4xl tracking-[0.14em] font-light drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
-                {config.fecha.textoCorto}
-              </p>
+          {/* Contenido inferior de la cubierta: Fecha + Reproduce Nuestra Canción (fijado bajo el marco barroco) */}
+          <div className="absolute top-[65.5%] inset-x-0 z-20 flex flex-col items-center text-center px-4 sm:px-6">
+            
+            {/* Fecha en tipografía Serif clásica con alto espaciado (permanece estrictamente debajo del marco) */}
+            <p className="font-serif text-[#F7F4EE] text-2xl sm:text-3xl md:text-4xl tracking-[0.14em] font-light drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+              {config.fecha.textoCorto}
+            </p>
 
-              {/* Texto "REPRODUCE NUESTRA CANCIÓN" */}
-              <p className="font-serif text-[#E3DCD2] text-[11px] sm:text-[13px] tracking-[0.26em] uppercase mt-3 sm:mt-5 mb-2 sm:mb-2.5 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
-                Reproduce Nuestra Canción
-              </p>
+            {/* Texto "REPRODUCE NUESTRA CANCIÓN" */}
+            <p className="font-serif text-[#E3DCD2] text-[11px] sm:text-[13px] tracking-[0.26em] uppercase mt-3 sm:mt-5 mb-2 sm:mb-2.5 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+              Reproduce Nuestra Canción
+            </p>
 
-              {/* Botón Táctil de Audio con Ondas de Sonido */}
-              <div className="relative flex items-center justify-center">
-                {isPlaying && (
-                  <div className="absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-[#C5A059]/60 animate-audio-wave pointer-events-none" />
+            {/* Botón Táctil de Audio con Ondas de Sonido */}
+            <div className="relative flex items-center justify-center">
+              {isPlaying && (
+                <div className="absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-[#C5A059]/60 animate-audio-wave pointer-events-none" />
+              )}
+              <button 
+                onClick={toggleAudio}
+                aria-label={isPlaying ? "Pausar nuestra canción" : "Reproducir nuestra canción"}
+                className="btn-tactile w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-gradient-to-b from-[#4A5544]/90 to-[#2A3425]/95 text-[#F7F4EE] border-2 border-[#C5A059]/70 shadow-[0_8px_20px_rgba(0,0,0,0.45)] flex items-center justify-center cursor-pointer hover:border-[#F7F4EE] focus:outline-none"
+              >
+                {isPlaying ? (
+                  <svg className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
                 )}
-                <button 
-                  onClick={toggleAudio}
-                  aria-label={isPlaying ? "Pausar nuestra canción" : "Reproducir nuestra canción"}
-                  className="btn-tactile w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-gradient-to-b from-[#4A5544]/90 to-[#2A3425]/95 text-[#F7F4EE] border-2 border-[#C5A059]/70 shadow-[0_8px_20px_rgba(0,0,0,0.45)] flex items-center justify-center cursor-pointer hover:border-[#F7F4EE] focus:outline-none"
-                >
-                  {isPlaying ? (
-                    <svg className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
-                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5 fill-current" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  )}
-                </button>
-              </div>
+              </button>
+            </div>
 
-              <span className="text-[9px] sm:text-[10px] font-sans tracking-[0.18em] text-[#C5A059] uppercase mt-1 sm:mt-1.5 drop-shadow">
-                {audioStatus}
+            <span className="text-[9px] sm:text-[10px] font-sans tracking-[0.18em] text-[#C5A059] uppercase mt-1 sm:mt-1.5 drop-shadow">
+              {audioStatus}
+            </span>
+
+            {/* Indicador sutil de deslizamiento */}
+            <div className="mt-3 sm:mt-4 animate-bounce opacity-80 flex flex-col items-center">
+              <span className="text-[9px] sm:text-[10px] font-sans tracking-[0.2em] text-[#F7F4EE]/70 uppercase">
+                Desliza hacia abajo
               </span>
-
-              {/* Indicador sutil de deslizamiento */}
-              <div className="mt-3 sm:mt-4 animate-bounce opacity-80 flex flex-col items-center">
-                <span className="text-[9px] sm:text-[10px] font-sans tracking-[0.2em] text-[#F7F4EE]/70 uppercase">
-                  Desliza hacia abajo
-                </span>
-                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C5A059] mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C5A059] mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
           </div>
         </section>
