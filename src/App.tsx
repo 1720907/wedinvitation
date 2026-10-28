@@ -190,7 +190,18 @@ export default function App() {
 
   // Hero couple photo zoom-out trigger
   const [heroAnimated, setHeroAnimated] = useState<boolean>(false);
+  // Fixed initial mobile viewport height to fill full screen without dynamic resize jumps on scroll
+  const [heroMobileHeight, setHeroMobileHeight] = useState<number | null>(null);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHeroMobileHeight(window.innerHeight);
+    }
+    const timer = setTimeout(() => {
+      setHeroAnimated(true);
+    }, 120);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Sección 4: Carrusel de 5 fotos Polaroid con alejamiento lento cada 4 segundos
   const [polaroidIdx, setPolaroidIdx] = useState<number>(0);
@@ -204,8 +215,6 @@ export default function App() {
 
   // Scroll Reveal observer
   useEffect(() => {
-    setHeroAnimated(true);
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -436,19 +445,27 @@ export default function App() {
 
         {/* =================================================================
              SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
-             Formato proporcional nativo 100% estable sin saltos de zoom al escrolear
+        {/* =================================================================
+             SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
+             En celular: 100% de la pantalla fija (sin saltos de zoom al escrolear).
+             En PC: Formato centrado proporcional nativo.
              ================================================================= */}
         <section 
           id="hero-invitation"
-          className="relative w-full overflow-hidden select-none bg-[#2C3426]"
-          style={{ aspectRatio: '1149 / 1951' }}
+          className="relative w-full h-[100svh] sm:!h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center flex-shrink-0"
+          style={heroMobileHeight && typeof window !== 'undefined' && window.innerWidth < 640 ? { height: `${heroMobileHeight}px` } : undefined}
         >
-          {/* Base Hero Frame Background: foto_cover_clean.jpg */}
-          <img 
-            src="./assets/aistudio/foto_cover_clean.jpg" 
-            alt="Cubierta de invitación fina con marco barroco verde" 
-            className="absolute inset-0 w-full h-full object-cover z-0"
-          />
+          {/* Contenedor proporcional centrado que llena la altura en celular sin deformar */}
+          <div 
+            className="h-full w-auto absolute left-1/2 -translate-x-1/2 sm:static sm:translate-x-0 sm:w-full sm:h-auto overflow-hidden flex-shrink-0"
+            style={{ aspectRatio: '1149 / 1951' }}
+          >
+            {/* Base Hero Frame Background: foto_cover_clean.jpg */}
+            <img 
+              src="./assets/aistudio/foto_cover_clean.jpg" 
+              alt="Cubierta de invitación fina con marco barroco verde" 
+              className="absolute inset-0 w-full h-full object-cover z-0"
+            />
 
           {/* Oval Cutout Area inside the Ornate Baroque Green Frame */}
           {/* Exact measured relative bounds: left 26.8%, top 15.2%, width 46.4%, height 39.4% */}
@@ -540,6 +557,7 @@ export default function App() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </div>
+          </div>
           </div>
         </section>
 
