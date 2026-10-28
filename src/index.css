@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+
+:root {
+  color-scheme: light dark;
+  supported-color-schemes: light dark;
+}
+
+html, body {
+  color-scheme: light dark;
+  forced-color-adjust: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  forced-color-adjust: none !important;
+}
+
 @layer base {
   body {
     background-color: #1a1e18;
@@ -7,6 +26,36 @@
     font-family: 'Cormorant Garamond', serif;
     overflow-x: hidden;
   }
+}
+
+
+/* Regla explícita para navegadores con tema oscuro (Samsung Internet, Chrome Android, etc.):
+   Al declarar soporte para tema oscuro nativo, el navegador NO activa su filtro heurístico de inversión de colores */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light dark;
+  }
+  body {
+    background-color: #1a1e18 !important;
+    color: #2c2c2a !important;
+  }
+  *,
+  *::before,
+  *::after {
+    forced-color-adjust: none !important;
+  }
+}
+
+/* Clases auxiliares para blindar elementos críticos ante filtros agresivos de navegadores móviles */
+.protect-text-white,
+.protect-text-white * {
+  color: #FFFFFF !important;
+  forced-color-adjust: none !important;
+}
+
+.protect-text-dark,
+.protect-text-dark * {
+  forced-color-adjust: none !important;
 }
 
 .font-script {
