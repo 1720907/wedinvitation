@@ -1,13 +1,7 @@
 @import "tailwindcss";
 
-
-:root {
-  color-scheme: light dark;
-  supported-color-schemes: light dark;
-}
-
-html, body {
-  color-scheme: light dark;
+:root, html, body {
+  color-scheme: light;
   forced-color-adjust: none !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

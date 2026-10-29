@@ -66,11 +66,11 @@ const DEFAULT_CONFIG: WeddingConfig = {
     el: "Jorge",
     ella: "Adriana",
     monograma: "J&A",
-    frase: "Nuestra historia continúa... y hoy, con el amor que nos une, la bendición de Dios y el apoyo de nuestros padres, uniremos nuestras vidas. Nos encantaría que seas parte de este nuevo capítulo."
+    frase: "Hay sueños que nacen en el corazón y, de la mano de Dios, encuentran el camino para hacerse realidad. El nuestro nos llevó a descubrir el mundo juntos, a extrañarnos sin dejar de sentirnos cerca y a encontrar, en los brazos del otro, ese hogar al que siempre queremos volver."
   },
   padres: {
     novio: "Jorge y Ana",
-    novia: "Gianni y José"
+    novia: "José y Gianni"
   },
   fecha: {
     iso: "2027-02-27T11:30:00",
@@ -116,49 +116,31 @@ const POLAROID_CAROUSEL_PHOTOS = [
     id: 1,
     src: "./assets/aistudio/carrusel1.jpeg",
     alt: "Foto polaroid 1",
-    caption: "“Caminando juntos hacia el mismo sueño”"
+    caption: "“Nuestro lugar favorito en el mundo siempre será estar juntos”"
   },
   {
     id: 2,
     src: "./assets/aistudio/carrusel2.jpeg",
     alt: "Foto polaroid 2",
-    caption: "“En cada mirada, una promesa de amor eterno”"
+    caption: "“De la mano, hacia todos los sueños que nos quedan por vivir”"
   },
   {
     id: 3,
     src: "./assets/aistudio/carrusel3.jpeg",
     alt: "Foto polaroid 3",
-    caption: "“El amor que florece siempre”"
+    caption: "“Cuando las palabras dejan de ser necesarias a través de nuestra mirada”"
   },
   {
     id: 4,
     src: "./assets/aistudio/carrusel4.jpeg",
     alt: "Foto polaroid 4",
-    caption: "“Paso a paso, construyendo nuestro destino”"
+    caption: "“Los brazos a los que siempre queremos volver”"
   },
   {
     id: 5,
     src: "./assets/aistudio/carrusel5.jpeg",
     alt: "Foto polaroid 5",
-    caption: "“Dos aventureros disfrutando momentos”"
-  },
-  {
-    id: 6,
-    src: "./assets/aistudio/carrusel6.jpeg",
-    alt: "Foto polaroid 6",
-    caption: "“Una aventura mágina”"
-  },
-  {
-    id: 7,
-    src: "./assets/aistudio/carrusel7.jpeg",
-    alt: "Foto polaroid 7",
-    caption: "“Aventuras de cuentos de hadas”"
-  },
-  {
-    id: 8,
-    src: "./assets/aistudio/carrusel8.jpeg",
-    alt: "Foto polaroid 8",
-    caption: "“Dos almas que Dios unió para siempre”"
+    caption: "“El comienzo de nuestro para siempre. 🤍”"
   }
 ];
 
@@ -613,24 +595,24 @@ export default function App() {
                   className="absolute -top-2 -right-1 w-16 h-32 object-contain opacity-85 pointer-events-none rotate-12 z-10"
                 />
 
-                <div className="relative z-10">
-                  <p className="font-display text-[11px] tracking-[0.3em] text-[#5C6B57] uppercase mb-4 font-semibold">
-                    Nuestra Boda
-                  </p>
-
+                <div className="relative z-10">                
                   {/* Mensaje de amor & bendición de los padres */}
                   <p className="font-serif italic text-base text-[#2C2C2A]/90 leading-relaxed max-w-xs mx-auto mb-6">
                     “{config.novios.frase}”
                   </p>
 
+                  <p className="font-display text-[11px] tracking-[0.3em] text-[#5C6B57] uppercase mb-4 font-semibold">
+                    Nuestra Boda
+                  </p>
+
                   {/* Nombres Caligráficos de los Novios */}
                   <div className="my-4">
                     <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
-                      {config.novios.ella}
-                    </h1>
-                    <span className="font-script text-3xl text-[#5A1E28] block my-0.5">&amp;</span>
-                    <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
                       {config.novios.el}
+                    </h1>
+                    <span className="text-3xl text-[#5A1E28] block my-0.5">&amp;</span>
+                    <h1 className="font-script text-6xl text-[#2C2C2A] leading-tight">
+                      {config.novios.ella}
                     </h1>
                   </div>
 
@@ -663,7 +645,7 @@ export default function App() {
                   </div>
 
                   <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-5">
-                    Con la bendición de nuestras familias, tenemos el honor de invitarte a celebrar este día inolvidable.
+                    "Nos haría inmensamente felices que nos acompañes en este día tan especial, en el que celebraremos nuestro para siempre junto a nuestras personas favoritas: ustedes."
                   </p>
                 </div>
               </div>
@@ -833,7 +815,7 @@ export default function App() {
                 </div>
 
                 {/* Frase poética que transiciona suavemente con cada foto sobre el papel */}
-                <div className="relative min-h-[48px] sm:min-h-[52px] flex items-center justify-center mt-4 sm:mt-5 px-3">
+                <div className="relative min-h-[48px] sm:min-h-[52px] flex items-center justify-center mt-6 sm:mt-8 px-3">
                   {POLAROID_CAROUSEL_PHOTOS.map((photo, idx) => (
                     <p
                       key={photo.src}
@@ -1153,7 +1135,7 @@ export default function App() {
               <div className="relative z-10 px-7 pt-7 pb-20 sm:px-8 sm:pt-8 sm:pb-24">
                 <div className="w-full aspect-[4/3] overflow-hidden rounded-xs border border-[#C5A059]/25 shadow-md bg-[#232920]">
                   <img 
-                    src="./assets/aistudio/couple_photo_2.jpg" 
+                    src="./assets/aistudio/carrusel2.jpeg" 
                     alt="Foto momento especial" 
                     className="w-full h-full object-cover object-top"
                   />
