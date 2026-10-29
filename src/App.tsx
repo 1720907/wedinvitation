@@ -792,7 +792,7 @@ export default function App() {
               {/* Contenido sobre el papel */}
               <div className="relative z-10 px-8 pt-7 pb-9 pt-9 sm:px-9 sm:pt-8 sm:pb-10 sm:pt-10 flex flex-col">
                 {/* Marco fotográfico con carrusel de alejamiento lento (Ken Burns zoom-out en bucle continuo) */}
-                <div className="w-full h-56 sm:h-64 overflow-hidden rounded-xs relative bg-[#1D211A] select-none pointer-events-none shadow-md border border-[#C5A059]/25">
+                <div className="w-full h-84 sm:h-94 overflow-hidden rounded-xs relative bg-[#1D211A] select-none pointer-events-none shadow-md border border-[#C5A059]/25">
                   {POLAROID_CAROUSEL_PHOTOS.map((photo, idx) => {
                     const isActive = idx === polaroidIdx;
                     return (
