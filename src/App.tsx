@@ -164,10 +164,16 @@ export default function App() {
   const [rsvpNote, setRsvpNote] = useState<string>('');
   const [rsvpSubmittedToast, setRsvpSubmittedToast] = useState<boolean>(false);
 
-  // Modal / Drawer state for Maps & Experiences
+  // Modal state for Maps & Honeymoon Experiences
   const [activeMapModal, setActiveMapModal] = useState<{ title: string; embedUrl: string; mapsUrl: string } | null>(null);
-  const [showExperiencesDrawer, setShowExperiencesDrawer] = useState<boolean>(false);
-  const [selectedExperience, setSelectedExperience] = useState<string | null>(null);
+  const [showHoneymoonModal, setShowHoneymoonModal] = useState<boolean>(false);
+  const [selectedExperience, setSelectedExperience] = useState<{
+    id: string;
+    titulo: string;
+    subtitulo: string;
+    sugerido: string;
+    icono: string;
+  } | null>(null);
   const [copyToast, setCopyToast] = useState<string | null>(null);
 
   // Hero couple photo zoom-out trigger
@@ -1202,181 +1208,88 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 8: SUGERENCIA DE REGALOS & LUNA DE MIEL
              ================================================================= */}
-        <section className="relative z-10 px-5 py-8 -mt-30 reveal-item">
-          <div className="max-w-[400px] mx-auto relative">
+        <section className="relative z-10 px-5 pt-4 pb-2 -mt-25 reveal-item">
+          <div className="w-full max-w-[360px] sm:max-w-[390px] mx-auto relative filter drop-shadow-[0_16px_32px_rgba(20,24,18,0.24)] transform -rotate-0.5">
             
-            <div className="shadow-torn-paper relative z-20">
-              <div className="deckle-card px-6 pt-10 pb-8 text-center">
-                
-                <h3 className="font-display text-sm tracking-[0.25em] text-[#5C6B57] uppercase font-semibold">
-                  Sugerencia de Regalos
-                </h3>
+            {/* Imagen del Papel Artesanal Real (papel1_14fb074a_limpio.png) como contenedor */}
+            <img 
+              src="./assets/aistudio/papel1_14fb074a_limpio.png" 
+              alt="Contenedor de papel artesanal regalos" 
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+            />
 
-                {/* Ilustración de Caja de Regalo */}
-                <div className="my-4 flex justify-center">
-                  <svg className="w-12 h-12 text-[#5A1E28]/85" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                    <rect x="3" y="8" width="18" height="4" rx="1"/>
-                    <path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
-                    <path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>
-                  </svg>
-                </div>
+            {/* Contenido sobre el papel artesanal */}
+            <div className="relative z-10 px-7 sm:px-9 pt-9 pb-10 text-center flex flex-col items-center">
+              
+              <h3 className="font-display text-xs sm:text-sm tracking-[0.25em] text-[#5C6B57] uppercase font-semibold">
+                Sugerencia de Regalos
+              </h3>
 
-                <p className="font-serif italic text-base text-[#2C2C2A]/90 leading-relaxed max-w-xs mx-auto mb-5">
-                  “¡Tu presencia es el mejor regalo! Pero si deseas tener un detalle con nosotros para nuestra Luna de Miel, estaremos muy agradecidos.”
-                </p>
-
-                {/* Cuentas Bancarias con botón de Copiar */}
-                <div className="bg-[#ECE7DF]/80 border border-[#C5A059]/40 rounded-sm p-4 text-center space-y-3 font-sans text-xs">
-                  <div>
-                    <span className="font-display text-[10px] tracking-wider uppercase text-[#5C6B57] font-semibold block">
-                      BBVA Banco Continental
-                    </span>
-                    <p className="font-mono text-sm font-semibold text-[#2C2C2A] mt-0.5">
-                      {config.banco.bbva}
-                    </p>
-                    <button 
-                      onClick={() => handleCopy(config.banco.bbva, "Número de cuenta BBVA")}
-                      className="text-[10px] uppercase tracking-wider text-[#5A1E28] font-semibold underline mt-1 cursor-pointer"
-                    >
-                      Copiar Cuenta
-                    </button>
-                  </div>
-
-                  <div className="h-[1px] w-20 bg-[#C5A059]/30 mx-auto" />
-
-                  <div>
-                    <span className="font-display text-[10px] tracking-wider uppercase text-[#5C6B57] font-semibold block">
-                      Código de Cuenta Interbancario (CCI)
-                    </span>
-                    <p className="font-mono text-xs font-semibold text-[#2C2C2A] mt-0.5">
-                      {config.banco.cci}
-                    </p>
-                    <button 
-                      onClick={() => handleCopy(config.banco.cci, "CCI")}
-                      className="text-[10px] uppercase tracking-wider text-[#5A1E28] font-semibold underline mt-1 cursor-pointer"
-                    >
-                      Copiar CCI
-                    </button>
-                  </div>
-
-                  <div className="h-[1px] w-20 bg-[#C5A059]/30 mx-auto" />
-
-                  <div>
-                    <span className="inline-block bg-[#5A1E28] text-[#F7F4EE] text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">
-                      Yape / Plin
-                    </span>
-                    <p className="font-mono text-sm font-bold text-[#2C2C2A] mt-1">
-                      {config.banco.yapeNumero}
-                    </p>
-                    <p className="text-[11px] text-[#2C2C2A]/70">
-                      Titular: {config.banco.titular}
-                    </p>
-                    <button 
-                      onClick={() => handleCopy(config.banco.yapeNumero, "Número de Yape")}
-                      className="text-[10px] uppercase tracking-wider text-[#5A1E28] font-semibold underline mt-1 cursor-pointer"
-                    >
-                      Copiar Yape
-                    </button>
-                  </div>
-                </div>
-
-                {/* Botón para desplegar Experiencias de Luna de Miel */}
-                <div className="mt-5">
-                  <button 
-                    onClick={() => setShowExperiencesDrawer(!showExperiencesDrawer)}
-                    className="btn-tactile bg-[#5C6B57] text-[#F7F4EE] font-sans text-[11px] tracking-[0.16em] uppercase px-6 py-2.5 rounded-full shadow hover:bg-[#3E4A37] cursor-pointer"
-                  >
-                    {showExperiencesDrawer ? "Ocultar Experiencias ▴" : "Ver Experiencias de Luna de Miel ▾"}
-                  </button>
-                </div>
-
-                {/* Experiencias de Luna de Miel Desplegables */}
-                {showExperiencesDrawer && (
-                  <div className="mt-6 space-y-3 text-left">
-                    <p className="font-display text-[10px] tracking-[0.15em] text-[#5A1E28] uppercase text-center font-semibold mb-2">
-                      Aporta a un momento especial de nuestro viaje:
-                    </p>
-                    {EXPERIENCES.map((exp) => (
-                      <div 
-                        key={exp.id} 
-                        className="bg-[#ECE7DF] p-3 rounded border border-[#C5A059]/30 flex items-center justify-between gap-3 shadow-xs"
-                      >
-                        <div className="text-2xl flex-shrink-0">{exp.icono}</div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-serif font-bold text-sm text-[#2C2C2A] truncate">{exp.titulo}</h4>
-                          <p className="font-serif text-xs text-[#2C2C2A]/80 leading-tight">{exp.subtitulo}</p>
-                          <span className="inline-block font-sans text-[10px] text-[#5C6B57] font-semibold mt-0.5">
-                            Sugerido: {exp.sugerido}
-                          </span>
-                        </div>
-                        <button 
-                          onClick={() => {
-                            setSelectedExperience(exp.titulo);
-                            handleCopy(`${config.banco.bbva}`, `Datos para ${exp.titulo}`);
-                          }}
-                          className="btn-tactile bg-[#22281F] text-[#F7F4EE] font-sans text-[10px] tracking-wider uppercase px-3 py-1.5 rounded-full flex-shrink-0 hover:bg-[#5A1E28] cursor-pointer"
-                        >
-                          Aportar
-                        </button>
-                      </div>
-                    ))}
-
-                    {selectedExperience && (
-                      <div className="bg-[#D8A7B1]/20 border border-[#5A1E28]/30 rounded p-3 text-center mt-3">
-                        <p className="font-serif font-bold text-xs text-[#5A1E28]">
-                          ¡Gracias por tu cariño para: {selectedExperience}!
-                        </p>
-                        <p className="text-[11px] text-[#2C2C2A]/80 mt-1 font-sans">
-                          Puedes realizar tu transferencia a la cuenta BBVA o Yape mostrada arriba.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
+              {/* Ilustración de Caja de Regalo */}
+              <div className="my-3.5 flex justify-center items-center">
+                <div className="w-8 h-[1px] bg-[#C5A059]/40 mr-2" />
+                <svg className="w-10 h-10 text-[#5A1E28]/85" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                  <rect x="3" y="8" width="18" height="4" rx="1"/>
+                  <path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+                  <path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>
+                </svg>
+                <div className="w-8 h-[1px] bg-[#C5A059]/40 ml-2" />
               </div>
+
+              <p className="font-serif italic text-[15px] sm:text-base text-[#2C2C2A]/90 leading-relaxed max-w-[280px] sm:max-w-xs mx-auto mb-6">
+                “¡Tu presencia es el mejor regalo! Pero si deseas tener un detalle con nosotros para nuestra Luna de Miel, estaremos muy agradecidos.”
+              </p>
+
+              {/* Botón único para abrir el modal interactivo de experiencias */}
+              <button 
+                onClick={() => {
+                  setShowHoneymoonModal(true);
+                  setSelectedExperience(null);
+                }}
+                className="btn-tactile bg-[#5C6B57] text-[#F7F4EE] font-sans text-xs sm:text-[13px] tracking-[0.14em] uppercase px-6 py-3 rounded-full shadow-md hover:bg-[#3E4A37] transition-all cursor-pointer flex items-center justify-center gap-2 font-medium"
+              >
+                <span>Ver experiencias de luna de miel</span>
+                <svg className="w-4 h-4 text-[#F7F4EE]/90" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
             </div>
 
           </div>
         </section>
 
         {/* =================================================================
-             SECCIÓN 9: FOTOGRAFÍA ANDINA 3 & QR PARA SUBIR FOTOS
+             SECCIÓN 9: QR PARA SUBIR FOTOS
              ================================================================= */}
         <section className="relative px-5 py-8 reveal-item">
           <div className="max-w-[400px] mx-auto relative flex flex-col items-center">
-            
-            {/* Foto íntima de pareja en los Andes (couple_photo_3.jpg) */}
-            <div className="w-full bg-[#F7F4EE] p-3 shadow-lg rounded-sm border border-[#C5A059]/20 mb-6">
-              <div className="w-full h-72 overflow-hidden rounded-xs">
-                <img 
-                  src="./assets/aistudio/couple_photo_3.jpg" 
-                  alt="Momento íntimo de los novios con ovejas y nevados de fondo" 
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
-            </div>
-
             {/* Tarjeta con Código QR de Álbum de Fotos */}
-            <div className="w-full shadow-torn-paper">
-              <div className="deckle-card px-6 pt-8 pb-8 text-center">
-                <h3 className="font-display text-sm tracking-[0.25em] text-[#5C6B57] uppercase font-semibold">
+            <div className="relative w-full shadow-torn-paper">
+              <div className="px-6 pt-8 pb-8 text-center">
+                {/* Imagen de fondo de papel real */}
+                <img
+                  src="./assets/aistudio/papel4_97b148ae.png"
+                  alt="Contenedor de papel artesanal regalos"
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+                />
+                <h3 className="font-display text-sm tracking-[0.25em] text-[#5C6B57] uppercase font-semibold relative z-10">
                   Álbum Compartido
                 </h3>
-                <p className="font-serif italic text-base text-[#2C2C2A]/85 mt-2 mb-4">
+                <p className="font-serif italic text-base text-[#2C2C2A]/85 mt-2 mb-4 relative z-10">
                   Escanea el código QR o pulsa el botón para subir las fotos y videos que tomes durante nuestra boda.
                 </p>
 
                 {/* Código QR Generado */}
-                <div className="inline-block p-3 bg-white rounded border border-[#C5A059]/40 shadow-xs my-2">
+                <div className="inline-block p-3 bg-white rounded border border-[#C5A059]/40 shadow-xs my-2 relative z-10">
                   <img 
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=2C2C2A&bgcolor=F7F4EE&data=${encodeURIComponent(config.albumUrl)}`} 
                     alt="Código QR Álbum de Boda" 
                     className="w-32 h-32 mx-auto"
                   />
                 </div>
-
-                <div className="mt-4">
+                               
+                <div className="mt-4 relative z-10">
                   <a 
                     href={config.albumUrl} 
                     target="_blank" 
@@ -1400,17 +1313,25 @@ export default function App() {
             
             {/* Tarjeta de Confirmación ingresando en el sobre inferior */}
             <div className="shadow-torn-paper mx-2 relative z-20">
-              <div className="deckle-card px-6 pt-8 pb-16 text-center">
-                <h3 className="font-display text-sm tracking-[0.25em] text-[#5A1E28] uppercase font-semibold">
+              <div className="px-10 pt-8 pb-16 text-center">
+
+                {/* tarjeta de papel real */}
+                <img
+                  src="./assets/aistudio/papel3_clean.png"
+                  alt="Contenedor de papel artesanal regalos"
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+                />
+
+                <h3 className="relative z-10 font-display text-sm tracking-[0.25em] text-[#5A1E28] uppercase font-semibold">
                   Confirmar Asistencia
                 </h3>
-                <p className="font-serif italic text-base text-[#2C2C2A]/90 mt-2 mb-5">
+                <p className="relative z-10 font-serif italic text-base text-[#2C2C2A]/90 mt-2 mb-5">
                   Nos encantará compartir este día con ustedes, rodeados de detalles, flores y momentos inolvidables.<br/>
                   Por favor confirma tu asistencia antes del 30 de mayo.
                 </p>
 
                 {/* Formulario RSVP Interactivo */}
-                <form onSubmit={handleRsvpSubmit} className="space-y-3.5 text-left max-w-xs mx-auto font-sans text-xs">
+                <form onSubmit={handleRsvpSubmit} className="space-y-3.5 text-left max-w-xs mx-auto font-sans text-xs relative z-10">
                   <div>
                     <label className="block text-[10px] uppercase tracking-wider text-[#5C6B57] font-semibold mb-1">
                       Nombre y Apellido
@@ -1482,7 +1403,7 @@ export default function App() {
                 </form>
 
                 {rsvpSubmittedToast && (
-                  <p className="text-[11px] text-[#5C6B57] font-semibold mt-3 animate-fade-in">
+                  <p className="relative z-10 text-[11px] text-[#5C6B57] font-semibold mt-3 animate-fade-in">
                     Abriendo WhatsApp con tu confirmación...
                   </p>
                 )}
@@ -1491,7 +1412,7 @@ export default function App() {
             </div>
 
             {/* Sobre de Cierre Inferior (sobrecerrado_3948ed67.png) */}
-            <div className="w-full -mt-10 relative z-30 flex justify-center">
+            <div className="w-full -mt-20 relative z-10 flex justify-center">
               <img 
                 src="./assets/aistudio/sobrecerrado_3948ed67.png" 
                 alt="Sobre de cierre" 
@@ -1499,7 +1420,7 @@ export default function App() {
               />
 
               {/* Sello de Cera verde sellando el sobre inferior */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-22 h-22 z-40 shadow-wax-seal wax-seal-anim cursor-pointer">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-22 h-22 z-40">
                 <img 
                   src="./assets/aistudio/imagen_sello_75c97831.png" 
                   alt="Sello de Cera J&A" 
@@ -1534,7 +1455,7 @@ export default function App() {
           </p>
 
           <p className="text-[10px] font-sans tracking-[0.2em] text-[#2C2C2A]/60 uppercase mt-4">
-            Urubamba — Cusco, Perú
+            Lima — Lima, Perú
           </p>
         </footer>
 
@@ -1582,6 +1503,172 @@ export default function App() {
               <button 
                 onClick={() => setActiveMapModal(null)}
                 className="btn-tactile bg-[#ECE7DF] text-[#2C2C2A] border border-[#2C2C2A]/30 font-sans text-xs tracking-wider uppercase px-4 py-2.5 rounded-full"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Interactivo de Experiencias de Luna de Miel y Cuentas Bancarias */}
+      {showHoneymoonModal && (
+        <div 
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 animate-fade-in"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowHoneymoonModal(false);
+            }
+          }}
+        >
+          <div className="bg-[#F7F4EE] rounded-sm max-w-md w-full p-5 sm:p-6 border border-[#C5A059]/40 shadow-2xl relative max-h-[92vh] flex flex-col">
+            {/* Header del Modal */}
+            <div className="flex items-start justify-between pb-3 border-b border-[#C5A059]/30">
+              <div>
+                <h4 className="font-serif font-bold text-lg text-[#2C2C2A] leading-tight">
+                  Experiencias de Luna de Miel
+                </h4>
+                <p className="font-sans text-xs text-[#5C6B57] mt-0.5">
+                  Elige una experiencia y haz clic en "Aportar" para ver los datos bancarios
+                </p>
+              </div>
+              <button 
+                onClick={() => setShowHoneymoonModal(false)}
+                aria-label="Cerrar modal"
+                className="text-[#2C2C2A]/60 hover:text-[#5A1E28] p-1 font-bold text-xl cursor-pointer leading-none -mt-1 -mr-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Lista interactiva de experiencias */}
+            <div className="my-3 overflow-y-auto pr-1 space-y-2.5 flex-1 max-h-[62vh]">
+              {EXPERIENCES.map((exp) => {
+                const isSelected = selectedExperience?.id === exp.id;
+                return (
+                  <div 
+                    key={exp.id} 
+                    className={`p-3 rounded-sm border transition-all ${
+                      isSelected 
+                        ? 'bg-[#EAE4D8] border-[#5A1E28] shadow-sm ring-1 ring-[#5A1E28]/40' 
+                        : 'bg-[#ECE7DF] border-[#C5A059]/30 hover:border-[#C5A059]'
+                    } flex items-center justify-between gap-3`}
+                  >
+                    <div className="text-2xl sm:text-3xl flex-shrink-0 select-none">{exp.icono}</div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <h5 className="font-serif font-bold text-xs sm:text-sm text-[#2C2C2A] leading-snug">
+                        {exp.titulo}
+                      </h5>
+                      <p className="font-serif text-[11px] text-[#2C2C2A]/75 leading-tight mt-0.5">
+                        {exp.subtitulo}
+                      </p>
+                      <span className="inline-block font-sans text-[10px] text-[#5C6B57] font-semibold mt-1">
+                        Sugerido: {exp.sugerido}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={() => setSelectedExperience(exp)}
+                      className={`btn-tactile font-sans text-[10px] tracking-wider uppercase px-3.5 py-1.5 rounded-full flex-shrink-0 cursor-pointer font-medium transition-all ${
+                        isSelected 
+                          ? 'bg-[#5A1E28] text-white shadow-xs' 
+                          : 'bg-[#22281F] text-[#F7F4EE] hover:bg-[#5A1E28]'
+                      }`}
+                    >
+                      {isSelected ? "Seleccionado ✓" : "Aportar"}
+                    </button>
+                  </div>
+                );
+              })}
+
+              {/* Información Bancaria (se muestra aquí mismo en el modal al hacer clic en "Aportar") */}
+              {selectedExperience && (
+                <div className="mt-4 pt-3.5 border-t border-[#C5A059]/40 bg-[#ECE7DF]/90 rounded-sm p-3.5 sm:p-4 space-y-3 text-center animate-fade-in">
+                  <div className="bg-[#5A1E28]/10 border border-[#5A1E28]/25 rounded px-3 py-2 text-center">
+                    <p className="font-serif font-bold text-xs sm:text-sm text-[#5A1E28]">
+                      Aporte para: {selectedExperience.titulo}
+                    </p>
+                    <p className="font-sans text-[11px] text-[#2C2C2A]/80 mt-0.5">
+                      Monto sugerido: <span className="font-semibold text-[#5C6B57]">{selectedExperience.sugerido}</span>
+                    </p>
+                  </div>
+
+                  <p className="font-display text-[10px] tracking-widest uppercase text-[#5C6B57] font-bold">
+                    Cuentas Bancarias para Transferencia
+                  </p>
+
+                  {/* BBVA */}
+                  <div className="bg-white/85 p-2.5 rounded border border-[#C5A059]/30 text-left flex items-center justify-between gap-2 shadow-xs">
+                    <div>
+                      <span className="font-display text-[9px] sm:text-[10px] tracking-wider uppercase text-[#5C6B57] font-bold block">
+                        BBVA Banco Continental
+                      </span>
+                      <p className="font-mono text-xs sm:text-sm font-semibold text-[#2C2C2A] mt-0.5">
+                        {config.banco.bbva}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => handleCopy(config.banco.bbva, "Número de cuenta BBVA")}
+                      className="btn-tactile bg-[#5A1E28] text-[#F7F4EE] font-sans text-[10px] uppercase tracking-wider px-2.5 py-1.5 rounded cursor-pointer whitespace-nowrap hover:bg-[#3E141B]"
+                    >
+                      Copiar
+                    </button>
+                  </div>
+
+                  {/* CCI */}
+                  <div className="bg-white/85 p-2.5 rounded border border-[#C5A059]/30 text-left flex items-center justify-between gap-2 shadow-xs">
+                    <div>
+                      <span className="font-display text-[9px] sm:text-[10px] tracking-wider uppercase text-[#5C6B57] font-bold block">
+                        CCI Interbancario
+                      </span>
+                      <p className="font-mono text-xs font-semibold text-[#2C2C2A] mt-0.5">
+                        {config.banco.cci}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => handleCopy(config.banco.cci, "Código CCI")}
+                      className="btn-tactile bg-[#5A1E28] text-[#F7F4EE] font-sans text-[10px] uppercase tracking-wider px-2.5 py-1.5 rounded cursor-pointer whitespace-nowrap hover:bg-[#3E141B]"
+                    >
+                      Copiar
+                    </button>
+                  </div>
+
+                  {/* Yape / Plin */}
+                  <div className="bg-white/85 p-2.5 rounded border border-[#C5A059]/30 text-left flex items-center justify-between gap-2 shadow-xs">
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="bg-[#5A1E28] text-[#F7F4EE] text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-semibold">
+                          Yape / Plin
+                        </span>
+                        <span className="font-mono text-xs sm:text-sm font-bold text-[#2C2C2A]">
+                          {config.banco.yapeNumero}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-[#2C2C2A]/70 mt-0.5">
+                        Titular: {config.banco.titular}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => handleCopy(config.banco.yapeNumero, "Número de Yape")}
+                      className="btn-tactile bg-[#5A1E28] text-[#F7F4EE] font-sans text-[10px] uppercase tracking-wider px-2.5 py-1.5 rounded cursor-pointer whitespace-nowrap hover:bg-[#3E141B]"
+                    >
+                      Copiar
+                    </button>
+                  </div>
+
+                  <p className="font-serif italic text-xs text-[#2C2C2A]/80 pt-1">
+                    ¡Muchas gracias por acompañar nuestra historia y ser parte de nuestra luna de miel!
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="pt-2.5 border-t border-[#C5A059]/20 flex justify-end">
+              <button 
+                onClick={() => setShowHoneymoonModal(false)}
+                className="btn-tactile bg-[#ECE7DF] hover:bg-[#DFD9CE] text-[#2C2C2A] border border-[#2C2C2A]/30 font-sans text-xs tracking-wider uppercase px-5 py-2 rounded-full cursor-pointer"
               >
                 Cerrar
               </button>
