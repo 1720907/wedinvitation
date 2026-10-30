@@ -17,7 +17,7 @@ import {
 // =================================================================
 export const IMAGES = {
   // Fondos y Texturas Artesanales
-  fondoContinuo: '/assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
+  fondoContinuo: './assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
   papel1Limpio: './assets/aistudio/papel1_14fb074a_limpio.png',
   papel3Clean: './assets/aistudio/papel3_clean.png',
   papel3CleanRotated: './assets/aistudio/papel3_clean_rotated.png',
