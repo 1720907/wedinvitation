@@ -12,112 +12,12 @@ import {
   generateGoogleCalendarUrl
 } from './utils/weddingLogic';
 
-interface WeddingConfig {
-  novios: {
-    el: string;
-    ella: string;
-    monograma: string;
-    frase: string;
-  };
-  padres: {
-    columna1: [string, string];
-    columna2: [string, string];
-  };
-  fecha: {
-    iso: string;
-    dia: string;
-    mes: string;
-    anio: string;
-    horaCeremonia: string;
-    horaRecepcion: string;
-    textoCorto: string;
-  };
-  lugares: {
-    ceremonia: {
-      titulo: string;
-      nombre: string;
-      direccion: string;
-      hora: string;
-      mapsUrl: string;
-      embedUrl: string;
-    };
-    recepcion: {
-      titulo: string;
-      nombre: string;
-      direccion: string;
-      hora: string;
-      mapsUrl: string;
-      embedUrl: string;
-    };
-  };
-  banco: {
-    bcp: string;
-    cci: string;
-    yapeAdriana: string;
-    titularAdriana: string;
-    yapeJorge: string;
-    titularJorge: string;
-  };
-  whatsapp: string;
-  albumUrl: string;
-}
-
-const DEFAULT_CONFIG: WeddingConfig = {
-  novios: {
-    el: "Jorge",
-    ella: "Adriana",
-    monograma: "J&A",
-    frase: "Hay sueños que nacen en el corazón y, de la mano de Dios, encuentran el camino para hacerse realidad. El nuestro nos llevó a descubrir el mundo juntos, a extrañarnos sin dejar de sentirnos cerca y a encontrar, en los brazos del otro, ese hogar al que siempre queremos volver."
-  },
-  padres: {
-    columna1: ["José Valencia Solís", "Gianni León Osorio"],
-    columna2: ["Jorge Cerón Torres", "Ana Ruíz Barrera"]
-  },
-  fecha: {
-    iso: "2027-02-27T11:30:00",
-    dia: "27",
-    mes: "Febrero",
-    anio: "2027",
-    horaCeremonia: "11:30 AM",
-    horaRecepcion: "01:30 PM",
-    textoCorto: "27.02.2027"
-  },
-  lugares: {
-    ceremonia: {
-      titulo: "Ceremonia Religiosa",
-      nombre: "Templo de San Pedro Apóstol",
-      direccion: "Plaza Principal, Urubamba — Cusco",
-      hora: "11:30 am",
-      mapsUrl: "https://maps.google.com/?q=Templo+de+San+Pedro+Apostol+Urubamba",
-      embedUrl: "https://www.google.com/maps?q=Templo+de+San+Pedro+Apostol+Urubamba&output=embed"
-    },
-    recepcion: {
-      titulo: "La Recepción",
-      nombre: "Hotel La Casona de Yucay",
-      direccion: "Plaza Manco II 104, Yucay — Urubamba, Cusco",
-      hora: "1:30 pm",
-      mapsUrl: "https://maps.google.com/?q=Hotel+La+Casona+de+Yucay+Cusco",
-      embedUrl: "https://www.google.com/maps?q=Hotel+La+Casona+de+Yucay+Cusco&output=embed"
-    }
-  },
-  banco: {
-    bcp: "193-98765432-0-12",
-    cci: "002-193009876543201214",
-    yapeAdriana: "987654321",
-    titularAdriana: "Adriana Valencia León",
-    yapeJorge: "912345678",
-    titularJorge: "Jorge Cerón Ruiz"
-  },
-  whatsapp: "51999888777",
-  albumUrl: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67"
-};
-
 // =================================================================
-// DICCIONARIO CENTRALIZADO DE IMÁGENES Y ASSETS
+// 1. DICCIONARIO CENTRALIZADO DE IMÁGENES Y RECURSOS MULTIMEDIA
 // =================================================================
 export const IMAGES = {
   // Fondos y Texturas Artesanales
-  fondoContinuo: './assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
+  fondoContinuo: '/assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
   papel1Limpio: './assets/aistudio/papel1_14fb074a_limpio.png',
   papel3Clean: './assets/aistudio/papel3_clean.png',
   papel3CleanRotated: './assets/aistudio/papel3_clean_rotated.png',
@@ -156,7 +56,255 @@ export const IMAGES = {
   carrusel3: './assets/aistudio/carrusel3.jpeg',
   carrusel4: './assets/aistudio/carrusel4.jpeg',
   carrusel5: './assets/aistudio/carrusel5.jpeg',
+
+  // Audio / Música de fondo
+  cancionBoda: 'assets/audio/A Thousand years.mp3',
 } as const;
+
+// =================================================================
+// 2. CONFIGURACIÓN CENTRALIZADA DE DATOS DE LA BODA (DATOS SENSIBLES Y EVENTO)
+// =================================================================
+export interface ItineraryItemConfig {
+  hora: string;
+  titulo: string;
+  iconoSrc: string;
+  alt: string;
+  variant: 'standard' | 'wide-flipped' | 'wide';
+}
+
+export interface WeddingConfig {
+  novios: {
+    el: string;
+    ella: string;
+    nombresJuntos: string;
+    monograma: string;
+    frase: string;
+    invitacionCarta: string;
+  };
+  padres: {
+    columna1: [string, string];
+    columna2: [string, string];
+  };
+  fecha: {
+    iso: string;
+    isoFin: string;
+    dia: string;
+    mes: string;
+    anio: string;
+    horaCeremonia: string;
+    horaRecepcion: string;
+    textoCorto: string;
+    fechaLimiteRsvp: string;
+  };
+  lugares: {
+    ceremonia: {
+      titulo: string;
+      nombre: string;
+      localidad: string;
+      direccion: string;
+      hora: string;
+      mapsUrl: string;
+      embedUrl: string;
+    };
+    recepcion: {
+      titulo: string;
+      nombre: string;
+      localidad: string;
+      direccion: string;
+      hora: string;
+      mapsUrl: string;
+      embedUrl: string;
+    };
+  };
+  itinerario: ItineraryItemConfig[];
+  vestimenta: {
+    categoria: string;
+    damas: string;
+    caballeros: string;
+    nota: string;
+  };
+  banco: {
+    nombreBanco: string;
+    bcp: string;
+    cci: string;
+    titularBcp: string;
+    metodoMovilTitulo: string;
+    yapeAdriana: string;
+    titularAdriana: string;
+    yapeJorge: string;
+    titularJorge: string;
+    mensaje: string;
+    agradecimiento: string;
+  };
+  album: {
+    url: string;
+    qrApiBaseUrl: string;
+    titulo: string;
+    descripcion: string;
+    instruccion: string;
+  };
+  rsvp: {
+    apiUrl: string;
+    storageKey: string;
+    sessionExpirationMs: number;
+    codigoEjemploPlaceholder: string;
+    parrafo1: string;
+    parrafo2: string;
+    fraseCierre: string;
+  };
+  despedida: {
+    titulo: string;
+    frase: string;
+    saludo: string;
+    firma: string;
+    ubicacion: string;
+  };
+  whatsapp: string;
+  albumUrl: string;
+  audioUrl: string;
+}
+
+export const DEFAULT_CONFIG: WeddingConfig = {
+  novios: {
+    el: "Jorge",
+    ella: "Adriana",
+    nombresJuntos: "Jorge & Adriana",
+    monograma: "J&A",
+    frase: "Hay sueños que nacen en el corazón y, de la mano de Dios, encuentran el camino para hacerse realidad. El nuestro nos llevó a descubrir el mundo juntos, a extrañarnos sin dejar de sentirnos cerca y a encontrar, en los brazos del otro, ese hogar al que siempre queremos volver.",
+    invitacionCarta: "Nos haría inmensamente felices que nos acompañes en este día tan especial, en el que celebraremos nuestro para siempre junto a nuestras personas favoritas: ustedes."
+  },
+  padres: {
+    columna1: ["José Valencia Solís", "Gianni León Osorio"],
+    columna2: ["Jorge Cerón Torres", "Ana Ruíz Barrera"]
+  },
+  fecha: {
+    iso: "2027-02-27T11:30:00",
+    isoFin: "2027-02-27T23:59:59",
+    dia: "27",
+    mes: "Febrero",
+    anio: "2027",
+    horaCeremonia: "11:30 AM",
+    horaRecepcion: "01:30 PM",
+    textoCorto: "27.02.2027",
+    fechaLimiteRsvp: "15 de enero de 2027"
+  },
+  lugares: {
+    ceremonia: {
+      titulo: "Ceremonia Religiosa",
+      nombre: "Templo de San Pedro Apóstol",
+      localidad: "– Urubamba – Cusco",
+      direccion: "Plaza Principal, Urubamba — Cusco",
+      hora: "11:30 am",
+      mapsUrl: "https://maps.google.com/?q=Templo+de+San+Pedro+Apostol+Urubamba",
+      embedUrl: "https://www.google.com/maps?q=Templo+de+San+Pedro+Apostol+Urubamba&output=embed"
+    },
+    recepcion: {
+      titulo: "Recepción",
+      nombre: "Hotel La Casona de Yucay",
+      localidad: "",
+      direccion: "Plaza Manco II 104, Yucay — Urubamba, Cusco",
+      hora: "1:30 pm",
+      mapsUrl: "https://maps.google.com/?q=Hotel+La+Casona+de+Yucay+Cusco",
+      embedUrl: "https://www.google.com/maps?q=Hotel+La+Casona+de+Yucay+Cusco&output=embed"
+    }
+  },
+  itinerario: [
+    {
+      hora: "11:30 am",
+      titulo: "Ceremonia religiosa",
+      iconoSrc: IMAGES.iconoAnillos,
+      alt: "Ceremonia religiosa",
+      variant: 'standard'
+    },
+    {
+      hora: "3:00 pm",
+      titulo: "Llegada a recepcion",
+      iconoSrc: IMAGES.iconoDespedida,
+      alt: "Llegada a recepcion",
+      variant: 'wide-flipped'
+    },
+    {
+      hora: "3:30 pm",
+      titulo: "Votos matrimoniales",
+      iconoSrc: IMAGES.iconoVotos,
+      alt: "Votos matrimoniales",
+      variant: 'standard'
+    },
+    {
+      hora: "4:30 pm",
+      titulo: "Coctel",
+      iconoSrc: IMAGES.iconoCoctel,
+      alt: "Coctel",
+      variant: 'standard'
+    },
+    {
+      hora: "6:00 pm",
+      titulo: "Cena",
+      iconoSrc: IMAGES.iconoCena,
+      alt: "Cena",
+      variant: 'standard'
+    },
+    {
+      hora: "8:00 pm",
+      titulo: "Fiesta",
+      iconoSrc: IMAGES.iconoFiesta,
+      alt: "Fiesta",
+      variant: 'standard'
+    },
+    {
+      hora: "12:00 am",
+      titulo: "Fin de fiesta",
+      iconoSrc: IMAGES.iconoDespedida,
+      alt: "Fin de fiesta",
+      variant: 'wide'
+    }
+  ],
+  vestimenta: {
+    categoria: "ELEGANTE",
+    damas: "Vestido largo.",
+    caballeros: "Terno con corbata, con saco o chaleco. Recomendamos telas ligeras y frescas.",
+    nota: "Agradeceremos evitar los tonos blancos, marfil y crema, reservados para la novia, así como el rojo intenso."
+  },
+  banco: {
+    nombreBanco: "Banco de Crédito del Perú (BCP)",
+    bcp: "193-98765432-0-12",
+    cci: "002-193009876543201214",
+    titularBcp: "Adriana Valencia León",
+    metodoMovilTitulo: "Yape / Plin",
+    yapeAdriana: "987654321",
+    titularAdriana: "Adriana Valencia León",
+    yapeJorge: "912345678",
+    titularJorge: "Jorge Cerón Ruiz",
+    mensaje: "El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.",
+    agradecimiento: "Gracias por acompañarnos en el comienzo de esta nueva etapa."
+  },
+  album: {
+    url: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67",
+    qrApiBaseUrl: "https://api.qrserver.com/v1/create-qr-code/",
+    titulo: "Álbum Compartido",
+    descripcion: "Queremos recordar este día desde todas las miradas. Comparte con nosotros tus fotos y videos para guardar juntos cada sonrisa, abrazo y momentos especiales de este día.",
+    instruccion: "¡Comparte tus recuerdos! Escanea el código QR o pulsa el botón para subir las fotos y videos que captures durante nuestra boda."
+  },
+  rsvp: {
+    apiUrl: "https://script.google.com/macros/s/AKfycbxIdCqpiRMw-1J7xlhokVYA_chDmzmEJlnFjpfjeO9TGR6EZHVrcULyl6RYmEzEeFn1/exec",
+    storageKey: "sesionBodaJA",
+    sessionExpirationMs: 24 * 60 * 60 * 1000, // 24 horas en milisegundos
+    codigoEjemploPlaceholder: "Ej: K9X2P",
+    parrafo1: "Hemos preparado este día con mucho amor, pensando en compartirlo con las personas más especiales para nosotros.",
+    parrafo2: "Por tratarse de una celebración íntima, esta invitación está reservada exclusivamente para ti. Gracias por comprenderlo y ayudarnos a cuidar cada detalle de este día tan especial.",
+    fraseCierre: "¡Nos hará muy felices celebrar contigo!"
+  },
+  despedida: {
+    titulo: "¡Te esperamos!",
+    frase: "Las historias más bonitas no solo se viven, también se construyen junto a las personas que las hacen inolvidables. Gracias por ser parte de nuestras vidas y de esta historia de amor que hoy celebramos",
+    saludo: "Con todo nuestro cariño,",
+    firma: "Jorge & Adriana",
+    ubicacion: "Lima, Perú"
+  },
+  whatsapp: "51999888777",
+  albumUrl: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67",
+  audioUrl: IMAGES.cancionBoda
+};
 
 // Carrusel de 5 fotos en Polaroid con animación de alejamiento lento (Ken Burns)
 const POLAROID_CAROUSEL_PHOTOS = [
@@ -192,9 +340,9 @@ const POLAROID_CAROUSEL_PHOTOS = [
   }
 ];
 
-const GUEST_API_URL = "https://script.google.com/macros/s/AKfycbxIdCqpiRMw-1J7xlhokVYA_chDmzmEJlnFjpfjeO9TGR6EZHVrcULyl6RYmEzEeFn1/exec";
-const SESSION_STORAGE_KEY = "sesionBodaJA";
-const SESSION_EXPIRATION_MS = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+const GUEST_API_URL = DEFAULT_CONFIG.rsvp.apiUrl;
+const SESSION_STORAGE_KEY = DEFAULT_CONFIG.rsvp.storageKey;
+const SESSION_EXPIRATION_MS = DEFAULT_CONFIG.rsvp.sessionExpirationMs;
 
 interface GuestData {
   codigo: string;
@@ -682,7 +830,7 @@ export default function App() {
       {/* Background Audio Element */}
       <audio
         ref={audioRef}
-        src="assets/audio/A Thousand years.mp3"
+        src={config.audioUrl}
         loop
         preload="auto"
       />
@@ -709,7 +857,7 @@ export default function App() {
                 <div className="w-16 h-16 mb-2 flex items-center justify-center">
                   <img
                     src={IMAGES.selloCera}
-                    alt="Sello de boda"
+                    alt={`Sello de boda ${config.novios.monograma}`}
                     className="w-full h-full object-contain filter drop-shadow-md"
                   />
                 </div>
@@ -745,7 +893,7 @@ export default function App() {
                         setAccessCode(e.target.value.toUpperCase());
                         if (accessError) setAccessError(null);
                       }}
-                      placeholder="Ej: K9X2P"
+                      placeholder={config.rsvp.codigoEjemploPlaceholder}
                       maxLength={14}
                       className="w-full font-serif uppercase tracking-[0.25em] text-[19px] sm:text-[21px] font-semibold text-center py-2 px-3 bg-[#ECE7DF]/75 border border-[#3A4436]/30 rounded-xl text-[#2C2C2A] placeholder:text-[#2C2C2A]/35 focus:outline-none focus:border-[#5A1E28] focus:bg-[#ECE7DF] transition-all"
                     />
@@ -769,7 +917,7 @@ export default function App() {
 
                 {/* Frase final */}
                 <p className="font-serif italic text-[12px] text-[#3A4436]/75 mt-4 tracking-wide">
-                  Jorge &amp; Adriana · 27.02.2027
+                  {config.novios.el} &amp; {config.novios.ella} · {config.fecha.textoCorto}
                 </p>
               </div>
             </div>
@@ -820,7 +968,7 @@ export default function App() {
             <div className="w-full h-full relative overflow-hidden bg-[#2C3426]">
               <img 
                 src={IMAGES.heroFotoPareja}
-                alt="Foto de la pareja" 
+                alt={`Foto de ${config.novios.nombresJuntos}`}
                 draggable={false}
                 onLoad={() => setHeroAnimated(true)}
                 className={`w-full h-full object-cover object-center select-none ${
@@ -941,7 +1089,7 @@ export default function App() {
               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-20 h-20 z-30 wax-seal-anim">
                 <img
                   src={IMAGES.selloCera}
-                  alt="Sello de cera J&A"
+                  alt={`Sello de cera ${config.novios.monograma}`}
                   className="w-full h-full object-contain filter drop-shadow-md"
                 />
               </div>
@@ -1012,7 +1160,7 @@ export default function App() {
                   </div>
 
                   <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-5 reveal-item reveal-delay-2">
-                    "Nos haría inmensamente felices que nos acompañes en este día tan especial, en el que celebraremos nuestro para siempre junto a nuestras personas favoritas: ustedes."
+                    "{config.novios.invitacionCarta}"
                   </p>
                 </div>
               </div>
@@ -1124,7 +1272,7 @@ export default function App() {
                       `Celebración del matrimonio de ${config.novios.el} y ${config.novios.ella}`,
                       config.lugares.ceremonia.nombre,
                       config.fecha.iso,
-                      "2027-02-27T23:59:59"
+                      config.fecha.isoFin
                     )}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1237,7 +1385,7 @@ export default function App() {
               <div className="absolute -top-3 -left-1 w-20 h-20 z-30 rotate-[-6deg] pointer-events-none select-none drop-shadow-md">
                 <img 
                   src={IMAGES.selloCera} 
-                  alt="Sello J&A" 
+                  alt={`Sello ${config.novios.monograma}`}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -1259,7 +1407,7 @@ export default function App() {
                 <div className="w-full max-w-[240px] sm:max-w-[260px] my-5 flex justify-center">
                   <img 
                     src={IMAGES.sketchIglesia} 
-                    alt="Templo de San Pedro Apóstol" 
+                    alt={config.lugares.ceremonia.nombre}
                     className="w-full h-auto object-contain mix-blend-multiply opacity-90"
                   />
                 </div>
@@ -1274,9 +1422,11 @@ export default function App() {
                   <p className="font-script text-2xl sm:text-[27px] text-[#2C3827] leading-tight">
                     {config.lugares.ceremonia.nombre}
                   </p>
-                  <p className="font-script text-xl sm:text-2xl text-[#3E4E39] leading-tight">
-                    – Urubamba – Cusco
-                  </p>
+                  {config.lugares.ceremonia.localidad && (
+                    <p className="font-script text-xl sm:text-2xl text-[#3E4E39] leading-tight">
+                      {config.lugares.ceremonia.localidad}
+                    </p>
+                  )}
                 </div>
 
                 {/* Botón verde oliva redondeado para Ver Ubicación */}
@@ -1307,14 +1457,14 @@ export default function App() {
             <div className="relative z-10 px-7 pt-10 pb-11 sm:px-9 sm:pt-12 sm:pb-12 text-center flex flex-col items-center">
               {/* Título: RECEPCIÓN en serifa clásica espaciada */}
               <h3 className="font-serif text-[#4F5E46] tracking-[0.24em] text-base sm:text-[17px] uppercase font-light leading-snug">
-                RECEPCIÓN
+                {config.lugares.recepcion.titulo}
               </h3>
 
               {/* Grabado arquitectónico auténtico de La Casona */}
               <div className="w-full max-w-[270px] sm:max-w-[290px] my-5 flex justify-center">
                 <img 
                   src={IMAGES.sketchRecepcion} 
-                  alt="Hotel La Casona de Yucay" 
+                  alt={config.lugares.recepcion.nombre}
                   className="w-full h-auto object-contain mix-blend-multiply opacity-90"
                 />
               </div>
@@ -1329,6 +1479,11 @@ export default function App() {
                 <p className="font-script text-2xl sm:text-[27px] text-[#2C3827] leading-tight">
                   {config.lugares.recepcion.nombre}
                 </p>
+                {config.lugares.recepcion.localidad && (
+                  <p className="font-script text-xl sm:text-2xl text-[#3E4E39] leading-tight">
+                    {config.lugares.recepcion.localidad}
+                  </p>
+                )}
               </div>
 
               {/* Botón verde oliva redondeado para Ver Ubicación */}
@@ -1373,7 +1528,7 @@ export default function App() {
             <div className="w-20 h-20 mx-auto -mb-15 relative z-30 wax-seal-anim">
               <img 
                 src={IMAGES.selloCera} 
-                alt="Sello J&A" 
+                alt={`Sello ${config.novios.monograma}`}
                 className="w-full h-full object-contain filter drop-shadow-md"
               />
             </div>
@@ -1395,87 +1550,9 @@ export default function App() {
                   ITINERARIO
                 </h3>
 
-                {/* Línea de tiempo vertical: cada momento aparece progresivamente a medida que se escrolea */}
+                {/* Línea de tiempo vertical: cada momento viene desde config.itinerario y aparece progresivamente */}
                 <div className="flex flex-col">
-                  {[
-                    {
-                      hora: "11:30 am",
-                      titulo: "Ceremonia religiosa",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoAnillos} 
-                          alt="Ceremonia religiosa" 
-                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
-                        />
-                      )
-                    },
-                    {
-                      hora: "3:00 pm",
-                      titulo: "Llegada a recepcion",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoDespedida} 
-                          alt="Llegada a recepcion" 
-                          className="w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90 rotate-y-180"
-                        />
-                      )
-                    },
-                    {
-                      hora: "3:30 pm",
-                      titulo: "Votos matrimoniales",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoVotos} 
-                          alt="Votos matrimoniales" 
-                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
-                        />
-                      )
-                    },
-                    {
-                      hora: "4:30 pm",
-                      titulo: "Coctel",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoCoctel} 
-                          alt="Coctel" 
-                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
-                        />
-                      )
-                    },
-                    {
-                      hora: "6:00 pm",
-                      titulo: "Cena",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoCena} 
-                          alt="Cena" 
-                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
-                        />
-                      )
-                    },
-                    {
-                      hora: "8:00 pm",
-                      titulo: "Fiesta",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoFiesta} 
-                          alt="Fiesta" 
-                          className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
-                        />
-                      )
-                    },
-                    {
-                      hora: "12:00 am",
-                      titulo: "Fin de fiesta",
-                      icon: (
-                        <img 
-                          src={IMAGES.iconoDespedida} 
-                          alt="Fin de fiesta" 
-                          className="w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90"
-                        />
-                      )
-                    }
-                  ].map((event, idx, arr) => {
+                  {config.itinerario.map((event, idx, arr) => {
                     const isFirst = idx === 0;
                     const isLast = idx === arr.length - 1;
                     return (
@@ -1483,7 +1560,17 @@ export default function App() {
                         {/* Columna 1: Iconos sustancialmente más grandes y alineados hacia el eje */}
                         <div className="flex items-center justify-end pr-2.5 sm:pr-3.5">
                           <div className="w-18 h-18 sm:w-20 sm:h-20 flex items-center justify-end">
-                            {event.icon}
+                            <img
+                              src={event.iconoSrc}
+                              alt={event.alt}
+                              className={
+                                event.variant === 'wide-flipped'
+                                  ? 'w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90 rotate-y-180'
+                                  : event.variant === 'wide'
+                                    ? 'w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90'
+                                    : 'w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs'
+                              }
+                            />
                           </div>
                         </div>
 
@@ -1590,19 +1677,19 @@ export default function App() {
 
                 {/* Categoría: ELEGANTE FORMAL */}
                 <p className="font-serif text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-white font-bold my-1 drop-shadow-xs">
-                  ELEGANTE
+                  {config.vestimenta.categoria}
                 </p>
 
                 {/* Detalle de vestimenta en serifa blanca de alto contraste y excelente lectura */}
                 <div className="space-y-1.5 mt-1.5 text-center w-[90%]">
                   <p className="font-serif text-[10px] sm:text-[11px] text-white leading-snug drop-shadow-xs">
-                    <span className="font-semibold">Damas:</span> Vestido largo.
+                    <span className="font-semibold">Damas:</span> {config.vestimenta.damas}
                   </p>
                   <p className="font-serif text-[10px] sm:text-[11px] text-white leading-snug drop-shadow-xs">
-                    <span className="font-semibold">Caballeros:</span> Terno con corbata, con saco o chaleco. Recomendamos telas ligeras y frescas.
+                    <span className="font-semibold">Caballeros:</span> {config.vestimenta.caballeros}
                   </p>
                   <p className="font-serif text-[10px] sm:text-[11px] text-white leading-snug drop-shadow-xs">
-                      Agradeceremos evitar los tonos blancos, marfil y crema, reservados para la novia, así como el rojo intenso.
+                    {config.vestimenta.nota}
                   </p>
                 </div>
               </div>
@@ -1677,7 +1764,7 @@ export default function App() {
 
                 {/* Mensaje cálido impreso */}
                 <p className="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#2C2C2A]/85 leading-relaxed max-w-[270px] mx-auto mb-4">
-                  El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.
+                  {config.banco.mensaje}
                 </p>
 
                 {/* Marco de tarjeta impresa con aparición fluida */}
@@ -1686,7 +1773,7 @@ export default function App() {
                   {/* Banco de Crédito del Perú (BCP) */}
                   <div className="text-center pb-3 border-b border-[#3A4436]/15">
                     <h4 className="font-serif uppercase tracking-[0.16em] text-[12.5px] sm:text-[13.5px] text-[#2C3328] font-semibold mb-2.5">
-                      Banco de Crédito del Perú (BCP)
+                      {config.banco.nombreBanco}
                     </h4>
 
                     {/* Número de cuenta */}
@@ -1695,7 +1782,7 @@ export default function App() {
                         Número de cuenta
                       </span>
                       <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
-                        Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularAdriana}</span>
+                        Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularBcp}</span>
                       </p>
                       <p className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all my-0.5">
                         {config.banco.bcp}
@@ -1736,7 +1823,7 @@ export default function App() {
                   {/* Sección YAPE / PLIN */}
                   <div className="text-center pt-0.5">
                     <h4 className="font-serif uppercase tracking-[0.2em] text-[12px] sm:text-[13px] text-[#2C3328] font-semibold mb-2.5">
-                      Yape / Plin
+                      {config.banco.metodoMovilTitulo}
                     </h4>
 
                     <div className="space-y-3">
@@ -1747,7 +1834,7 @@ export default function App() {
                             {config.banco.yapeAdriana}
                           </span>
                           <button
-                            onClick={() => handleCopyField(config.banco.yapeAdriana, "Número Yape/Plin (Adriana)", "yapeAdriana")}
+                            onClick={() => handleCopyField(config.banco.yapeAdriana, `Número ${config.banco.metodoMovilTitulo} (${config.novios.ella})`, "yapeAdriana")}
                             className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[8.5px] tracking-[0.12em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
                           >
                             {copiedField === 'yapeAdriana' ? (
@@ -1769,7 +1856,7 @@ export default function App() {
                             {config.banco.yapeJorge}
                           </span>
                           <button
-                            onClick={() => handleCopyField(config.banco.yapeJorge, "Número Yape/Plin (Jorge)", "yapeJorge")}
+                            onClick={() => handleCopyField(config.banco.yapeJorge, `Número ${config.banco.metodoMovilTitulo} (${config.novios.el})`, "yapeJorge")}
                             className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[8.5px] tracking-[0.12em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
                           >
                             {copiedField === 'yapeJorge' ? (
@@ -1790,7 +1877,7 @@ export default function App() {
 
                 {/* Frase final de agradecimiento estilo editorial */}
                 <p className="font-serif italic text-[12px] sm:text-[13px] text-[#3A4436]/80 mt-4 tracking-wide">
-                  Gracias por acompañarnos en el comienzo de esta nueva etapa.
+                  {config.banco.agradecimiento}
                 </p>
 
               </div>
@@ -1814,28 +1901,28 @@ export default function App() {
                   className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
                 />
                 <h3 className="font-display text-sm tracking-[0.25em] text-[#5C6B57] uppercase font-semibold relative z-10">
-                  Álbum Compartido
+                  {config.album.titulo}
                 </h3>
                 <p className="font-serif italic text-base text-[#2C2C2A]/85 mt-2 mb-4 relative z-10">
-                  Queremos recordar este día desde todas las miradas. Comparte con nosotros tus fotos y videos para guardar juntos cada sonrisa, abrazo y momentos especiales de este día.
+                  {config.album.descripcion}
                 </p>
 
                 {/* Código QR Generado */}
                 <div className="inline-block p-3 bg-white rounded border border-[#C5A059]/40 shadow-xs my-2 relative z-10 reveal-item reveal-delay-1">
                   <img 
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=2C2C2A&bgcolor=F7F4EE&data=${encodeURIComponent(config.albumUrl)}`} 
+                    src={`${config.album.qrApiBaseUrl}?size=150x150&color=2C2C2A&bgcolor=F7F4EE&data=${encodeURIComponent(config.album.url)}`} 
                     alt="Código QR Álbum de Boda" 
                     className="w-32 h-32 mx-auto"
                   />
                 </div>
 
                 <p className="font-serif italic text-base text-[#2C2C2A]/85 mt-2 mb-4 relative z-10">
-                  ¡Comparte tus recuerdos! <br /> Escanea el código QR o pulsa el botón para subir las fotos y videos que captures durante nuestra boda.
+                  {config.album.instruccion}
                 </p>
                                
                 <div className="mt-4 mb-4 relative z-10">
                   <a 
-                    href={config.albumUrl} 
+                    href={config.album.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="btn-tactile inline-flex items-center gap-2 bg-[#22281F] text-[#F7F4EE] font-sans text-[11px] tracking-[0.18em] uppercase px-6 py-2.5 rounded-full shadow hover:bg-[#5C6B57]"
@@ -1896,11 +1983,11 @@ export default function App() {
 
                 {/* Mensaje descriptivo en elegante serifa editorial */}
                 <p className="relative z-10 font-serif text-[14.5px] sm:text-[15.5px] leading-relaxed text-[#2C2C2A]/90 max-w-[320px] mx-auto mb-3">
-                  Hemos preparado este día con mucho amor, pensando en compartirlo con las personas más especiales para nosotros.
+                  {config.rsvp.parrafo1}
                 </p>
 
                 <p className="relative z-10 font-serif text-[14.5px] sm:text-[15.5px] leading-relaxed text-[#2C2C2A]/90 max-w-[320px] mx-auto mb-5">
-                  Por tratarse de una celebración íntima, esta invitación está reservada exclusivamente para ti. Gracias por comprenderlo y ayudarnos a cuidar cada detalle de este día tan especial.
+                  {config.rsvp.parrafo2}
                 </p>
 
                 {/* Línea divisoria */}
@@ -1912,11 +1999,11 @@ export default function App() {
                 </p>
 
                 <p className="relative z-10 font-display font-semibold text-[17px] sm:text-lg tracking-wider text-[#2C2C2A] mb-2.5">
-                  15 de enero de 2027
+                  {config.fecha.fechaLimiteRsvp}
                 </p>
 
                 <p className="relative z-10 font-serif italic text-base sm:text-[17px] text-[#5A1E28] mb-5">
-                  ¡Nos hará muy felices celebrar contigo!
+                  {config.rsvp.fraseCierre}
                 </p>
 
                 {/* Botón Confirmar que abre el modal interactivo */}
@@ -1945,7 +2032,7 @@ export default function App() {
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-22 h-22 z-40 wax-seal-anim">
                 <img 
                   src={IMAGES.selloCera} 
-                  alt="Sello de Cera J&A" 
+                  alt={`Sello de Cera ${config.novios.monograma}`}
                   className="w-full h-full object-contain filter drop-shadow-lg"
                 />
               </div>
@@ -1966,25 +2053,25 @@ export default function App() {
             </div>
 
             <h2 className="font-script text-5xl text-[#2C2C2A] mb-4">
-              ¡Te esperamos!
+              {config.despedida.titulo}
             </h2>
           </div>
 
           <p className="font-serif italic text-base sm:text-lg text-[#2C2C2A]/85 max-w-md mx-auto leading-relaxed reveal-item reveal-delay-1">
-            “Las historias más bonitas no solo se viven, también se construyen junto a las personas que las hacen inolvidables. Gracias por ser parte de nuestras vidas y de esta historia de amor que hoy celebramos”
+            “{config.despedida.frase}”
           </p>
 
           <div className="reveal-item reveal-delay-2">
             <p className="font-serif italic text-sm text-[#5C6B57] mt-6">
-              Con todo nuestro cariño,
+              {config.despedida.saludo}
             </p>
 
             <p className="font-display text-xs sm:text-sm tracking-[0.3em] text-[#3A4436] uppercase font-semibold mt-1.5">
-              Jorge &amp; Adriana
+              {config.novios.el} &amp; {config.novios.ella}
             </p>
 
             <p className="text-[10px] sm:text-xs font-sans tracking-[0.25em] text-[#2C2C2A]/60 uppercase mt-3">
-              Lima, Perú
+              {config.despedida.ubicacion}
             </p>
           </div>
         </footer>
