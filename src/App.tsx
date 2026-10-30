@@ -389,24 +389,31 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // Scroll Reveal observer
+  // Scroll Reveal observer granular para que cada elemento aparezca individualmente al hacer scroll
   useEffect(() => {
     if (!isUnlocked) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -50px 0px' }
-    );
+    let observer: IntersectionObserver | null = null;
+    const timer = setTimeout(() => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer?.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
+      );
 
-    const elements = document.querySelectorAll('.reveal-item');
-    elements.forEach((el) => observer.observe(el));
+      const elements = document.querySelectorAll('.reveal-item');
+      elements.forEach((el) => observer?.observe(el));
+    }, 60);
 
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(timer);
+      observer?.disconnect();
+    };
   }, [isUnlocked]);
 
   // Countdown timer interval
@@ -892,14 +899,13 @@ export default function App() {
           </div>
 
         {/* =================================================================
-        {/* =================================================================
              SECCIÓN 2: SOBRE ABIERTO + CARTA DE BIENVENIDA (NOS CASAMOS)
              ================================================================= */}
-        <section className="relative z-20 px-5 pt-12 flex flex-col items-center reveal-item">
+        <section className="relative z-20 px-5 pt-12 flex flex-col items-center">
           
           <div className="w-full max-w-[360px] relative">
             {/* Contenedor del Sobre Abierto Realista */}
-            <div className="w-full relative z-10 flex justify-center -mb-10">
+            <div className="w-full relative z-10 flex justify-center -mb-10 reveal-item">
               {/* Capa 1: Fondo del sobre con la solapa interior y trasera */}
               <img
                 src={IMAGES.sobreAbiertoFondo}
@@ -914,13 +920,11 @@ export default function App() {
                 className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none z-10"
               />
             </div>
-            
-
 
             {/* Tarjeta de Papel Rasgado que emerge del sobre */}
-            <div className="shadow-torn-paper -mt-[130px] mx-2 relative z-20">
+            <div className="shadow-torn-paper -mt-[130px] mx-2 relative z-20 reveal-item">
               {/* Sello de Cera Verde Salvia colocado a caballo exactamente en el borde superior del tarjetón */}
-              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-20 h-20 z-30">
+              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-20 h-20 z-30 wax-seal-anim">
                 <img
                   src={IMAGES.selloCera}
                   alt="Sello de cera J&A"
@@ -935,7 +939,6 @@ export default function App() {
                   alt="Tarjetón de papel artesanal rasgado" 
                   className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0 filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
                 />
-                
 
                 {/* Flor prensada romántica en la esquina (flor_9aee3096.png) */}
                 <img 
@@ -975,7 +978,7 @@ export default function App() {
                     Con la bendición de nuestros padres:
                   </p>
                   {/* Nombres de los Padres en dos columnas */}
-                  <div className="grid grid-cols-2 gap-x-2 sm:gap-x-4 max-w-[340px] mx-auto py-1 text-center">
+                  <div className="grid grid-cols-2 gap-x-2 sm:gap-x-4 max-w-[340px] mx-auto py-1 text-center reveal-item reveal-delay-1">
                     <div className="space-y-1 sm:space-y-1.5">
                       <p className="font-serif text-[13px] sm:text-[14.5px] font-medium text-[#2C2C2A] leading-tight">
                         {config.padres.columna1[0]}
@@ -994,14 +997,12 @@ export default function App() {
                     </div>
                   </div>
 
-                  <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-5">
+                  <p className="font-serif italic text-sm text-[#2C2C2A]/80 mt-5 reveal-item reveal-delay-2">
                     "Nos haría inmensamente felices que nos acompañes en este día tan especial, en el que celebraremos nuestro para siempre junto a nuestras personas favoritas: ustedes."
                   </p>
                 </div>
               </div>
             </div>
-
-                
 
           </div>
         </section>
@@ -1009,7 +1010,7 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 3: MEDALLÓN BARROCO DE FECHA (papel6_03599585.png) & CUENTA REGRESIVA
              ================================================================= */}
-        <section className="relative z-10 px-5 -mt-10 pb-8 flex flex-col items-center reveal-item">
+        <section className="relative z-10 px-5 -mt-10 pb-8 flex flex-col items-center">
           <div className="w-full max-w-[360px] relative flex flex-col items-center">
             
             {/* Papel manuscrito decorativo detrás del medallón y bajo la carta de bienvenida (Ref 1) */}
@@ -1029,7 +1030,7 @@ export default function App() {
             />
 
             {/* Medallón Barroco Terracota con texturas talladas en 3D (papel6_03599585.png) */}
-            <div className="relative z-20 w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo pointer-events-none">
+            <div className="relative z-20 w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo pointer-events-none reveal-item">
               {/* Imagen del camafeo real con relieve */}
               <img 
                 src={IMAGES.papel6Medallon} 
@@ -1052,7 +1053,7 @@ export default function App() {
             </div>
 
             {/* Tarjeta de Cuenta Regresiva de Papel Rasgado superpuesta debajo */}
-            <div className="relative z-10 w-full -mt-16 shadow-torn-paper">
+            <div className="relative z-10 w-full -mt-16 shadow-torn-paper reveal-item">
               <div className="relative z-10 px-6 py-10 text-center">
                 {/* Imagen del papel */}
                 <img 
@@ -1134,8 +1135,8 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 4: FOTOGRAFÍA DE PAREJA (Carrusel Polaroid de 5 fotos con alejamiento lento)
              ================================================================= */}
-        <section className="relative z-40 px-5 py-6 reveal-item">
-          <div className="w-full max-w-[400px] mx-auto relative">
+        <section className="relative z-40 px-5 py-6">
+          <div className="w-full max-w-[400px] mx-auto relative reveal-item">
 
             {/* Foto enmarcada en papel artesanal real */}
             <div className="relative z-10 transform -rotate-0.5 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)]">
@@ -1193,10 +1194,10 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 5: LUGAR DE LA IGLESIA Y LA RECEPCIÓN (Papel Artesanal papel4 & Grabados Finos)
              ================================================================= */}
-        <section className="relative z-30 px-5 py-8 reveal-item">
+        <section className="relative z-30 px-5 py-8">
           
           {/* Contenedor de Ceremonia con decoración de estampilla caligráfica conectando con la foto superior (Ref 2) */}
-          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative">
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative mb-10 reveal-item">
             
             {/* Papel de estampilla caligráfica (papel_decoracion_2) detrás entre la Polaroid y Ceremonia (Ref 2) */}
             <img
@@ -1279,7 +1280,7 @@ export default function App() {
           </div>
 
           {/* Tarjeta 2: LA RECEPCIÓN */}
-          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative z-10 drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative z-10 drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)] reveal-item">
             {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
             <img 
               src={IMAGES.papel4} 
@@ -1334,7 +1335,7 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 6: ITINERARIO EN LÍNEA DE TIEMPO VERTICAL (papel3_clean)
              ================================================================= */}
-        <section className="relative z-20 px-5 py-6 reveal-item">
+        <section className="relative z-20 px-5 py-6">
           <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative">
             
             {/* Papel de estampilla caligráfica (papel_decoracion_2) detrás del Itinerario asomando a ambos lados (Ref 3) */}
@@ -1354,7 +1355,7 @@ export default function App() {
             />
 
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
-            <div className="w-20 h-20 mx-auto -mb-15 relative z-30">
+            <div className="w-20 h-20 mx-auto -mb-15 relative z-30 wax-seal-anim">
               <img 
                 src={IMAGES.selloCera} 
                 alt="Sello J&A" 
@@ -1363,7 +1364,7 @@ export default function App() {
             </div>
 
             {/* Hoja de Itinerario en papel artesanal real vertical (papel3_clean.png) */}
-            <div className="w-[88%] sm:w-[86%] mx-auto relative z-10 drop-shadow-[0_16px_32px_rgba(20,24,18,0.22)]">
+            <div className="w-[88%] sm:w-[86%] mx-auto relative z-10 drop-shadow-[0_16px_32px_rgba(20,24,18,0.22)] reveal-item">
               {/* Imagen de fondo papel3_clean vertical */}
               <img 
                 src={IMAGES.papel3Clean} 
@@ -1379,7 +1380,7 @@ export default function App() {
                   ITINERARIO
                 </h3>
 
-                {/* Línea de tiempo vertical: iconos grandes y texto compacto en el lado derecho */}
+                {/* Línea de tiempo vertical: cada momento aparece progresivamente a medida que se escrolea */}
                 <div className="flex flex-col">
                   {[
                     {
@@ -1463,7 +1464,7 @@ export default function App() {
                     const isFirst = idx === 0;
                     const isLast = idx === arr.length - 1;
                     return (
-                      <div key={idx} className="grid grid-cols-[1.2fr_34px_1.05fr] items-center min-h-[74px] sm:min-h-[82px]">
+                      <div key={idx} className="grid grid-cols-[1.2fr_34px_1.05fr] items-center min-h-[74px] sm:min-h-[82px] reveal-item">
                         {/* Columna 1: Iconos sustancialmente más grandes y alineados hacia el eje */}
                         <div className="flex items-center justify-end pr-2.5 sm:pr-3.5">
                           <div className="w-18 h-18 sm:w-20 sm:h-20 flex items-center justify-end">
@@ -1484,7 +1485,7 @@ export default function App() {
                             )}
                             {/* Marca horizontal con topes verticales en los extremos */}
                             <line x1="3" y1="40" x2="31" y2="40" stroke="#5C6E52" strokeWidth="1.3" />
-                            <line x1="3" y1="34" x2="3" y2="46" stroke="#5C6E52" strokeWidth="1.3" />
+                            <line x1="3" y1="34" x2="31" y2="34" stroke="#5C6E52" strokeWidth="1.3" />
                             <line x1="31" y1="34" x2="31" y2="46" stroke="#5C6E52" strokeWidth="1.3" />
                           </svg>
                         </div>
@@ -1512,11 +1513,11 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 7: FOTOGRAFÍA & CÓDIGO DE VESTIMENTA (papel6)
              ================================================================= */}
-        <section className="relative z-20 px-5 py-8 reveal-item">
+        <section className="relative z-20 px-5 py-8">
           <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative flex flex-col items-center">
             
             {/* Foto de la pareja enmarcada en papel artesanal real tipo marco/Polaroid */}
-            <div className="relative w-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)] transform -rotate-0.5">
+            <div className="relative w-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)] transform -rotate-0.5 reveal-item">
               {/* Fondo de textura de papel artesanal */}
               <img 
                 src={IMAGES.papel1Limpio} 
@@ -1537,7 +1538,7 @@ export default function App() {
             </div>
 
             {/* Camafeo Barroco de Código de Vestimenta superpuesto exactamente sobre el marco inferior de papel */}
-            <div className="relative z-20 w-115 h-115 -mt-22 sm:-mt-26 flex pt-23 justify-center shadow-cameo">
+            <div className="relative z-20 w-115 h-115 -mt-22 sm:-mt-26 flex pt-23 justify-center shadow-cameo reveal-item">
               <img 
                 src={IMAGES.papel6Medallon} 
                 alt="Camafeo barroco de vestimenta" 
@@ -1598,7 +1599,7 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 8: SUGERENCIA DE REGALOS & LUNA DE MIEL
              ================================================================= */}
-        <section className="relative z-10 px-5 pt-4 pb-2 -mt-30 reveal-item">
+        <section className="relative z-10 px-5 pt-4 pb-2 -mt-30">
           <div className="w-full max-w-[360px] sm:max-w-[390px] mx-auto relative">
 
             {/* Papel manuscrito decorativo detrás del camafeo de vestimenta y sobre la tarjeta de regalos (Ref 4) */}
@@ -1617,7 +1618,7 @@ export default function App() {
               className="absolute -bottom-12 -left-4 sm:-left-5 w-22 sm:w-26 h-auto object-contain pointer-events-none select-none z-0 -rotate-[22deg] opacity-90 drop-shadow-sm"
             />
 
-            <div className="w-full relative z-10 filter drop-shadow-[0_16px_32px_rgba(20,24,18,0.24)] transform -rotate-0.5">
+            <div className="w-full relative z-10 filter drop-shadow-[0_16px_32px_rgba(20,24,18,0.24)] transform -rotate-0.5 reveal-item">
               
               {/* Imagen del Papel Artesanal Real (papel1_14fb074a_limpio.png) como contenedor */}
               <img 
@@ -1664,8 +1665,8 @@ export default function App() {
                   El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.
                 </p>
 
-                {/* Marco de tarjeta impresa (sin fondo plano, dejando ver el papel artesanal) */}
-                <div className="w-full border border-[#3A4436]/30 rounded-2xl p-4 sm:p-5 space-y-4">
+                {/* Marco de tarjeta impresa con aparición fluida */}
+                <div className="w-full border border-[#3A4436]/30 rounded-2xl p-4 sm:p-5 space-y-4 reveal-item reveal-delay-1">
                   
                   {/* Banco de Crédito del Perú (BCP) */}
                   <div className="text-center pb-3 border-b border-[#3A4436]/15">
@@ -1786,10 +1787,10 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 9: QR PARA SUBIR FOTOS
              ================================================================= */}
-        <section className="relative z-20 px-5 py-8 reveal-item">
+        <section className="relative z-20 px-5 py-8">
           <div className="max-w-[400px] mx-auto relative flex flex-col items-center">
             {/* Tarjeta con Código QR de Álbum de Fotos */}
-            <div className="relative z-10 w-full shadow-torn-paper">
+            <div className="relative z-10 w-full shadow-torn-paper reveal-item">
               <div className="px-6 pt-8 pb-8 text-center">
                 {/* Imagen de fondo de papel real */}
                 <img
@@ -1805,7 +1806,7 @@ export default function App() {
                 </p>
 
                 {/* Código QR Generado */}
-                <div className="inline-block p-3 bg-white rounded border border-[#C5A059]/40 shadow-xs my-2 relative z-10">
+                <div className="inline-block p-3 bg-white rounded border border-[#C5A059]/40 shadow-xs my-2 relative z-10 reveal-item reveal-delay-1">
                   <img 
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=2C2C2A&bgcolor=F7F4EE&data=${encodeURIComponent(config.albumUrl)}`} 
                     alt="Código QR Álbum de Boda" 
@@ -1836,7 +1837,7 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 10: CONFIRMAR ASISTENCIA (RSVP) & SOBRE DE CIERRE
              ================================================================= */}
-        <section className="relative z-10 px-5 pt-10 pb-16 reveal-item">
+        <section className="relative z-10 px-5 pt-10 pb-16">
           <div className="max-w-[400px] mx-auto relative">
             
             {/* Papel manuscrito decorativo invertido asomando por encima y por debajo de la sección de confirmación (Ref 5) */}
@@ -1854,7 +1855,7 @@ export default function App() {
             />
 
             {/* Tarjeta de Confirmación ingresando en el sobre inferior */}
-            <div className="shadow-torn-paper mx-2 relative z-20">
+            <div className="shadow-torn-paper mx-2 relative z-20 reveal-item">
               <div className="px-6 sm:px-8 pt-8 pb-16 text-center">
 
                 {/* tarjeta de papel real */}
@@ -1918,7 +1919,7 @@ export default function App() {
             </div>
 
             {/* Sobre de Cierre Inferior (sobrecerrado_3948ed67.png) */}
-            <div className="w-full -mt-20 relative z-10 flex justify-center">
+            <div className="w-full -mt-20 relative z-10 flex justify-center reveal-item">
               <img 
                 src={IMAGES.sobreCerrado} 
                 alt="Sobre de cierre" 
@@ -1926,7 +1927,7 @@ export default function App() {
               />
 
               {/* Sello de Cera verde sellando el sobre inferior */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-22 h-22 z-40">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-22 h-22 z-40 wax-seal-anim">
                 <img 
                   src={IMAGES.selloCera} 
                   alt="Sello de Cera J&A" 
@@ -1941,32 +1942,36 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 11: MENSAJE FINAL DE DESPEDIDA & PIE DE PAPELERÍA
              ================================================================= */}
-        <footer className="px-6 pt-4 pb-14 text-center reveal-item relative z-20">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="h-[1px] w-12 bg-[#5A1E28]/40"></span>
-            <span className="text-[#5A1E28] text-sm">♥</span>
-            <span className="h-[1px] w-12 bg-[#5A1E28]/40"></span>
+        <footer className="px-6 pt-4 pb-14 text-center relative z-20">
+          <div className="reveal-item">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <span className="h-[1px] w-12 bg-[#5A1E28]/40"></span>
+              <span className="text-[#5A1E28] text-sm">♥</span>
+              <span className="h-[1px] w-12 bg-[#5A1E28]/40"></span>
+            </div>
+
+            <h2 className="font-script text-5xl text-[#2C2C2A] mb-4">
+              ¡Te esperamos!
+            </h2>
           </div>
 
-          <h2 className="font-script text-5xl text-[#2C2C2A] mb-4">
-            ¡Te esperamos!
-          </h2>
-
-          <p className="font-serif italic text-base sm:text-lg text-[#2C2C2A]/85 max-w-md mx-auto leading-relaxed">
+          <p className="font-serif italic text-base sm:text-lg text-[#2C2C2A]/85 max-w-md mx-auto leading-relaxed reveal-item reveal-delay-1">
             “Las historias más bonitas no solo se viven, también se construyen junto a las personas que las hacen inolvidables. Gracias por ser parte de nuestras vidas y de esta historia de amor que hoy celebramos”
           </p>
 
-          <p className="font-serif italic text-sm text-[#5C6B57] mt-6">
-            Con todo nuestro cariño,
-          </p>
+          <div className="reveal-item reveal-delay-2">
+            <p className="font-serif italic text-sm text-[#5C6B57] mt-6">
+              Con todo nuestro cariño,
+            </p>
 
-          <p className="font-display text-xs sm:text-sm tracking-[0.3em] text-[#3A4436] uppercase font-semibold mt-1.5">
-            Jorge &amp; Adriana
-          </p>
+            <p className="font-display text-xs sm:text-sm tracking-[0.3em] text-[#3A4436] uppercase font-semibold mt-1.5">
+              Jorge &amp; Adriana
+            </p>
 
-          <p className="text-[10px] sm:text-xs font-sans tracking-[0.25em] text-[#2C2C2A]/60 uppercase mt-3">
-            Lima, Perú
-          </p>
+            <p className="text-[10px] sm:text-xs font-sans tracking-[0.25em] text-[#2C2C2A]/60 uppercase mt-3">
+              Lima, Perú
+            </p>
+          </div>
         </footer>
 
         </div>

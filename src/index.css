@@ -163,18 +163,34 @@
   );
 }
 
-/* Animaciones Scroll Reveal con retardo escalonado */
+/* Animaciones Scroll Reveal granular y fluido a medida que se escrolea */
 .reveal-item {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 850ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 850ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .reveal-item.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal-delay-1 {
+  transition-delay: 80ms;
+}
+
+.reveal-delay-2 {
+  transition-delay: 160ms;
+}
+
+.reveal-delay-3 {
+  transition-delay: 240ms;
+}
+
+.reveal-delay-4 {
+  transition-delay: 320ms;
 }
 
 /* Sello de cera con ligero zoom de estampado */
@@ -183,6 +199,7 @@
   transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.reveal-item.visible .wax-seal-anim {
+.reveal-item.visible .wax-seal-anim,
+.wax-seal-anim.visible {
   transform: scale(1);
 }
