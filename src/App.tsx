@@ -146,6 +146,14 @@ const POLAROID_CAROUSEL_PHOTOS = [
   }
 ];
 
+const GUEST_API_URL = "https://script.google.com/macros/s/AKfycbxIdCqpiRMw-1J7xlhokVYA_chDmzmEJlnFjpfjeO9TGR6EZHVrcULyl6RYmEzEeFn1/exec";
+
+interface GuestData {
+  codigo: string;
+  invitado: string;
+  pases: number;
+}
+
 export default function App() {
   const [config, setConfig] = useState<WeddingConfig>(DEFAULT_CONFIG);
   const [countdown, setCountdown] = useState<CountdownResult>(() =>
@@ -159,13 +167,22 @@ export default function App() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const synthIntervalRef = useRef<number | null>(null);
 
-  // RSVP Form state
-  const [rsvpName, setRsvpName] = useState<string>('');
-  const [rsvpWillAttend, setRsvpWillAttend] = useState<boolean>(true);
-  const [rsvpCompanions, setRsvpCompanions] = useState<number>(0);
-  const [rsvpNote, setRsvpNote] = useState<string>('');
-  const [rsvpSubmittedToast, setRsvpSubmittedToast] = useState<boolean>(false);
+  // Guest Access / Validation state (Google Apps Script API)
+  const [accessCode, setAccessCode] = useState<string>('');
+  const [isAccessLoading, setIsAccessLoading] = useState<boolean>(false);
+  const [accessError, setAccessError] = useState<string | null>(null);
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+  const [guestData, setGuestData] = useState<GuestData | null>(null);
+
+  // RSVP Form state (Google Apps Script API)
   const [isRsvpModalOpen, setIsRsvpModalOpen] = useState<boolean>(false);
+  const [rsvpAttendance, setRsvpAttendance] = useState<'si' | 'no'>('si');
+  const [rsvpConfirmedCount, setRsvpConfirmedCount] = useState<number>(1);
+  const [rsvpMessage, setRsvpMessage] = useState<string>('');
+  const [isRsvpSubmitting, setIsRsvpSubmitting] = useState<boolean>(false);
+  const [rsvpFeedback, setRsvpFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [lastSubmittedStatus, setLastSubmittedStatus] = useState<'Confirmado' | 'Declinado' | null>(null);
+  const [lastSubmittedCount, setLastSubmittedCount] = useState<number>(0);
 
   // Modal state for Maps
   const [activeMapModal, setActiveMapModal] = useState<{ title: string; embedUrl: string; mapsUrl: string } | null>(null);
@@ -225,6 +242,7 @@ export default function App() {
 
   // Scroll Reveal observer
   useEffect(() => {
+    if (!isUnlocked) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -240,7 +258,7 @@ export default function App() {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [isUnlocked]);
 
   // Countdown timer interval
   useEffect(() => {
@@ -379,33 +397,90 @@ export default function App() {
     setTimeout(() => setCopyToast(null), 2500);
   };
 
-  // WhatsApp RSVP submission
-  const handleRsvpSubmit = (e: React.FormEvent) => {
+  // Guest Code Validation (Google Apps Script API)
+  const handleValidateCode = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rsvpName.trim()) {
-      return;
+    const cleanCode = accessCode.trim().toUpperCase();
+    if (!cleanCode) return;
+
+    setIsAccessLoading(true);
+    setAccessError(null);
+
+    try {
+      const res = await fetch(`${GUEST_API_URL}?id=${encodeURIComponent(cleanCode)}`);
+      const data = await res.json();
+      if (data.encontrado) {
+        const pasesCount = parseInt(data.pases, 10) || 1;
+        setGuestData({
+          codigo: cleanCode,
+          invitado: data.invitado || 'Invitado Especial',
+          pases: pasesCount
+        });
+        setRsvpAttendance('si');
+        setRsvpConfirmedCount(pasesCount);
+        setIsUnlocked(true);
+      } else {
+        setAccessError('Código no encontrado');
+      }
+    } catch (err) {
+      console.error('Error al consultar código:', err);
+      setAccessError('Hubo un inconveniente al consultar el código. Intenta de nuevo.');
+    } finally {
+      setIsAccessLoading(false);
     }
+  };
 
-    const message = formatRsvpMessage(
-      rsvpName,
-      rsvpWillAttend,
-      rsvpCompanions,
-      rsvpNote,
-      `${config.novios.el} & ${config.novios.ella}`,
-      config.fecha.textoCorto
-    );
+  // Google Sheets RSVP Submission (Google Apps Script API)
+  const handleRsvpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!guestData) return;
 
-    const waLink = buildWhatsAppLink(config.whatsapp, message);
-    setRsvpSubmittedToast(true);
-    setTimeout(() => {
-      window.open(waLink, '_blank');
-      setRsvpSubmittedToast(false);
-      setIsRsvpModalOpen(false);
-    }, 600);
+    setIsRsvpSubmitting(true);
+    setRsvpFeedback(null);
+
+    const confirmados = rsvpAttendance === 'si'
+      ? (guestData.pases > 1 ? rsvpConfirmedCount : 1)
+      : 0;
+
+    const datosAEnviar = {
+      codigo: guestData.codigo,
+      estado: rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado',
+      confirmados: confirmados,
+      mensaje: rsvpMessage.trim()
+    };
+
+    try {
+      const res = await fetch(GUEST_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8' // Clave para evitar problemas de CORS
+        },
+        body: JSON.stringify(datosAEnviar)
+      });
+      const respuesta = await res.json();
+      if (respuesta.exito) {
+        setRsvpFeedback({
+          type: 'success',
+          message: '¡Muchas gracias! Tu respuesta ha sido registrada.'
+        });
+        setLastSubmittedStatus(rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado');
+        setLastSubmittedCount(confirmados);
+      } else {
+        throw new Error(respuesta.error || 'Ocurrió un error.');
+      }
+    } catch (err) {
+      console.error('Error al guardar RSVP:', err);
+      setRsvpFeedback({
+        type: 'error',
+        message: 'Hubo un error al guardar tu respuesta. Por favor intenta de nuevo.'
+      });
+    } finally {
+      setIsRsvpSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#141812] text-[#2C2C2A] flex justify-center pt-0 pb-0 px-0 sm:px-4">
+    <div className="min-h-dvh bg-[#141812] text-[#2C2C2A] flex justify-center pt-0 pb-0 px-0 sm:px-4">
       {/* Background Audio Element */}
       <audio
         ref={audioRef}
@@ -414,8 +489,101 @@ export default function App() {
         preload="auto"
       />
 
-      {/* Main Invitation Canvas (Proportional Mobile-First 480px) */}
-      <main className="w-full max-w-[480px] bg-[#ECE7DF] shadow-[0_25px_80px_rgba(0,0,0,0.65)] relative overflow-hidden flex flex-col">
+      {/* =================================================================
+           1) VISTA FLOTANTE INICIAL (PANTALLA DE ACCESO CON CÓDIGO - SIN NADA DETRÁS)
+           ================================================================= */}
+      {!isUnlocked && (
+        <div
+          id="pantalla-acceso"
+          className="fixed inset-0 w-full h-dvh bg-[#141812] flex items-center justify-center p-5 select-none animate-fade-in z-50 overflow-y-auto"
+        >
+          <div className="relative w-full max-w-[380px] my-auto shadow-torn-paper">
+            <div className="relative px-6 sm:px-8 pt-8 pb-9 text-center flex flex-col items-center w-full">
+              {/* Textura de papel artesanal idéntica a la sección de álbum compartido */}
+              <img
+                src="./assets/aistudio/papel4_97b148ae.png"
+                alt="Papel artesanal"
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+              />
+
+              <div className="relative z-10 w-full flex flex-col items-center">
+                {/* Sello de cera artesanal */}
+                <div className="w-16 h-16 mb-2 flex items-center justify-center">
+                  <img
+                    src="./assets/aistudio/imagen_sello_75c97831.png"
+                    alt="Sello de boda"
+                    className="w-full h-full object-contain filter drop-shadow-md"
+                  />
+                </div>
+
+                {/* Título en tipografía clásica (estilo sugerencia de regalos) */}
+                <h2 className="font-serif text-[18px] sm:text-[20px] tracking-[0.24em] text-[#3A4436] uppercase font-normal leading-snug">
+                  Bienvenido a<br />
+                  <span className="text-[20px] sm:text-[22px] tracking-[0.28em] font-medium">Nuestra Boda</span>
+                </h2>
+
+                <div className="my-3 flex items-center justify-center gap-2">
+                  <span className="h-[1px] w-10 bg-[#C5A059]/40"></span>
+                  <span className="text-[#5A1E28] text-xs">✦</span>
+                  <span className="h-[1px] w-10 bg-[#C5A059]/40"></span>
+                </div>
+
+                {/* Mensaje descriptivo */}
+                <p className="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#2C2C2A]/85 leading-relaxed max-w-[270px] mx-auto mb-4">
+                  Ingresa el código que te enviamos para ver tus pases:
+                </p>
+
+                {/* Marco de tarjeta impresa (sin fondo plano, dejando ver el papel artesanal como en sugerencia de regalos) */}
+                <form onSubmit={handleValidateCode} className="w-full border border-[#3A4436]/30 rounded-2xl p-4 sm:p-5 space-y-4">
+                  <div className="text-center">
+                    <span className="font-serif italic text-[11px] text-[#5C6B57] block mb-2">
+                      Código de invitado
+                    </span>
+                    <input
+                      type="text"
+                      id="codigo-input"
+                      value={accessCode}
+                      onChange={(e) => {
+                        setAccessCode(e.target.value.toUpperCase());
+                        if (accessError) setAccessError(null);
+                      }}
+                      placeholder="Ej: K9X2P"
+                      maxLength={14}
+                      className="w-full font-serif uppercase tracking-[0.25em] text-[19px] sm:text-[21px] font-semibold text-center py-2 px-3 bg-[#ECE7DF]/75 border border-[#3A4436]/30 rounded-xl text-[#2C2C2A] placeholder:text-[#2C2C2A]/35 focus:outline-none focus:border-[#5A1E28] focus:bg-[#ECE7DF] transition-all"
+                    />
+                  </div>
+
+                  {accessError && (
+                    <p id="error" className="font-serif italic text-[12px] text-[#8A2525] animate-fade-in leading-snug">
+                      {accessError}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    id="btn-consultar"
+                    disabled={isAccessLoading || !accessCode.trim()}
+                    className="btn-tactile w-full py-2.5 rounded-full bg-[#22281F] text-[#F7F4EE] hover:bg-[#5C6B57] font-serif uppercase tracking-[0.18em] text-[11px] sm:text-xs font-medium transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_12px_rgba(0,0,0,0.18)]"
+                  >
+                    {isAccessLoading ? 'Consultando...' : 'Entrar'}
+                  </button>
+                </form>
+
+                {/* Frase final */}
+                <p className="font-serif italic text-[12px] text-[#3A4436]/75 mt-4 tracking-wide">
+                  Jorge &amp; Adriana · 27.02.2027
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =================================================================
+           2) INVITACIÓN PRINCIPAL (SE MUESTRA SOLO TRAS VALIDAR EL CÓDIGO)
+           ================================================================= */}
+      {isUnlocked && (
+        <main id="pantalla-invitacion" className="w-full max-w-[480px] bg-[#ECE7DF] shadow-[0_25px_80px_rgba(0,0,0,0.65)] relative overflow-hidden flex flex-col animate-fade-in">
         
         {/* Layer 0: Continuous Texture Wallpaper */}
         <div 
@@ -1554,6 +1722,7 @@ export default function App() {
         </footer>
 
       </main>
+      )}
 
       {/* =================================================================
            MODAL INTERACTIVO DE MAPA / UBICACIÓN
@@ -1614,7 +1783,7 @@ export default function App() {
           aria-modal="true"
           className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in"
         >
-          <div className="bg-[#FBF9F5] rounded-xl max-w-sm w-full p-6 border border-[#C5A059]/40 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#FBF9F5] rounded-2xl max-w-sm w-full p-6 border border-[#C5A059]/40 shadow-2xl relative max-h-[92vh] overflow-y-auto">
             {/* Botón cerrar */}
             <button 
               onClick={() => setIsRsvpModalOpen(false)}
@@ -1624,107 +1793,165 @@ export default function App() {
               ✕
             </button>
 
-            {/* Encabezado */}
+            {/* Encabezado con datos del invitado (desde Sheet) */}
             <div className="text-center pb-3 border-b border-[#C5A059]/30">
-              <div className="w-8 h-8 mx-auto mb-2 text-[#B59359] flex items-center justify-center">
+              <div className="w-8 h-8 mx-auto mb-1 text-[#B59359] flex items-center justify-center">
                 <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3.5" y="5" width="17" height="14" rx="2" />
                   <path d="m3.5 6.5 8.5 6 8.5-6" />
                   <path d="m14 16 2 2 4.5-4.5" strokeWidth="1.8" />
                 </svg>
               </div>
-              <h4 className="font-display font-semibold text-base sm:text-[17px] tracking-[0.2em] text-[#3A4436] uppercase">
+
+              <h4 className="font-display font-semibold text-sm tracking-[0.22em] text-[#3A4436] uppercase">
                 Confirmar Asistencia
               </h4>
-              <p className="font-serif italic text-sm text-[#5C6B57] mt-1">
-                Completa tus datos para acompañarnos en nuestro día
+
+              {/* Información traída desde el Sheet */}
+              <h2 id="nombre-invitado" className="font-serif text-[17px] sm:text-[19px] font-semibold text-[#2C2C2A] mt-1.5 leading-snug">
+                {guestData ? guestData.invitado : 'Cargando...'}
+              </h2>
+
+              <p id="info-pases" className="font-serif italic text-xs sm:text-[13px] text-[#5C6B57] mt-0.5">
+                {guestData ? `Pases asignados: ${guestData.pases}` : ''}
               </p>
             </div>
 
-            {/* Formulario RSVP */}
-            <form onSubmit={handleRsvpSubmit} className="space-y-3.5 text-left mt-4 font-sans text-xs">
-              <div>
-                <label className="block text-[10px] uppercase tracking-wider text-[#3A4436] font-semibold mb-1">
-                  Nombre y Apellido *
-                </label>
-                <input 
-                  type="text" 
-                  required
-                  value={rsvpName}
-                  onChange={(e) => setRsvpName(e.target.value)}
-                  placeholder="Ej. Familia Rodríguez / Carlos Mendoza" 
-                  className="w-full px-3 py-2 rounded-lg bg-[#ECE7DF]/90 border border-[#C5A059]/40 text-[#2C2C2A] placeholder:text-[#2C2C2A]/40 focus:outline-none focus:border-[#5A1E28] transition-colors"
-                />
-              </div>
+            {/* Mensaje de feedback de confirmación */}
+            {rsvpFeedback?.type === 'success' ? (
+              <div className="py-4 text-center space-y-3 animate-fade-in">
+                <div className="bg-[#5C6B57]/15 border border-[#5C6B57]/40 rounded-xl p-4">
+                  <span className="text-2xl block mb-1">🕊️</span>
+                  <p id="mensaje-feedback" className="font-serif text-[15px] font-semibold text-[#2C3328] mb-1">
+                    {rsvpFeedback.message}
+                  </p>
+                  <p className="font-serif italic text-xs text-[#5C6B57]">
+                    Estado registrado: <span className="font-medium text-[#2C2C2A]">{lastSubmittedStatus}</span>
+                    {lastSubmittedStatus === 'Confirmado' && (
+                      <span> ({lastSubmittedCount} {lastSubmittedCount === 1 ? 'persona' : 'personas'})</span>
+                    )}
+                  </p>
+                </div>
 
-              <div>
-                <label className="block text-[10px] uppercase tracking-wider text-[#3A4436] font-semibold mb-1">
-                  ¿Podrás acompañarnos?
-                </label>
-                <select 
-                  value={rsvpWillAttend ? 'si' : 'no'}
-                  onChange={(e) => setRsvpWillAttend(e.target.value === 'si')}
-                  className="w-full px-3 py-2 rounded-lg bg-[#ECE7DF]/90 border border-[#C5A059]/40 text-[#2C2C2A] focus:outline-none focus:border-[#5A1E28] transition-colors cursor-pointer"
-                >
-                  <option value="si">¡Sí, asistiré con mucha alegría!</option>
-                  <option value="no">Lamentablemente no podré asistir</option>
-                </select>
-              </div>
+                <p className="font-serif italic text-xs text-[#2C2C2A]/75">
+                  Puedes modificar tu respuesta en cualquier momento durante tu visita.
+                </p>
 
-              {rsvpWillAttend && (
-                <div>
-                  <label className="block text-[10px] uppercase tracking-wider text-[#3A4436] font-semibold mb-1">
-                    Acompañantes adicionales
+                <div className="space-y-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setRsvpFeedback(null)}
+                    className="btn-tactile w-full py-2.5 rounded-full border border-[#3A4436]/35 text-[#2C2C2A] font-serif uppercase tracking-[0.16em] text-[10.5px] hover:bg-[#ECE7DF] transition-all cursor-pointer active:scale-95"
+                  >
+                    Modificar mi respuesta
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsRsvpModalOpen(false)}
+                    className="btn-tactile w-full py-2.5 rounded-full bg-[#22281F] text-[#F7F4EE] hover:bg-[#5C6B57] font-serif uppercase tracking-[0.16em] text-[10.5px] transition-all cursor-pointer active:scale-95"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Formulario de Confirmación */
+              <form id="form-rsvp" onSubmit={handleRsvpSubmit} className="space-y-4 text-left mt-4">
+                <h3 className="font-serif italic text-[14px] sm:text-[15px] text-[#2C2C2A] font-medium text-center">
+                  ¿Nos acompañarás en este día tan especial?
+                </h3>
+
+                {/* Opciones de asistencia */}
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer ${rsvpAttendance === 'si' ? 'bg-[#5C6B57]/12 border-[#5C6B57] text-[#2C2C2A]' : 'bg-[#ECE7DF]/70 border-[#3A4436]/20 text-[#2C2C2A]/80'}`}>
+                    <input 
+                      type="radio" 
+                      name="asistencia" 
+                      value="si" 
+                      required
+                      checked={rsvpAttendance === 'si'}
+                      onChange={() => setRsvpAttendance('si')}
+                      className="accent-[#5C6B57] w-4 h-4 cursor-pointer"
+                    />
+                    <span className="font-serif text-[14.5px] font-medium">¡Sí, ahí estaré!</span>
                   </label>
-                  <input 
-                    type="number" 
-                    min="0" 
-                    max="6"
-                    value={rsvpCompanions}
-                    onChange={(e) => setRsvpCompanions(Math.max(0, parseInt(e.target.value) || 0))}
-                    className="w-full px-3 py-2 rounded-lg bg-[#ECE7DF]/90 border border-[#C5A059]/40 text-[#2C2C2A] focus:outline-none focus:border-[#5A1E28] transition-colors"
+
+                  <label className={`flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer ${rsvpAttendance === 'no' ? 'bg-[#5A1E28]/10 border-[#5A1E28] text-[#2C2C2A]' : 'bg-[#ECE7DF]/70 border-[#3A4436]/20 text-[#2C2C2A]/80'}`}>
+                    <input 
+                      type="radio" 
+                      name="asistencia" 
+                      value="no" 
+                      required
+                      checked={rsvpAttendance === 'no'}
+                      onChange={() => setRsvpAttendance('no')}
+                      className="accent-[#5A1E28] w-4 h-4 cursor-pointer"
+                    />
+                    <span className="font-serif text-[14.5px] font-medium">No podré asistir</span>
+                  </label>
+                </div>
+
+                {/* Desplegable dinámico: solo visible si tiene más de 1 pase y marca "Sí" */}
+                {rsvpAttendance === 'si' && (guestData?.pases ?? 0) > 1 && (
+                  <div id="contenedor-desplegable" className="mt-3 text-left animate-fade-in">
+                    <label htmlFor="select-pases" className="font-serif italic text-[12px] sm:text-[13px] text-[#5C6B57] block mb-1">
+                      ¿Cuántas personas asistirán?
+                    </label>
+                    <select 
+                      id="select-pases"
+                      value={rsvpConfirmedCount}
+                      onChange={(e) => setRsvpConfirmedCount(parseInt(e.target.value, 10))}
+                      className="w-full px-3 py-2 rounded-xl bg-[#ECE7DF]/85 border border-[#3A4436]/30 text-[#2C2C2A] font-serif text-[14px] focus:outline-none focus:border-[#5A1E28] cursor-pointer"
+                    >
+                      {Array.from({ length: guestData?.pases ?? 1 }, (_, i) => i + 1).map((num) => (
+                        <option key={num} value={num}>
+                          {num === 1 ? '1 persona' : `${num} personas`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Campo opcional de mensaje */}
+                <div className="mt-3 text-left">
+                  <label htmlFor="mensaje-invitado" className="font-serif italic text-[12px] sm:text-[13px] text-[#5C6B57] block mb-1">
+                    Déjales un mensaje a los novios (opcional):
+                  </label>
+                  <textarea 
+                    id="mensaje-invitado" 
+                    rows={3} 
+                    value={rsvpMessage}
+                    onChange={(e) => setRsvpMessage(e.target.value)}
+                    placeholder="¡Felicidades!"
+                    className="w-full px-3 py-2 rounded-xl bg-[#ECE7DF]/85 border border-[#3A4436]/30 text-[#2C2C2A] font-serif text-[13.5px] placeholder:text-[#2C2C2A]/35 focus:outline-none focus:border-[#5A1E28] transition-colors resize-none"
                   />
                 </div>
-              )}
 
-              <div>
-                <label className="block text-[10px] uppercase tracking-wider text-[#3A4436] font-semibold mb-1">
-                  Restricción alimentaria o dedicatoria (opcional)
-                </label>
-                <input 
-                  type="text" 
-                  value={rsvpNote}
-                  onChange={(e) => setRsvpNote(e.target.value)}
-                  placeholder="Ej. Alergia a mariscos / ¡Felicidades!" 
-                  className="w-full px-3 py-2 rounded-lg bg-[#ECE7DF]/90 border border-[#C5A059]/40 text-[#2C2C2A] placeholder:text-[#2C2C2A]/40 focus:outline-none focus:border-[#5A1E28] transition-colors"
-                />
-              </div>
+                {rsvpFeedback?.type === 'error' && (
+                  <p className="font-serif italic text-xs text-[#8A2525] text-center animate-fade-in">
+                    {rsvpFeedback.message}
+                  </p>
+                )}
 
-              <div className="pt-2 text-center space-y-2">
-                <button 
-                  type="submit"
-                  className="btn-tactile w-full bg-[#22281F] text-[#F7F4EE] font-sans text-[11px] tracking-[0.2em] uppercase py-3 rounded-full shadow-[0_6px_18px_rgba(0,0,0,0.25)] hover:bg-[#5C6B57] cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-98"
-                >
-                  <span>Confirmar por WhatsApp</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.087-.178.181-.077.355.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/>
-                  </svg>
-                </button>
+                <div className="pt-2 text-center space-y-2">
+                  <button 
+                    type="submit" 
+                    id="btn-enviar"
+                    disabled={isRsvpSubmitting}
+                    className="btn-tactile w-full bg-[#22281F] text-[#F7F4EE] hover:bg-[#5C6B57] font-serif uppercase tracking-[0.18em] text-[11px] sm:text-xs py-3 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.2)] cursor-pointer transition-all active:scale-95 disabled:opacity-50"
+                  >
+                    {isRsvpSubmitting ? 'Guardando...' : 'Confirmar Respuesta'}
+                  </button>
 
-                <button 
-                  type="button"
-                  onClick={() => setIsRsvpModalOpen(false)}
-                  className="w-full text-[10.5px] uppercase tracking-wider text-[#3A4436]/70 hover:text-[#3A4436] py-1 cursor-pointer transition-colors"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-
-            {rsvpSubmittedToast && (
-              <p className="text-[11px] text-[#5C6B57] font-semibold text-center mt-3 animate-fade-in">
-                Abriendo WhatsApp con tu confirmación...
-              </p>
+                  <button 
+                    type="button"
+                    onClick={() => setIsRsvpModalOpen(false)}
+                    className="w-full text-[10.5px] uppercase font-serif tracking-wider text-[#3A4436]/70 hover:text-[#3A4436] py-1 cursor-pointer transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </form>
             )}
           </div>
         </div>
