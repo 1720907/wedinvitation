@@ -112,35 +112,80 @@ const DEFAULT_CONFIG: WeddingConfig = {
   albumUrl: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67"
 };
 
+// =================================================================
+// DICCIONARIO CENTRALIZADO DE IMÁGENES Y ASSETS
+// =================================================================
+export const IMAGES = {
+  // Fondos y Texturas Artesanales
+  fondoContinuo: '/assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
+  papel1Limpio: './assets/aistudio/papel1_14fb074a_limpio.png',
+  papel3Clean: './assets/aistudio/papel3_clean.png',
+  papel3CleanRotated: './assets/aistudio/papel3_clean_rotated.png',
+  papel4: './assets/aistudio/papel4_97b148ae.png',
+  papel6Medallon: './assets/aistudio/papel6_03599585.png',
+  papelDecoracion2: './assets/aistudio/papel_decoracion_2_6b80d71f.png',
+  sombraHero: './assets/aistudio/sombra_baa5a2e0.png',
+  selloCera: './assets/aistudio/imagen_sello_75c97831.png',
+  florPrensada: './assets/aistudio/flor_9aee3096.png',
+
+  // Hero y Portada
+  heroCover: './assets/aistudio/foto_cover_clean.jpg',
+  heroFotoPareja: './assets/aistudio/portada.jpeg',
+
+  // Sobres
+  sobreAbiertoFondo: './assets/aistudio/sobreabierto1_a0f8ad35.png',
+  sobreAbiertoFrente: './assets/aistudio/sobreabierto2_d3a8449e.png',
+  sobreCerrado: './assets/aistudio/sobrecerrado_3948ed67.png',
+
+  // Bocetos Artísticos
+  sketchIglesia: './assets/aistudio/sketch_iglesia.png',
+  sketchRecepcion: './assets/aistudio/sketch_recepcion.png',
+
+  // Iconos de Itinerario
+  iconoAnillos: './assets/aistudio/icono_anillos_48b04619.png',
+  iconoDespedida: './assets/aistudio/icono_despedida_dcfd3b04.png',
+  iconoVotos: './assets/aistudio/icono_votos.png',
+  iconoCoctel: './assets/aistudio/icono_coctel_2fb88822.png',
+  iconoCena: './assets/aistudio/icono_cena_f73c8000.png',
+  iconoFiesta: './assets/aistudio/icono_fiesta_a951966a.png',
+
+  // Fotos Carrusel Polaroid
+  carrusel1: './assets/aistudio/carrusel1.jpeg',
+  carrusel2: './assets/aistudio/carrusel2.jpeg',
+  carrusel3: './assets/aistudio/carrusel3.jpeg',
+  carrusel4: './assets/aistudio/carrusel4.jpeg',
+  carrusel5: './assets/aistudio/carrusel5.jpeg',
+} as const;
+
 // Carrusel de 5 fotos en Polaroid con animación de alejamiento lento (Ken Burns)
 const POLAROID_CAROUSEL_PHOTOS = [
   {
     id: 1,
-    src: "./assets/aistudio/carrusel1.jpeg",
+    src: IMAGES.carrusel1,
     alt: "Foto polaroid 1",
     caption: "“Nuestro lugar favorito en el mundo siempre será estar juntos”"
   },
   {
     id: 2,
-    src: "./assets/aistudio/carrusel2.jpeg",
+    src: IMAGES.carrusel2,
     alt: "Foto polaroid 2",
     caption: "“De la mano, hacia todos los sueños que nos quedan por vivir”"
   },
   {
     id: 3,
-    src: "./assets/aistudio/carrusel3.jpeg",
+    src: IMAGES.carrusel3,
     alt: "Foto polaroid 3",
     caption: "“Cuando las palabras dejan de ser necesarias a través de nuestra mirada”"
   },
   {
     id: 4,
-    src: "./assets/aistudio/carrusel4.jpeg",
+    src: IMAGES.carrusel4,
     alt: "Foto polaroid 4",
     caption: "“Los brazos a los que siempre queremos volver”"
   },
   {
     id: 5,
-    src: "./assets/aistudio/carrusel5.jpeg",
+    src: IMAGES.carrusel5,
     alt: "Foto polaroid 5",
     caption: "“El comienzo de nuestro para siempre. 🤍”"
   }
@@ -634,7 +679,7 @@ export default function App() {
             <div className="relative px-6 sm:px-8 pt-8 pb-9 text-center flex flex-col items-center w-full">
               {/* Textura de papel artesanal idéntica a la sección de álbum compartido */}
               <img
-                src="./assets/aistudio/papel4_97b148ae.png"
+                src={IMAGES.papel4}
                 alt="Papel artesanal"
                 className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
               />
@@ -643,7 +688,7 @@ export default function App() {
                 {/* Sello de cera artesanal */}
                 <div className="w-16 h-16 mb-2 flex items-center justify-center">
                   <img
-                    src="./assets/aistudio/imagen_sello_75c97831.png"
+                    src={IMAGES.selloCera}
                     alt="Sello de boda"
                     className="w-full h-full object-contain filter drop-shadow-md"
                   />
@@ -722,7 +767,7 @@ export default function App() {
         <div 
           className="absolute inset-0 pointer-events-none opacity-45 mix-blend-multiply z-0"
           style={{
-            backgroundImage: `url('/assets/aistudio/imagen_fondo.jpg_a5ae7893.png')`,
+            backgroundImage: `url('${IMAGES.fondoContinuo}')`,
             backgroundRepeat: 'repeat',
             backgroundSize: '360px auto'
           }}
@@ -754,7 +799,7 @@ export default function App() {
           >
             {/* Base Hero Frame Background: foto_cover_clean.jpg */}
             <img 
-              src="./assets/aistudio/foto_cover_clean.jpg" 
+              src={IMAGES.heroCover} 
               alt="Cubierta de invitación fina con marco barroco verde" 
               className="absolute inset-0 w-full h-full object-cover z-0"
             />
@@ -774,7 +819,7 @@ export default function App() {
             {/* Foto de dos personas con efecto de aparición de alejamiento (zoom-out) */}
             <div className="w-full h-full relative overflow-hidden bg-[#2C3426]">
               <img 
-                src="./assets/aistudio/portada.jpeg"
+                src={IMAGES.heroFotoPareja}
                 alt="Foto de la pareja" 
                 onLoad={() => setHeroAnimated(true)}
                 className={`w-full h-full object-cover object-center ${
@@ -847,7 +892,7 @@ export default function App() {
 
         <div className="w-full flex justify-center relative z-10">
           <img 
-          src="./assets/aistudio/sombra_baa5a2e0.png"
+          src={IMAGES.sombraHero}
           alt="Sombra" 
           className="w-4/5 h-auto opacity-70" 
           />
@@ -863,14 +908,14 @@ export default function App() {
             <div className="w-full relative z-10 flex justify-center -mb-10">
               {/* Capa 1: Fondo del sobre con la solapa interior y trasera */}
               <img
-                src="./assets/aistudio/sobreabierto1_a0f8ad35.png"
+                src={IMAGES.sobreAbiertoFondo}
                 alt="Sobre abierto fondo"
                 className="w-full h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)] block select-none"
               />
 
               {/* Capa 2: Frente del sobre con solapas y bolsillo frontal exactamente superpuesto */}
               <img
-                src="./assets/aistudio/sobreabierto2_d3a8449e.png"
+                src={IMAGES.sobreAbiertoFrente}
                 alt="Sobre abierto frente"
                 className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none z-10"
               />
@@ -883,7 +928,7 @@ export default function App() {
               {/* Sello de Cera Verde Salvia colocado a caballo exactamente en el borde superior del tarjetón */}
               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-20 h-20 z-30">
                 <img
-                  src="./assets/aistudio/imagen_sello_75c97831.png"
+                  src={IMAGES.selloCera}
                   alt="Sello de cera J&A"
                   className="w-full h-full object-contain filter drop-shadow-md"
                 />
@@ -892,7 +937,7 @@ export default function App() {
               <div className="relative px-7 sm:px-9 pt-14 pb-16 sm:pb-20 text-center">
                 {/* Imagen del papel */}
                 <img 
-                  src="./assets/aistudio/papel3_clean.png" 
+                  src={IMAGES.papel3Clean} 
                   alt="Tarjetón de papel artesanal rasgado" 
                   className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0 filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
                 />
@@ -900,7 +945,7 @@ export default function App() {
 
                 {/* Flor prensada romántica en la esquina (flor_9aee3096.png) */}
                 <img 
-                  src="./assets/aistudio/flor_9aee3096.png" 
+                  src={IMAGES.florPrensada} 
                   alt="Flor prensada" 
                   className="absolute -top-2 -right-1 w-16 h-32 object-contain opacity-85 pointer-events-none rotate-12 z-10"
                 />
@@ -977,7 +1022,7 @@ export default function App() {
             <div className="relative z-20 w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo pointer-events-none">
               {/* Imagen del camafeo real con relieve */}
               <img 
-                src="./assets/aistudio/papel6_03599585.png" 
+                src={IMAGES.papel6Medallon} 
                 alt="Camafeo barroco de fecha en terracota" 
                 className="absolute inset-0 w-full h-full object-contain filter drop-shadow-lg select-none"
               />
@@ -1001,7 +1046,7 @@ export default function App() {
               <div className="relative z-10 px-6 py-10 text-center">
                 {/* Imagen del papel */}
                 <img 
-                  src="./assets/aistudio/papel3_clean_rotated.png" 
+                  src={IMAGES.papel3CleanRotated} 
                   alt="Tarjetón de papel artesanal rasgado" 
                   className="absolute inset-0 w-full h-full inset-0 object-fill pointer-events-none select-none z-10 filter drop-shadow-[0_16px_28px_rgba(20,24,18,0.22)]"
                 />
@@ -1085,7 +1130,7 @@ export default function App() {
             {/* Sello de vintage calligraphy decorativo en la esquina (papel_decoracion_2_6b80d71f.png) */}
             <div className="absolute -top-3 -right-2 z-40 w-14 h-14 rotate-6 drop-shadow-md pointer-events-none">
               <img
-                src="./assets/aistudio/papel_decoracion_2_6b80d71f.png"
+                src={IMAGES.papelDecoracion2}
                 alt="Sello vintage"
                 className="w-full h-full object-contain"
               />
@@ -1095,7 +1140,7 @@ export default function App() {
             <div className="relative transform -rotate-0.5 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)]">
               {/* Imagen del Papel Artesanal Real (papel1_14fb074a.png) como fondo del contenedor */}
               <img
-                src="./assets/aistudio/papel1_14fb074a_limpio.png"
+                src={IMAGES.papel1Limpio}
                 alt="Contenedor de papel artesanal"
                 className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
               />
@@ -1155,14 +1200,14 @@ export default function App() {
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
             <div className="absolute -top-3 -left-1 w-20 h-20 z-30 rotate-[-6deg] pointer-events-none select-none drop-shadow-md">
               <img 
-                src="./assets/aistudio/imagen_sello_75c97831.png" 
+                src={IMAGES.selloCera} 
                 alt="Sello J&A" 
                 className="w-full h-full object-contain"
               />
             </div>
             {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
             <img 
-              src="./assets/aistudio/papel4_97b148ae.png" 
+              src={IMAGES.papel4} 
               alt="Papel artesanal Ceremonia" 
               className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
             />
@@ -1177,7 +1222,7 @@ export default function App() {
               {/* Grabado arquitectónico auténtico del Templo */}
               <div className="w-full max-w-[240px] sm:max-w-[260px] my-5 flex justify-center">
                 <img 
-                  src="./assets/aistudio/sketch_iglesia.png" 
+                  src={IMAGES.sketchIglesia} 
                   alt="Templo de San Pedro Apóstol" 
                   className="w-full h-auto object-contain mix-blend-multiply opacity-90"
                 />
@@ -1216,7 +1261,7 @@ export default function App() {
           <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
             {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
             <img 
-              src="./assets/aistudio/papel4_97b148ae.png" 
+              src={IMAGES.papel4} 
               alt="Papel artesanal Recepción" 
               className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
             />
@@ -1231,7 +1276,7 @@ export default function App() {
               {/* Grabado arquitectónico auténtico de La Casona */}
               <div className="w-full max-w-[270px] sm:max-w-[290px] my-5 flex justify-center">
                 <img 
-                  src="./assets/aistudio/sketch_recepcion.png" 
+                  src={IMAGES.sketchRecepcion} 
                   alt="Hotel La Casona de Yucay" 
                   className="w-full h-auto object-contain mix-blend-multiply opacity-90"
                 />
@@ -1274,7 +1319,7 @@ export default function App() {
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
             <div className="w-20 h-20 mx-auto -mb-15 relative z-30">
               <img 
-                src="./assets/aistudio/imagen_sello_75c97831.png" 
+                src={IMAGES.selloCera} 
                 alt="Sello J&A" 
                 className="w-full h-full object-contain filter drop-shadow-md"
               />
@@ -1284,7 +1329,7 @@ export default function App() {
             <div className="relative z-10 drop-shadow-[0_16px_32px_rgba(20,24,18,0.22)]">
               {/* Imagen de fondo papel3_clean vertical */}
               <img 
-                src="./assets/aistudio/papel3_clean.png" 
+                src={IMAGES.papel3Clean} 
                 alt="Papel artesanal Itinerario" 
                 className="absolute inset-0 w-full h-full object-fill z-0 pointer-events-none select-none"
               />
@@ -1305,7 +1350,7 @@ export default function App() {
                       titulo: "Ceremonia religiosa",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_anillos_48b04619.png" 
+                          src={IMAGES.iconoAnillos} 
                           alt="Ceremonia religiosa" 
                           className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
                         />
@@ -1316,7 +1361,7 @@ export default function App() {
                       titulo: "Llegada a recepcion",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_despedida_dcfd3b04.png" 
+                          src={IMAGES.iconoDespedida} 
                           alt="Llegada a recepcion" 
                           className="w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90 rotate-y-180"
                         />
@@ -1327,7 +1372,7 @@ export default function App() {
                       titulo: "Votos matrimoniales",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_votos.png" 
+                          src={IMAGES.iconoVotos} 
                           alt="Votos matrimoniales" 
                           className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
                         />
@@ -1338,7 +1383,7 @@ export default function App() {
                       titulo: "Coctel",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_coctel_2fb88822.png" 
+                          src={IMAGES.iconoCoctel} 
                           alt="Coctel" 
                           className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
                         />
@@ -1349,7 +1394,7 @@ export default function App() {
                       titulo: "Cena",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_cena_f73c8000.png" 
+                          src={IMAGES.iconoCena} 
                           alt="Cena" 
                           className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
                         />
@@ -1360,7 +1405,7 @@ export default function App() {
                       titulo: "Fiesta",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_fiesta_a951966a.png" 
+                          src={IMAGES.iconoFiesta} 
                           alt="Fiesta" 
                           className="w-16 h-16 sm:w-18 sm:h-18 object-contain filter drop-shadow-xs"
                         />
@@ -1371,7 +1416,7 @@ export default function App() {
                       titulo: "Fin de fiesta",
                       icon: (
                         <img 
-                          src="./assets/aistudio/icono_despedida_dcfd3b04.png" 
+                          src={IMAGES.iconoDespedida} 
                           alt="Fin de fiesta" 
                           className="w-18 h-10 sm:w-20 sm:h-11 object-contain opacity-90"
                         />
@@ -1437,7 +1482,7 @@ export default function App() {
             <div className="relative w-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)] transform -rotate-0.5">
               {/* Fondo de textura de papel artesanal */}
               <img 
-                src="./assets/aistudio/papel1_14fb074a_limpio.png" 
+                src={IMAGES.papel1Limpio} 
                 alt="Fondo textura papel" 
                 className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
               />
@@ -1446,7 +1491,7 @@ export default function App() {
               <div className="relative z-10 px-7 pt-7 pb-20 sm:px-8 sm:pt-8 sm:pb-24">
                 <div className="w-full aspect-[4/3] overflow-hidden rounded-xs border border-[#C5A059]/25 shadow-md bg-[#232920]">
                   <img 
-                    src="./assets/aistudio/carrusel2.jpeg" 
+                    src={IMAGES.carrusel2} 
                     alt="Foto momento especial" 
                     className="w-full h-full object-cover object-top"
                   />
@@ -1457,7 +1502,7 @@ export default function App() {
             {/* Camafeo Barroco de Código de Vestimenta superpuesto exactamente sobre el marco inferior de papel */}
             <div className="relative z-20 w-115 h-115 -mt-22 sm:-mt-26 flex pt-23 justify-center shadow-cameo">
               <img 
-                src="./assets/aistudio/papel6_03599585.png" 
+                src={IMAGES.papel6Medallon} 
                 alt="Camafeo barroco de vestimenta" 
                 className="absolute inset-0 w-full h-full object-contain filter drop-shadow-md select-none"
               />
@@ -1521,7 +1566,7 @@ export default function App() {
             
             {/* Imagen del Papel Artesanal Real (papel1_14fb074a_limpio.png) como contenedor */}
             <img 
-              src="./assets/aistudio/papel1_14fb074a_limpio.png" 
+              src={IMAGES.papel1Limpio} 
               alt="Contenedor de papel artesanal regalos" 
               className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
             />
@@ -1692,7 +1737,7 @@ export default function App() {
               <div className="px-6 pt-8 pb-8 text-center">
                 {/* Imagen de fondo de papel real */}
                 <img
-                  src="./assets/aistudio/papel4_97b148ae.png"
+                  src={IMAGES.papel4}
                   alt="Contenedor de papel artesanal regalos"
                   className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
                 />
@@ -1744,7 +1789,7 @@ export default function App() {
 
                 {/* tarjeta de papel real */}
                 <img
-                  src="./assets/aistudio/papel3_clean.png"
+                  src={IMAGES.papel3Clean}
                   alt="Contenedor de papel artesanal regalos"
                   className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
                 />
@@ -1805,7 +1850,7 @@ export default function App() {
             {/* Sobre de Cierre Inferior (sobrecerrado_3948ed67.png) */}
             <div className="w-full -mt-20 relative z-10 flex justify-center">
               <img 
-                src="./assets/aistudio/sobrecerrado_3948ed67.png" 
+                src={IMAGES.sobreCerrado} 
                 alt="Sobre de cierre" 
                 className="w-full h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.35)]"
               />
@@ -1813,7 +1858,7 @@ export default function App() {
               {/* Sello de Cera verde sellando el sobre inferior */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-22 h-22 z-40">
                 <img 
-                  src="./assets/aistudio/imagen_sello_75c97831.png" 
+                  src={IMAGES.selloCera} 
                   alt="Sello de Cera J&A" 
                   className="w-full h-full object-contain filter drop-shadow-lg"
                 />
