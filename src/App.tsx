@@ -20,8 +20,8 @@ interface WeddingConfig {
     frase: string;
   };
   padres: {
-    novio: string;
-    novia: string;
+    columna1: [string, string];
+    columna2: [string, string];
   };
   fecha: {
     iso: string;
@@ -70,8 +70,8 @@ const DEFAULT_CONFIG: WeddingConfig = {
     frase: "Hay sueños que nacen en el corazón y, de la mano de Dios, encuentran el camino para hacerse realidad. El nuestro nos llevó a descubrir el mundo juntos, a extrañarnos sin dejar de sentirnos cerca y a encontrar, en los brazos del otro, ese hogar al que siempre queremos volver."
   },
   padres: {
-    novio: "Jorge y Ana",
-    novia: "José y Gianni"
+    columna1: ["José Valencia Solís", "Gianni León Osorio"],
+    columna2: ["Jorge Cerón Torres", "Ana Ruíz Barrera"]
   },
   fecha: {
     iso: "2027-02-27T11:30:00",
@@ -634,23 +634,22 @@ export default function App() {
                   <p className="font-display text-[11px] tracking-[0.3em] text-[#5C6B57] uppercase mb-4 font-semibold">
                     Con la bendición de nuestros padres:
                   </p>
-                  {/* Cuadro de bendición de los Padres */}
-                  <div className="bg-[#ECE7DF]/85 border border-[#C5A059]/30 rounded-sm py-4 px-4 text-center space-y-3">
-                    <div>
-                      <p className="font-display text-[10px] tracking-[0.2em] text-[#5C6B57] uppercase font-semibold">
-                        Padres del Novio
+                  {/* Nombres de los Padres en dos columnas */}
+                  <div className="grid grid-cols-2 gap-x-2 sm:gap-x-4 max-w-[340px] mx-auto py-1 text-center">
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <p className="font-serif text-[13px] sm:text-[14.5px] font-medium text-[#2C2C2A] leading-tight">
+                        {config.padres.columna1[0]}
                       </p>
-                      <p className="font-serif text-base font-semibold text-[#2C2C2A] mt-0.5">
-                        {config.padres.novio}
+                      <p className="font-serif text-[13px] sm:text-[14.5px] font-medium text-[#2C2C2A] leading-tight">
+                        {config.padres.columna1[1]}
                       </p>
                     </div>
-                    <div className="h-[1px] w-16 bg-[#C5A059]/30 mx-auto" />
-                    <div>
-                      <p className="font-display text-[10px] tracking-[0.2em] text-[#5C6B57] uppercase font-semibold">
-                        Padres de la Novia
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <p className="font-serif text-[13px] sm:text-[14.5px] font-medium text-[#2C2C2A] leading-tight">
+                        {config.padres.columna2[0]}
                       </p>
-                      <p className="font-serif text-base font-semibold text-[#2C2C2A] mt-0.5">
-                        {config.padres.novia}
+                      <p className="font-serif text-[13px] sm:text-[14.5px] font-medium text-[#2C2C2A] leading-tight">
+                        {config.padres.columna2[1]}
                       </p>
                     </div>
                   </div>
