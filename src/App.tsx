@@ -182,8 +182,8 @@ export default function App() {
     const calculateHeroHeight = () => {
       if (typeof window !== 'undefined') {
         if (window.innerWidth < 640) {
-          // ~125% of mobile viewport height as requested so hero is enlarged and completes on scroll
-          setHeroMobileHeight(Math.round(window.innerHeight * 1.25));
+          // ~110% of mobile viewport height as requested so hero is enlarged and completes on scroll
+          setHeroMobileHeight(Math.round(window.innerHeight * 1.1));
         } else {
           setHeroMobileHeight(null);
         }
@@ -443,7 +443,7 @@ export default function App() {
         {/* ================================================================= */}
         <section 
           id="hero-invitation"
-          className="relative w-full h-[125svh] sm:!h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center flex-shrink-0"
+          className="relative w-full h-[110svh] sm:!h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center flex-shrink-0"
           style={heroMobileHeight && typeof window !== 'undefined' && window.innerWidth < 640 ? { height: `${heroMobileHeight}px` } : undefined}
         >
           {/* Contenedor proporcional centrado que llena la altura en celular sin deformar */}
@@ -488,15 +488,7 @@ export default function App() {
                   background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(30,36,26,0.3) 85%, rgba(18,22,15,0.6) 100%)'
                 }}
               />
-
-              {/* Iniciales encima de la foto (iniciales_ca9ceab3.png) */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none pb-2">
-                <img 
-                  src="./assets/aistudio/iniciales_ca9ceab3_1.png" 
-                  alt="Monograma de los novios" 
-                  className="w-[80%] max-w-[185px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] filter brightness-120 opacity-50"
-                />
-              </div>
+              
             </div>
           </div>
 
@@ -551,6 +543,14 @@ export default function App() {
           </div>
           </div>
         </section>
+
+        <div className="w-full flex justify-center relative z-10">
+          <img 
+          src="./assets/aistudio/sombra_baa5a2e0.png"
+          alt="Sombra" 
+          className="w-4/5 h-auto opacity-70" 
+          />
+        </div>
 
         {/* =================================================================
              SECCIÓN 2: SOBRE ABIERTO + CARTA DE BIENVENIDA (NOS CASAMOS)
