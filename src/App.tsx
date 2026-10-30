@@ -164,145 +164,98 @@ export interface WeddingConfig {
   audioUrl: string;
 }
 
+// Configuración inicial sin datos sensibles expuestos en el código fuente.
+// Todos los datos sensibles y del evento son inyectados desde Google Apps Script tras validar el código de invitado
+// y se almacenan de forma segura en localStorage durante 24 horas.
 export const DEFAULT_CONFIG: WeddingConfig = {
   novios: {
-    el: "Jorge",
-    ella: "Adriana",
-    nombresJuntos: "Jorge & Adriana",
+    el: "",
+    ella: "",
+    nombresJuntos: "",
     monograma: "J&A",
-    frase: "Hay sueños que nacen en el corazón y, de la mano de Dios, encuentran el camino para hacerse realidad. El nuestro nos llevó a descubrir el mundo juntos, a extrañarnos sin dejar de sentirnos cerca y a encontrar, en los brazos del otro, ese hogar al que siempre queremos volver.",
-    invitacionCarta: "Nos haría inmensamente felices que nos acompañes en este día tan especial, en el que celebraremos nuestro para siempre junto a nuestras personas favoritas: ustedes."
+    frase: "",
+    invitacionCarta: ""
   },
   padres: {
-    columna1: ["José Valencia Solís", "Gianni León Osorio"],
-    columna2: ["Jorge Cerón Torres", "Ana Ruíz Barrera"]
+    columna1: ["", ""],
+    columna2: ["", ""]
   },
   fecha: {
     iso: "2027-02-27T11:30:00",
     isoFin: "2027-02-27T23:59:59",
-    dia: "27",
-    mes: "Febrero",
-    anio: "2027",
-    horaCeremonia: "11:30 AM",
-    horaRecepcion: "01:30 PM",
-    textoCorto: "27.02.2027",
-    fechaLimiteRsvp: "15 de enero de 2027"
+    dia: "",
+    mes: "",
+    anio: "",
+    horaCeremonia: "",
+    horaRecepcion: "",
+    textoCorto: "",
+    fechaLimiteRsvp: ""
   },
   lugares: {
     ceremonia: {
       titulo: "Ceremonia Religiosa",
-      nombre: "Templo de San Pedro Apóstol",
-      localidad: "– Urubamba – Cusco",
-      direccion: "Plaza Principal, Urubamba — Cusco",
-      hora: "11:30 am",
-      mapsUrl: "https://maps.google.com/?q=Templo+de+San+Pedro+Apostol+Urubamba",
-      embedUrl: "https://www.google.com/maps?q=Templo+de+San+Pedro+Apostol+Urubamba&output=embed"
+      nombre: "",
+      localidad: "",
+      direccion: "",
+      hora: "",
+      mapsUrl: "",
+      embedUrl: ""
     },
     recepcion: {
       titulo: "Recepción",
-      nombre: "Hotel La Casona de Yucay",
+      nombre: "",
       localidad: "",
-      direccion: "Plaza Manco II 104, Yucay — Urubamba, Cusco",
-      hora: "1:30 pm",
-      mapsUrl: "https://maps.google.com/?q=Hotel+La+Casona+de+Yucay+Cusco",
-      embedUrl: "https://www.google.com/maps?q=Hotel+La+Casona+de+Yucay+Cusco&output=embed"
+      direccion: "",
+      hora: "",
+      mapsUrl: "",
+      embedUrl: ""
     }
   },
-  itinerario: [
-    {
-      hora: "11:30 am",
-      titulo: "Ceremonia religiosa",
-      iconoSrc: IMAGES.iconoAnillos,
-      alt: "Ceremonia religiosa",
-      variant: 'standard'
-    },
-    {
-      hora: "3:00 pm",
-      titulo: "Llegada a recepcion",
-      iconoSrc: IMAGES.iconoDespedida,
-      alt: "Llegada a recepcion",
-      variant: 'wide-flipped'
-    },
-    {
-      hora: "3:30 pm",
-      titulo: "Votos matrimoniales",
-      iconoSrc: IMAGES.iconoVotos,
-      alt: "Votos matrimoniales",
-      variant: 'standard'
-    },
-    {
-      hora: "4:30 pm",
-      titulo: "Coctel",
-      iconoSrc: IMAGES.iconoCoctel,
-      alt: "Coctel",
-      variant: 'standard'
-    },
-    {
-      hora: "6:00 pm",
-      titulo: "Cena",
-      iconoSrc: IMAGES.iconoCena,
-      alt: "Cena",
-      variant: 'standard'
-    },
-    {
-      hora: "8:00 pm",
-      titulo: "Fiesta",
-      iconoSrc: IMAGES.iconoFiesta,
-      alt: "Fiesta",
-      variant: 'standard'
-    },
-    {
-      hora: "12:00 am",
-      titulo: "Fin de fiesta",
-      iconoSrc: IMAGES.iconoDespedida,
-      alt: "Fin de fiesta",
-      variant: 'wide'
-    }
-  ],
+  itinerario: [],
   vestimenta: {
     categoria: "ELEGANTE",
-    damas: "Vestido largo.",
-    caballeros: "Terno con corbata, con saco o chaleco. Recomendamos telas ligeras y frescas.",
-    nota: "Agradeceremos evitar los tonos blancos, marfil y crema, reservados para la novia, así como el rojo intenso."
+    damas: "",
+    caballeros: "",
+    nota: ""
   },
   banco: {
-    nombreBanco: "Banco de Crédito del Perú (BCP)",
-    bcp: "193-98765432-0-12",
-    cci: "002-193009876543201214",
-    titularBcp: "Adriana Valencia León",
+    nombreBanco: "",
+    bcp: "",
+    cci: "",
+    titularBcp: "",
     metodoMovilTitulo: "Yape / Plin",
-    yapeAdriana: "987654321",
-    titularAdriana: "Adriana Valencia León",
-    yapeJorge: "912345678",
-    titularJorge: "Jorge Cerón Ruiz",
-    mensaje: "El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.",
-    agradecimiento: "Gracias por acompañarnos en el comienzo de esta nueva etapa."
+    yapeAdriana: "",
+    titularAdriana: "",
+    yapeJorge: "",
+    titularJorge: "",
+    mensaje: "",
+    agradecimiento: ""
   },
   album: {
-    url: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67",
+    url: "",
     qrApiBaseUrl: "https://api.qrserver.com/v1/create-qr-code/",
     titulo: "Álbum Compartido",
-    descripcion: "Queremos recordar este día desde todas las miradas. Comparte con nosotros tus fotos y videos para guardar juntos cada sonrisa, abrazo y momentos especiales de este día.",
-    instruccion: "¡Comparte tus recuerdos! Escanea el código QR o pulsa el botón para subir las fotos y videos que captures durante nuestra boda."
+    descripcion: "",
+    instruccion: ""
   },
   rsvp: {
-    apiUrl: "https://script.google.com/macros/s/AKfycbyLBlQM7OXE2e5cINtifX4U617kQuSHyLjg6DNAX1z2fuWn5lHGCwaA9_s2JsAxIOUT/exec",
+    apiUrl: "https://script.google.com/macros/s/AKfycbz0lazax4EV4fb5F1MW6Js4nvupFJgMIxp_QSS2vTFkCllo0NUcIeshSPOVFU4K0MAl/exec",
     storageKey: "sesionBodaJA",
     sessionExpirationMs: 24 * 60 * 60 * 1000, // 24 horas en milisegundos
     codigoEjemploPlaceholder: "Ej: K9X2P",
-    parrafo1: "Hemos preparado este día con mucho amor, pensando en compartirlo con las personas más especiales para nosotros.",
-    parrafo2: "Por tratarse de una celebración íntima, esta invitación está reservada exclusivamente para ti. Gracias por comprenderlo y ayudarnos a cuidar cada detalle de este día tan especial.",
-    fraseCierre: "¡Nos hará muy felices celebrar contigo!"
+    parrafo1: "",
+    parrafo2: "",
+    fraseCierre: ""
   },
   despedida: {
     titulo: "¡Te esperamos!",
-    frase: "Las historias más bonitas no solo se viven, también se construyen junto a las personas que las hacen inolvidables. Gracias por ser parte de nuestras vidas y de esta historia de amor que hoy celebramos",
+    frase: "",
     saludo: "Con todo nuestro cariño,",
-    firma: "Jorge & Adriana",
-    ubicacion: "Lima, Perú"
+    firma: "",
+    ubicacion: ""
   },
-  whatsapp: "51999888777",
-  albumUrl: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67",
+  whatsapp: "",
+  albumUrl: "",
   audioUrl: IMAGES.cancionBoda
 };
 
@@ -348,27 +301,222 @@ interface GuestData {
   codigo: string;
   invitado: string;
   pases: number;
+  confirmados?: number;
+  estado?: 'Confirmado' | 'Declinado' | null;
 }
 
 interface StoredSessionData {
   codigo: string;
   invitado?: string;
   pases?: number;
+  confirmados?: number;
+  estado?: 'Confirmado' | 'Declinado' | null;
+  configuracion?: WeddingConfig;
   timestamp: number;
 }
 
-// Sanitización estricta contra XSS: elimina etiquetas o caracteres peligrosos y valida formato
-function sanitizePlainText(input: unknown, maxLen = 120): string {
-  if (typeof input !== 'string') return '';
-  return input.replace(/[<>]/g, '').trim().slice(0, maxLen);
+// Sanitización estricta contra XSS: elimina etiquetas o caracteres peligrosos y convierte números de Sheets a string
+function sanitizePlainText(input: unknown, maxLen = 600): string {
+  if (input === null || input === undefined) return '';
+  const str = typeof input === 'string' ? input : typeof input === 'number' || typeof input === 'boolean' ? String(input) : '';
+  return str.replace(/[<>]/g, '').trim().slice(0, maxLen);
+}
+
+// Sanitización segura de URLs (solo permite https://, http:// o rutas relativas de assets)
+function sanitizeUrl(input: unknown, fallback = ''): string {
+  const clean = sanitizePlainText(input, 1000);
+  if (!clean) return fallback;
+  if (
+    clean.startsWith('https://') ||
+    clean.startsWith('http://') ||
+    clean.startsWith('./assets/') ||
+    clean.startsWith('/assets/') ||
+    clean.startsWith('assets/')
+  ) {
+    return clean;
+  }
+  return fallback;
+}
+
+// Resuelve referencias al diccionario IMAGES (ej. "IMAGES.iconoAnillos" o "iconoAnillos") o rutas directas
+function resolveImageReference(input: unknown, fallback: string): string {
+  const clean = sanitizePlainText(input, 300);
+  if (!clean) return fallback;
+  const key = clean.startsWith('IMAGES.') ? clean.slice('IMAGES.'.length) : clean;
+  if (key in IMAGES) {
+    return IMAGES[key as keyof typeof IMAGES];
+  }
+  return sanitizeUrl(clean, fallback);
 }
 
 function sanitizeGuestCode(input: unknown): string {
-  if (typeof input !== 'string') return '';
-  return input.replace(/[^A-Za-z0-9_-]/g, '').toUpperCase().slice(0, 14);
+  if (input === null || input === undefined) return '';
+  const str = typeof input === 'string' ? input : String(input);
+  return str.replace(/[^A-Za-z0-9_-]/g, '').toUpperCase().slice(0, 14);
 }
 
-// Lectura segura de localStorage con validación de esquema y expiración de 24h
+function asRecord(val: unknown): Record<string, unknown> {
+  return val && typeof val === 'object' && !Array.isArray(val) ? (val as Record<string, unknown>) : {};
+}
+
+function sanitizeParentsTuple(input: unknown, fallback: [string, string]): [string, string] {
+  if (Array.isArray(input)) {
+    return [
+      sanitizePlainText(input[0], 120) || fallback[0],
+      sanitizePlainText(input[1], 120) || fallback[1]
+    ];
+  }
+  if (typeof input === 'string' && input.trim()) {
+    const parts = input.split(',').map((s) => sanitizePlainText(s, 120));
+    return [parts[0] || fallback[0], parts[1] || fallback[1]];
+  }
+  return fallback;
+}
+
+// Normaliza y fusiona de forma segura el objeto configuracion proveniente de Google Apps Script o localStorage
+function mergeAndSanitizeConfig(rawConfig: unknown, base: WeddingConfig = DEFAULT_CONFIG): WeddingConfig {
+  const root = asRecord(rawConfig);
+  const novios = asRecord(root.novios);
+  const padres = asRecord(root.padres);
+  const fecha = asRecord(root.fecha);
+  const lugares = asRecord(root.lugares);
+  const ceremonia = asRecord(lugares.ceremonia);
+  const recepcion = asRecord(lugares.recepcion);
+  const vestimenta = asRecord(root.vestimenta);
+  const banco = asRecord(root.banco);
+  const album = asRecord(root.album);
+  const rsvp = asRecord(root.rsvp);
+  const despedida = asRecord(root.despedida);
+
+  const rawItinerario = Array.isArray(root.itinerario) ? root.itinerario : null;
+  const sanitizedItinerario: ItineraryItemConfig[] = rawItinerario
+    ? rawItinerario
+        .map((itemRaw) => {
+          const item = asRecord(itemRaw);
+          const titulo = sanitizePlainText(item.titulo, 120);
+          const hora = sanitizePlainText(item.hora, 60);
+          if (!titulo && !hora) return null;
+          const rawVariant = sanitizePlainText(item.variant, 30);
+          const variant: ItineraryItemConfig['variant'] =
+            rawVariant === 'wide-flipped' || rawVariant === 'wide' || rawVariant === 'standard'
+              ? rawVariant
+              : 'standard';
+
+          return {
+            hora,
+            titulo,
+            iconoSrc: resolveImageReference(item.iconoSrc, IMAGES.iconoAnillos),
+            alt: sanitizePlainText(item.alt, 120) || titulo,
+            variant
+          };
+        })
+        .filter((it): it is ItineraryItemConfig => it !== null)
+    : base.itinerario;
+
+  const el = sanitizePlainText(novios.el, 80) || base.novios.el;
+  const ella = sanitizePlainText(novios.ella, 80) || base.novios.ella;
+  const nombresJuntos =
+    sanitizePlainText(novios.nombresJuntos, 140) ||
+    (el && ella ? `${el} & ${ella}` : base.novios.nombresJuntos);
+
+  const resolvedAlbumUrl =
+    sanitizeUrl(album.url) || sanitizeUrl(root.albumUrl) || base.album.url || base.albumUrl;
+
+  return {
+    novios: {
+      el,
+      ella,
+      nombresJuntos,
+      monograma: sanitizePlainText(novios.monograma, 20) || base.novios.monograma,
+      frase: sanitizePlainText(novios.frase, 800) || base.novios.frase,
+      invitacionCarta: sanitizePlainText(novios.invitacionCarta, 800) || base.novios.invitacionCarta
+    },
+    padres: {
+      columna1: sanitizeParentsTuple(padres.columna1, base.padres.columna1),
+      columna2: sanitizeParentsTuple(padres.columna2, base.padres.columna2)
+    },
+    fecha: {
+      iso: sanitizePlainText(fecha.iso, 60) || base.fecha.iso,
+      isoFin: sanitizePlainText(fecha.isoFin, 60) || base.fecha.isoFin,
+      dia: sanitizePlainText(fecha.dia, 20) || base.fecha.dia,
+      mes: sanitizePlainText(fecha.mes, 40) || base.fecha.mes,
+      anio: sanitizePlainText(fecha.anio, 20) || base.fecha.anio,
+      horaCeremonia: sanitizePlainText(fecha.horaCeremonia, 40) || base.fecha.horaCeremonia,
+      horaRecepcion: sanitizePlainText(fecha.horaRecepcion, 40) || base.fecha.horaRecepcion,
+      textoCorto: sanitizePlainText(fecha.textoCorto, 40) || base.fecha.textoCorto,
+      fechaLimiteRsvp: sanitizePlainText(fecha.fechaLimiteRsvp, 80) || base.fecha.fechaLimiteRsvp
+    },
+    lugares: {
+      ceremonia: {
+        titulo: sanitizePlainText(ceremonia.titulo, 100) || base.lugares.ceremonia.titulo,
+        nombre: sanitizePlainText(ceremonia.nombre, 160) || base.lugares.ceremonia.nombre,
+        localidad: sanitizePlainText(ceremonia.localidad, 120) || base.lugares.ceremonia.localidad,
+        direccion: sanitizePlainText(ceremonia.direccion, 220) || base.lugares.ceremonia.direccion,
+        hora: sanitizePlainText(ceremonia.hora, 40) || base.lugares.ceremonia.hora,
+        mapsUrl: sanitizeUrl(ceremonia.mapsUrl, base.lugares.ceremonia.mapsUrl),
+        embedUrl: sanitizeUrl(ceremonia.embedUrl, base.lugares.ceremonia.embedUrl)
+      },
+      recepcion: {
+        titulo: sanitizePlainText(recepcion.titulo, 100) || base.lugares.recepcion.titulo,
+        nombre: sanitizePlainText(recepcion.nombre, 160) || base.lugares.recepcion.nombre,
+        localidad: sanitizePlainText(recepcion.localidad, 120) || base.lugares.recepcion.localidad,
+        direccion: sanitizePlainText(recepcion.direccion, 220) || base.lugares.recepcion.direccion,
+        hora: sanitizePlainText(recepcion.hora, 40) || base.lugares.recepcion.hora,
+        mapsUrl: sanitizeUrl(recepcion.mapsUrl, base.lugares.recepcion.mapsUrl),
+        embedUrl: sanitizeUrl(recepcion.embedUrl, base.lugares.recepcion.embedUrl)
+      }
+    },
+    itinerario: sanitizedItinerario,
+    vestimenta: {
+      categoria: sanitizePlainText(vestimenta.categoria, 60) || base.vestimenta.categoria,
+      damas: sanitizePlainText(vestimenta.damas, 300) || base.vestimenta.damas,
+      caballeros: sanitizePlainText(vestimenta.caballeros, 300) || base.vestimenta.caballeros,
+      nota: sanitizePlainText(vestimenta.nota, 400) || base.vestimenta.nota
+    },
+    banco: {
+      nombreBanco: sanitizePlainText(banco.nombreBanco, 120) || base.banco.nombreBanco,
+      bcp: sanitizePlainText(banco.bcp, 80) || base.banco.bcp,
+      cci: sanitizePlainText(banco.cci, 80) || base.banco.cci,
+      titularBcp: sanitizePlainText(banco.titularBcp, 120) || base.banco.titularBcp,
+      metodoMovilTitulo: sanitizePlainText(banco.metodoMovilTitulo, 60) || base.banco.metodoMovilTitulo,
+      yapeAdriana: sanitizePlainText(banco.yapeAdriana, 40) || base.banco.yapeAdriana,
+      titularAdriana: sanitizePlainText(banco.titularAdriana, 120) || base.banco.titularAdriana,
+      yapeJorge: sanitizePlainText(banco.yapeJorge, 40) || base.banco.yapeJorge,
+      titularJorge: sanitizePlainText(banco.titularJorge, 120) || base.banco.titularJorge,
+      mensaje: sanitizePlainText(banco.mensaje, 600) || base.banco.mensaje,
+      agradecimiento: sanitizePlainText(banco.agradecimiento, 300) || base.banco.agradecimiento
+    },
+    album: {
+      url: resolvedAlbumUrl,
+      qrApiBaseUrl: sanitizeUrl(album.qrApiBaseUrl, base.album.qrApiBaseUrl),
+      titulo: sanitizePlainText(album.titulo, 100) || base.album.titulo,
+      descripcion: sanitizePlainText(album.descripcion, 600) || base.album.descripcion,
+      instruccion: sanitizePlainText(album.instruccion, 600) || base.album.instruccion
+    },
+    rsvp: {
+      apiUrl: base.rsvp.apiUrl,
+      storageKey: base.rsvp.storageKey,
+      sessionExpirationMs: base.rsvp.sessionExpirationMs,
+      codigoEjemploPlaceholder:
+        sanitizePlainText(rsvp.codigoEjemploPlaceholder, 40) || base.rsvp.codigoEjemploPlaceholder,
+      parrafo1: sanitizePlainText(rsvp.parrafo1, 600) || base.rsvp.parrafo1,
+      parrafo2: sanitizePlainText(rsvp.parrafo2, 600) || base.rsvp.parrafo2,
+      fraseCierre: sanitizePlainText(rsvp.fraseCierre, 200) || base.rsvp.fraseCierre
+    },
+    despedida: {
+      titulo: sanitizePlainText(despedida.titulo, 100) || base.despedida.titulo,
+      frase: sanitizePlainText(despedida.frase, 600) || base.despedida.frase,
+      saludo: sanitizePlainText(despedida.saludo, 100) || base.despedida.saludo,
+      firma: sanitizePlainText(despedida.firma, 120) || nombresJuntos || base.despedida.firma,
+      ubicacion: sanitizePlainText(despedida.ubicacion, 100) || base.despedida.ubicacion
+    },
+    whatsapp: sanitizePlainText(root.whatsapp, 40) || base.whatsapp,
+    albumUrl: resolvedAlbumUrl,
+    audioUrl: resolveImageReference(root.audioUrl, base.audioUrl)
+  };
+}
+
+// Lectura segura de localStorage con validación de esquema, configuración y expiración de 24h
 function getValidStoredSession(): StoredSessionData | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -395,11 +543,29 @@ function getValidStoredSession(): StoredSessionData | null {
       const cleanInvitado = sanitizePlainText(record.invitado, 100);
       const rawPases = typeof record.pases === 'number' ? record.pases : parseInt(String(record.pases ?? ''), 10);
       const cleanPases = Number.isFinite(rawPases) && rawPases > 0 && rawPases <= 20 ? rawPases : undefined;
+      const rawConfirmados =
+        typeof record.confirmados === 'number'
+          ? record.confirmados
+          : parseInt(String(record.confirmados ?? ''), 10);
+      const cleanConfirmados =
+        Number.isFinite(rawConfirmados) && rawConfirmados >= 0 && rawConfirmados <= 20
+          ? rawConfirmados
+          : undefined;
+      const rawEstado = sanitizePlainText(record.estado, 20);
+      const cleanEstado: 'Confirmado' | 'Declinado' | null =
+        rawEstado === 'Confirmado' || rawEstado === 'Declinado' ? rawEstado : null;
+
+      const sanitizedConfig = record.configuracion
+        ? mergeAndSanitizeConfig(record.configuracion, DEFAULT_CONFIG)
+        : undefined;
 
       return {
         codigo: cleanCode,
         invitado: cleanInvitado || undefined,
         pases: cleanPases,
+        confirmados: cleanConfirmados,
+        estado: cleanEstado,
+        configuracion: sanitizedConfig,
         timestamp
       };
     } else {
@@ -416,13 +582,19 @@ function getValidStoredSession(): StoredSessionData | null {
   }
 }
 
-function saveStoredSession(data: GuestData): void {
+function saveStoredSession(data: GuestData, configuracion?: WeddingConfig): void {
   if (typeof window === 'undefined') return;
   try {
     const payload: StoredSessionData = {
       codigo: sanitizeGuestCode(data.codigo),
       invitado: sanitizePlainText(data.invitado, 100),
       pases: Math.max(1, Math.min(20, Math.floor(Number(data.pases) || 1))),
+      confirmados:
+        typeof data.confirmados === 'number' && Number.isFinite(data.confirmados)
+          ? Math.max(0, Math.min(20, Math.floor(data.confirmados)))
+          : undefined,
+      estado: data.estado ?? null,
+      configuracion: configuracion ? mergeAndSanitizeConfig(configuracion, DEFAULT_CONFIG) : undefined,
       timestamp: Date.now()
     };
     window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(payload));
@@ -441,9 +613,14 @@ function clearStoredSession(): void {
 }
 
 export default function App() {
-  const [config, setConfig] = useState<WeddingConfig>(DEFAULT_CONFIG);
+  // Inicialización síncrona desde localStorage válido (< 24h) para restaurar tanto el código como la configuración sin exponer datos sensibles
+  const [initialSession] = useState<StoredSessionData | null>(() => getValidStoredSession());
+
+  const [config, setConfig] = useState<WeddingConfig>(() =>
+    initialSession?.configuracion ?? DEFAULT_CONFIG
+  );
   const [countdown, setCountdown] = useState<CountdownResult>(() =>
-    calculateCountdown(DEFAULT_CONFIG.fecha.iso)
+    calculateCountdown((initialSession?.configuracion ?? DEFAULT_CONFIG).fecha.iso)
   );
   
   // Audio state
@@ -452,9 +629,6 @@ export default function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const synthIntervalRef = useRef<number | null>(null);
-
-  // Inicialización síncrona desde localStorage válido (< 24h) para mostrar de frente la invitación sin mostrar la vista flotante
-  const [initialSession] = useState<StoredSessionData | null>(() => getValidStoredSession());
 
   // Guest Access / Validation state (Google Apps Script API)
   const [accessCode, setAccessCode] = useState<string>(() => initialSession?.codigo ?? '');
@@ -466,20 +640,32 @@ export default function App() {
       ? {
           codigo: initialSession.codigo,
           invitado: initialSession.invitado || 'Cargando...',
-          pases: initialSession.pases || 1
+          pases: initialSession.pases || 1,
+          confirmados: initialSession.confirmados,
+          estado: initialSession.estado ?? null
         }
       : null
   );
 
   // RSVP Form state (Google Apps Script API)
   const [isRsvpModalOpen, setIsRsvpModalOpen] = useState<boolean>(false);
-  const [rsvpAttendance, setRsvpAttendance] = useState<'si' | 'no'>('si');
-  const [rsvpConfirmedCount, setRsvpConfirmedCount] = useState<number>(() => initialSession?.pases || 1);
+  const [rsvpAttendance, setRsvpAttendance] = useState<'si' | 'no'>(() =>
+    initialSession?.estado === 'Declinado' ? 'no' : 'si'
+  );
+  const [rsvpConfirmedCount, setRsvpConfirmedCount] = useState<number>(() =>
+    initialSession?.confirmados && initialSession.confirmados > 0
+      ? initialSession.confirmados
+      : initialSession?.pases || 1
+  );
   const [rsvpMessage, setRsvpMessage] = useState<string>('');
   const [isRsvpSubmitting, setIsRsvpSubmitting] = useState<boolean>(false);
   const [rsvpFeedback, setRsvpFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-  const [lastSubmittedStatus, setLastSubmittedStatus] = useState<'Confirmado' | 'Declinado' | null>(null);
-  const [lastSubmittedCount, setLastSubmittedCount] = useState<number>(0);
+  const [lastSubmittedStatus, setLastSubmittedStatus] = useState<'Confirmado' | 'Declinado' | null>(
+    () => initialSession?.estado ?? null
+  );
+  const [lastSubmittedCount, setLastSubmittedCount] = useState<number>(
+    () => initialSession?.confirmados ?? 0
+  );
 
   // Modal state for Maps
   const [activeMapModal, setActiveMapModal] = useState<{ title: string; embedUrl: string; mapsUrl: string } | null>(null);
@@ -740,22 +926,56 @@ export default function App() {
         const pasesCount = Number.isFinite(rawPases) && rawPases > 0 && rawPases <= 20 ? rawPases : 1;
         const safeInvitado = sanitizePlainText(data.invitado || data.nombre, 100) || 'Invitado Especial';
 
+        const rawConfirmados = parseInt(String(data.confirmados ?? ''), 10);
+        const confirmadosCount =
+          Number.isFinite(rawConfirmados) && rawConfirmados >= 0 && rawConfirmados <= 20
+            ? rawConfirmados
+            : undefined;
+        const rawEstado = sanitizePlainText(data.estado, 20);
+        const safeEstado: 'Confirmado' | 'Declinado' | null =
+          rawEstado === 'Confirmado' || rawEstado === 'Declinado' ? rawEstado : null;
+
+        // Hidratar y sanitizar toda la configuración de la boda devuelta por la API
+        const nextConfig = data.configuracion
+          ? mergeAndSanitizeConfig(data.configuracion, DEFAULT_CONFIG)
+          : config;
+
         const verifiedGuest: GuestData = {
           codigo: cleanCode,
           invitado: safeInvitado,
-          pases: pasesCount
+          pases: pasesCount,
+          confirmados: confirmadosCount,
+          estado: safeEstado
         };
 
-        // Guardar en localStorage con el timestamp actual (24h de validez)
-        saveStoredSession(verifiedGuest);
+        // Guardar tanto los datos del invitado como la configuración de la boda en localStorage (24h de validez)
+        saveStoredSession(verifiedGuest, nextConfig);
 
+        setConfig(nextConfig);
+        setCountdown(calculateCountdown(nextConfig.fecha.iso));
         setGuestData(verifiedGuest);
-        setRsvpAttendance('si');
-        setRsvpConfirmedCount(pasesCount);
+
+        if (safeEstado === 'Declinado') {
+          setRsvpAttendance('no');
+          setRsvpConfirmedCount(pasesCount);
+          setLastSubmittedStatus('Declinado');
+          setLastSubmittedCount(0);
+        } else if (safeEstado === 'Confirmado') {
+          setRsvpAttendance('si');
+          const countToSet = confirmadosCount && confirmadosCount > 0 ? confirmadosCount : pasesCount;
+          setRsvpConfirmedCount(countToSet);
+          setLastSubmittedStatus('Confirmado');
+          setLastSubmittedCount(countToSet);
+        } else {
+          setRsvpAttendance('si');
+          setRsvpConfirmedCount(pasesCount);
+        }
+
         setIsUnlocked(true);
       } else {
         // Limpiar por seguridad si el código ingresado o almacenado fue revocado
         clearStoredSession();
+        setConfig(DEFAULT_CONFIG);
         setIsUnlocked(false);
         setGuestData(null);
         setAccessError(data?.error || 'Código no encontrado');
@@ -772,7 +992,7 @@ export default function App() {
     }
   };
 
-  // Verificar y refrescar automáticamente los pases si hay una sesión válida (< 24h) al cargar la página
+  // Verificar y refrescar automáticamente los pases y la configuración si hay una sesión válida (< 24h) al cargar la página
   useEffect(() => {
     if (initialSession?.codigo) {
       consultarCodigo(initialSession.codigo, true);
@@ -796,11 +1016,12 @@ export default function App() {
     const confirmados = rsvpAttendance === 'si'
       ? (guestData.pases > 1 ? rsvpConfirmedCount : 1)
       : 0;
+    const nuevoEstado: 'Confirmado' | 'Declinado' = rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado';
 
     const datosAEnviar = {
       accion: 'guardar',
       codigo: sanitizeGuestCode(guestData.codigo),
-      estado: rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado',
+      estado: nuevoEstado,
       confirmados: confirmados,
       mensaje: sanitizePlainText(rsvpMessage, 400)
     };
@@ -819,8 +1040,16 @@ export default function App() {
           type: 'success',
           message: '¡Muchas gracias! Tu respuesta ha sido registrada.'
         });
-        setLastSubmittedStatus(rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado');
+        setLastSubmittedStatus(nuevoEstado);
         setLastSubmittedCount(confirmados);
+
+        const updatedGuest: GuestData = {
+          ...guestData,
+          confirmados,
+          estado: nuevoEstado
+        };
+        setGuestData(updatedGuest);
+        saveStoredSession(updatedGuest, config);
       } else {
         throw new Error(respuesta.error || 'Ocurrió un error.');
       }
@@ -927,7 +1156,9 @@ export default function App() {
 
                 {/* Frase final */}
                 <p className="font-serif italic text-[12px] text-[#3A4436]/75 mt-4 tracking-wide">
-                  {config.novios.el} &amp; {config.novios.ella} · {config.fecha.textoCorto}
+                  {config.novios.el && config.novios.ella
+                    ? `${config.novios.el} & ${config.novios.ella}${config.fecha.textoCorto ? ` · ${config.fecha.textoCorto}` : ''}`
+                    : 'Invitación Exclusiva'}
                 </p>
               </div>
             </div>
