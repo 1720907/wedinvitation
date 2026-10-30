@@ -1204,7 +1204,7 @@ export default function App() {
                     <span className="font-semibold">Caballeros:</span> Terno con corbata, con saco o chaleco. Recomendamos telas ligeras y frescas.
                   </p>
                   <p className="font-serif text-[10px] sm:text-[11px] text-white leading-snug drop-shadow-xs">
-                      Agradeceremos evitar los tonos blancos, marfil y crema, reservados para la novia, así como el rojo intensorescas.
+                      Agradeceremos evitar los tonos blancos, marfil y crema, reservados para la novia, así como el rojo intenso.
                   </p>
                 </div>
               </div>
@@ -1261,7 +1261,7 @@ export default function App() {
 
               {/* Mensaje cálido impreso */}
               <p className="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#2C2C2A]/85 leading-relaxed max-w-[270px] mx-auto mb-4">
-                El mejor regalo es tenerlos cerca en este capítulo tan especial de nuestra historia pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias.Cada aporte será parte de los sueños que seguiremos construyendo juntos.
+                El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.
               </p>
 
               {/* Marco de tarjeta impresa (sin fondo plano, dejando ver el papel artesanal) */}
@@ -1278,6 +1278,9 @@ export default function App() {
                     <span className="font-serif italic text-[11px] text-[#5C6B57] block">
                       Número de cuenta
                     </span>
+                    <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
+                      Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularAdriana}</span>
+                    </p>
                     <p className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all my-0.5">
                       {config.banco.bcp}
                     </p>
@@ -1397,7 +1400,7 @@ export default function App() {
                   Álbum Compartido
                 </h3>
                 <p className="font-serif italic text-base text-[#2C2C2A]/85 mt-2 mb-4 relative z-10">
-                  Queremos recordar este día desde todas las miradas. Comparte con nosotros tus fotos y videos para guardar juntos cada sonrisa, abrazo y momento especial de nuestra historia.
+                  Queremos recordar este día desde todas las miradas. Comparte con nosotros tus fotos y videos para guardar juntos cada sonrisa, abrazo y momentos especiales de este día.
                 </p>
 
                 {/* Código QR Generado */}
@@ -1535,7 +1538,7 @@ export default function App() {
           </h2>
 
           <p className="font-serif italic text-base sm:text-lg text-[#2C2C2A]/85 max-w-md mx-auto leading-relaxed">
-            “Las historias más bonitas no solo se viven, también se construyen junto a personas que las hacen inolvidables. Gracias por ser parte de nuestras vidas y de esta historia de amor que hoy celebramos”
+            “Las historias más bonitas no solo se viven, también se construyen junto a las personas que las hacen inolvidables. Gracias por ser parte de nuestras vidas y de esta historia de amor que hoy celebramos”
           </p>
 
           <p className="font-serif italic text-sm text-[#5C6B57] mt-6">
