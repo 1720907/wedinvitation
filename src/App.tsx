@@ -174,17 +174,43 @@ export default function App() {
 
   // Hero couple photo zoom-out trigger
   const [heroAnimated, setHeroAnimated] = useState<boolean>(false);
-  // Fixed initial mobile viewport height to fill full screen without dynamic resize jumps on scroll
+  // Initial mobile viewport height scaled to ~125% so the hero appears zoomed in and completes on scroll
   const [heroMobileHeight, setHeroMobileHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setHeroMobileHeight(window.innerHeight);
-    }
+    let lastWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+    const calculateHeroHeight = () => {
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth < 640) {
+          // ~125% of mobile viewport height as requested so hero is enlarged and completes on scroll
+          setHeroMobileHeight(Math.round(window.innerHeight * 1.25));
+        } else {
+          setHeroMobileHeight(null);
+        }
+      }
+    };
+
+    calculateHeroHeight();
+
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        // Only update if width changes (orientation flip), preventing jitter when mobile browser URL bar hides/shows
+        if (window.innerWidth !== lastWidth) {
+          lastWidth = window.innerWidth;
+          calculateHeroHeight();
+        }
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
     const timer = setTimeout(() => {
       setHeroAnimated(true);
     }, 120);
-    return () => clearTimeout(timer);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
   }, []);
 
   // Sección 4: Carrusel de 5 fotos Polaroid con alejamiento lento cada 4 segundos
@@ -417,7 +443,7 @@ export default function App() {
         {/* ================================================================= */}
         <section 
           id="hero-invitation"
-          className="relative w-full h-[100svh] sm:!h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center flex-shrink-0"
+          className="relative w-full h-[125svh] sm:!h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center flex-shrink-0"
           style={heroMobileHeight && typeof window !== 'undefined' && window.innerWidth < 640 ? { height: `${heroMobileHeight}px` } : undefined}
         >
           {/* Contenedor proporcional centrado que llena la altura en celular sin deformar */}
@@ -483,8 +509,8 @@ export default function App() {
             </p>
 
             {/* Texto "REPRODUCE NUESTRA CANCIÓN" */}
-            <p className="font-serif text-[#E3DCD2] text-[11px] sm:text-[13px] tracking-[0.26em] uppercase mt-3 sm:mt-5 mb-2 sm:mb-2.5 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
-              Reproduce Nuestra Canción
+            <p className="font-serif text-[#E3DCD2] text-[11px] sm:text-[13px] tracking-[0.26em] uppercase mt-7 sm:mt-5 mb-2.5 sm:mb-2.5 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] leading-relaxed text-center">
+              Reproduce<br />Nuestra Canción
             </p>
 
             {/* Botón Táctil de Audio con Ondas de Sonido */}
