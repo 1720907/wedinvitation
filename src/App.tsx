@@ -711,7 +711,7 @@ export default function App() {
 
                 {/* Contador regresivo con numerales tabulares */}
                 <div className="relative z-20 grid grid-cols-4 gap-2 tabular-nums max-w-xs mx-auto">
-                  <div className="bg-[#ECE7DF]/70 py-2 rounded border border-[#C5A059]/20">
+                  <div className="py-2">
                     <span className="font-display text-2xl sm:text-3xl font-semibold text-[#2C2C2A] block leading-none">
                       {String(countdown.days).padStart(2, '0')}
                     </span>
@@ -719,7 +719,7 @@ export default function App() {
                       Días
                     </span>
                   </div>
-                  <div className="bg-[#ECE7DF]/70 py-2 rounded border border-[#C5A059]/20">
+                  <div className="py-2">
                     <span className="font-display text-2xl sm:text-3xl font-semibold text-[#2C2C2A] block leading-none">
                       {String(countdown.hours).padStart(2, '0')}
                     </span>
@@ -727,7 +727,7 @@ export default function App() {
                       Horas
                     </span>
                   </div>
-                  <div className="bg-[#ECE7DF]/70 py-2 rounded border border-[#C5A059]/20">
+                  <div className="py-2">
                     <span className="font-display text-2xl sm:text-3xl font-semibold text-[#2C2C2A] block leading-none">
                       {String(countdown.minutes).padStart(2, '0')}
                     </span>
@@ -735,7 +735,7 @@ export default function App() {
                       Minutos
                     </span>
                   </div>
-                  <div className="bg-[#ECE7DF]/70 py-2 rounded border border-[#C5A059]/20">
+                  <div className="py-2">
                     <span className="font-display text-2xl sm:text-3xl font-semibold text-[#2C2C2A] block leading-none">
                       {String(countdown.seconds).padStart(2, '0')}
                     </span>
