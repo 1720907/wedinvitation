@@ -379,7 +379,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#141812] text-[#2C2C2A] flex justify-center pt-0 pb-8 px-0 sm:px-4">
+    <div className="min-h-screen bg-[#141812] text-[#2C2C2A] flex justify-center pt-0 pb-0 px-0 sm:px-4">
       {/* Background Audio Element */}
       <audio
         ref={audioRef}
@@ -414,11 +414,7 @@ export default function App() {
 
         {/* =================================================================
              SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
-        {/* =================================================================
-             SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
-             En celular: 100% de la pantalla fija (sin saltos de zoom al escrolear).
-             En PC: Formato centrado proporcional nativo.
-             ================================================================= */}
+        {/* ================================================================= */}
         <section 
           id="hero-invitation"
           className="relative w-full h-[100svh] sm:!h-auto overflow-hidden select-none bg-[#2C3426] flex items-center justify-center flex-shrink-0"
@@ -558,11 +554,11 @@ export default function App() {
             {/* Tarjeta de Papel Rasgado que emerge del sobre */}
             <div className="shadow-torn-paper -mt-[130px] mx-2 relative z-20">
               {/* Sello de Cera Verde Salvia colocado a caballo exactamente en el borde superior del tarjetón */}
-              <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 z-30 shadow-wax-seal wax-seal-anim cursor-pointer">
+              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-20 h-20 z-30">
                 <img
                   src="./assets/aistudio/imagen_sello_75c97831.png"
                   alt="Sello de cera J&A"
-                  className="w-full h-full object-contain filter drop-shadow-md hover:scale-105 transition-transform"
+                  className="w-full h-full object-contain filter drop-shadow-md"
                 />
               </div>
 
@@ -950,11 +946,11 @@ export default function App() {
           <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative">
             
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
-            <div className="w-20 h-20 mx-auto -mb-10 relative z-30 wax-seal-anim cursor-pointer">
+            <div className="w-20 h-20 mx-auto -mb-15 relative z-30">
               <img 
                 src="./assets/aistudio/imagen_sello_75c97831.png" 
                 alt="Sello J&A" 
-                className="w-full h-full object-contain filter drop-shadow-md hover:scale-105 transition-transform"
+                className="w-full h-full object-contain filter drop-shadow-md"
               />
             </div>
 
