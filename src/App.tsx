@@ -109,7 +109,7 @@ const DEFAULT_CONFIG: WeddingConfig = {
     titularJorge: "Jorge Cerón Ruiz"
   },
   whatsapp: "51999888777",
-  albumUrl: "https://photos.google.com/"
+  albumUrl: "https://photos.app.goo.gl/yhwUfBsvK82nx5F67"
 };
 
 // Carrusel de 5 fotos en Polaroid con animación de alejamiento lento (Ken Burns)
