@@ -123,6 +123,7 @@ export const IMAGES = {
   papel3CleanRotated: './assets/aistudio/papel3_clean_rotated.png',
   papel4: './assets/aistudio/papel4_97b148ae.png',
   papel6Medallon: './assets/aistudio/papel6_03599585.png',
+  papelDecoracion1: './assets/aistudio/papel_decoracion_1819d25f.png',
   papelDecoracion2: './assets/aistudio/papel_decoracion_2_6b80d71f.png',
   sombraHero: './assets/aistudio/sombra_baa5a2e0.png',
   selloCera: './assets/aistudio/imagen_sello_75c97831.png',
@@ -762,27 +763,6 @@ export default function App() {
            ================================================================= */}
       {isUnlocked && (
         <main id="pantalla-invitacion" className="w-full max-w-[480px] bg-[#ECE7DF] shadow-[0_25px_80px_rgba(0,0,0,0.65)] relative overflow-hidden flex flex-col animate-fade-in">
-        
-        {/* Layer 0: Continuous Texture Wallpaper */}
-        <div 
-          className="absolute inset-0 pointer-events-none opacity-45 mix-blend-multiply z-0"
-          style={{
-            backgroundImage: `url('${IMAGES.fondoContinuo}')`,
-            backgroundRepeat: 'repeat',
-            backgroundSize: '360px auto'
-          }}
-        />
-
-        {/* Botanical leaf vine motifs trailing down the sides */}
-        <div 
-          className="absolute inset-0 pointer-events-none opacity-40 select-none z-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='140' height='260' viewBox='0 0 140 260' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%235C6B57' fill-opacity='0.55'%3E%3Cpath d='M10 20 C25 15, 35 25, 30 40 C20 35, 12 28, 10 20 Z'/%3E%3Cpath d='M30 40 C45 35, 55 45, 50 60 C40 55, 32 48, 30 40 Z'/%3E%3Cpath d='M25 80 C15 75, 10 65, 18 55 C22 65, 28 72, 25 80 Z'/%3E%3Cpath d='M125 140 C110 135, 100 145, 105 160 C115 155, 123 148, 125 140 Z'/%3E%3Cpath d='M105 160 C90 155, 80 165, 85 180 C95 175, 103 168, 105 160 Z'/%3E%3Cpath d='M120 200 C130 195, 135 185, 127 175 C123 185, 117 192, 120 200 Z'/%3E%3C/g%3E%3Cpath d='M15 15 Q30 50 20 90 T25 170 T15 250' fill='none' stroke='%235C6B57' stroke-width='0.7' stroke-opacity='0.45'/%3E%3Cpath d='M130 135 Q110 170 120 210' fill='none' stroke='%235C6B57' stroke-width='0.7' stroke-opacity='0.45'/%3E%3C/svg%3E")`,
-            backgroundRepeat: 'repeat-y',
-            backgroundPosition: 'left center, right center',
-            backgroundSize: '100% 260px'
-          }}
-        />
 
         {/* =================================================================
              SECCIÓN 1: HERO (foto_cover_clean + Marco Verde Oval + Iniciales)
@@ -890,18 +870,32 @@ export default function App() {
           </div>
         </section>
 
-        <div className="w-full flex justify-center relative z-10">
-          <img 
-          src={IMAGES.sombraHero}
-          alt="Sombra" 
-          className="w-4/5 h-auto opacity-70" 
-          />
-        </div>
+        {/* =================================================================
+             CUERPO DE LA INVITACIÓN POST-HERO CON FONDO TEXTURIZADO CONTINUO (imagen_fondo)
+             ================================================================= */}
+        <div 
+          id="invitacion-cuerpo"
+          className="relative w-full flex flex-col"
+          style={{
+            backgroundImage: `url('${IMAGES.fondoContinuo}')`,
+            backgroundRepeat: 'repeat-y',
+            backgroundSize: '100% auto',
+            backgroundColor: '#ECE7DF'
+          }}
+        >
+          <div className="w-full flex justify-center relative z-10">
+            <img 
+              src={IMAGES.sombraHero}
+              alt="Sombra" 
+              className="w-4/5 h-auto opacity-70" 
+            />
+          </div>
 
+        {/* =================================================================
         {/* =================================================================
              SECCIÓN 2: SOBRE ABIERTO + CARTA DE BIENVENIDA (NOS CASAMOS)
              ================================================================= */}
-        <section className="relative px-5 pt-12 flex flex-col items-center reveal-item">
+        <section className="relative z-20 px-5 pt-12 flex flex-col items-center reveal-item">
           
           <div className="w-full max-w-[360px] relative">
             {/* Contenedor del Sobre Abierto Realista */}
@@ -1015,9 +1009,25 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 3: MEDALLÓN BARROCO DE FECHA (papel6_03599585.png) & CUENTA REGRESIVA
              ================================================================= */}
-        <section className="relative px-5 -mt-10 pb-8 flex flex-col items-center reveal-item">
-          <div className="w-full max-w-[360px] flex flex-col items-center">
+        <section className="relative z-10 px-5 -mt-10 pb-8 flex flex-col items-center reveal-item">
+          <div className="w-full max-w-[360px] relative flex flex-col items-center">
             
+            {/* Papel manuscrito decorativo detrás del medallón y bajo la carta de bienvenida (Ref 1) */}
+            <img
+              src={IMAGES.papelDecoracion1}
+              alt=""
+              aria-hidden="true"
+              className="absolute -top-6 right-1 sm:right-0 w-42 sm:w-46 h-auto object-contain pointer-events-none select-none z-0 rotate-[2deg] opacity-95"
+            />
+
+            {/* Flor prensada decorativa asomando detrás del lado izquierdo de la cuenta regresiva */}
+            <img
+              src={IMAGES.florPrensada}
+              alt=""
+              aria-hidden="true"
+              className="absolute bottom-6 -left-5 sm:-left-6 w-20 sm:w-22 h-auto object-contain pointer-events-none select-none z-0 -rotate-[24deg] opacity-90 drop-shadow-sm"
+            />
+
             {/* Medallón Barroco Terracota con texturas talladas en 3D (papel6_03599585.png) */}
             <div className="relative z-20 w-96 h-96 -mt-6 flex items-center justify-center shadow-cameo pointer-events-none">
               {/* Imagen del camafeo real con relieve */}
@@ -1124,20 +1134,11 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 4: FOTOGRAFÍA DE PAREJA (Carrusel Polaroid de 5 fotos con alejamiento lento)
              ================================================================= */}
-        <section className="relative px-5 py-6 reveal-item">
+        <section className="relative z-40 px-5 py-6 reveal-item">
           <div className="w-full max-w-[400px] mx-auto relative">
 
-            {/* Sello de vintage calligraphy decorativo en la esquina (papel_decoracion_2_6b80d71f.png) */}
-            <div className="absolute -top-3 -right-2 z-40 w-14 h-14 rotate-6 drop-shadow-md pointer-events-none">
-              <img
-                src={IMAGES.papelDecoracion2}
-                alt="Sello vintage"
-                className="w-full h-full object-contain"
-              />
-            </div>
-
             {/* Foto enmarcada en papel artesanal real */}
-            <div className="relative transform -rotate-0.5 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)]">
+            <div className="relative z-10 transform -rotate-0.5 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.22)]">
               {/* Imagen del Papel Artesanal Real (papel1_14fb074a.png) como fondo del contenedor */}
               <img
                 src={IMAGES.papel1Limpio}
@@ -1192,73 +1193,93 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 5: LUGAR DE LA IGLESIA Y LA RECEPCIÓN (Papel Artesanal papel4 & Grabados Finos)
              ================================================================= */}
-        <section className="relative px-5 py-8 reveal-item">
+        <section className="relative z-30 px-5 py-8 reveal-item">
           
-          {/* Tarjeta 1: CEREMONIA RELIGIOSA */}
-          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
-
-            {/* Sello de cera verde superior fijando la hoja de itinerario */}
-            <div className="absolute -top-3 -left-1 w-20 h-20 z-30 rotate-[-6deg] pointer-events-none select-none drop-shadow-md">
-              <img 
-                src={IMAGES.selloCera} 
-                alt="Sello J&A" 
-                className="w-full h-full object-contain"
-              />
-            </div>
-            {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
-            <img 
-              src={IMAGES.papel4} 
-              alt="Papel artesanal Ceremonia" 
-              className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+          {/* Contenedor de Ceremonia con decoración de estampilla caligráfica conectando con la foto superior (Ref 2) */}
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative">
+            
+            {/* Papel de estampilla caligráfica (papel_decoracion_2) detrás entre la Polaroid y Ceremonia (Ref 2) */}
+            <img
+              src={IMAGES.papelDecoracion2}
+              alt=""
+              aria-hidden="true"
+              className="absolute -top-28 -left-5 sm:-left-6 w-72 sm:w-80 h-auto object-contain pointer-events-none select-none z-0 -rotate-1 opacity-95"
             />
 
-            {/* Contenido sobre el papel siguiendo la proporción y tipografía de referencia */}
-            <div className="relative z-10 px-7 pt-10 pb-11 sm:px-9 sm:pt-12 sm:pb-12 text-center flex flex-col items-center">
-              {/* Título: CEREMONIA RELIGIOSA en serifa clásica espaciada */}
-              <h3 className="font-serif text-[#4F5E46] tracking-[0.24em] text-base sm:text-[17px] uppercase font-light leading-snug">
-                CEREMONIA<br />RELIGIOSA
-              </h3>
+            {/* Flor prensada asomando entre Ceremonia y Recepción por el borde derecho */}
+            <img
+              src={IMAGES.florPrensada}
+              alt=""
+              aria-hidden="true"
+              className="absolute -bottom-14 -right-4 sm:-right-6 w-22 sm:w-26 h-auto object-contain pointer-events-none select-none z-0 rotate-[20deg] opacity-90 drop-shadow-sm"
+            />
 
-              {/* Grabado arquitectónico auténtico del Templo */}
-              <div className="w-full max-w-[240px] sm:max-w-[260px] my-5 flex justify-center">
+            {/* Tarjeta 1: CEREMONIA RELIGIOSA */}
+            <div className="w-full relative z-10 drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
+
+              {/* Sello de cera verde superior fijando la hoja de itinerario */}
+              <div className="absolute -top-3 -left-1 w-20 h-20 z-30 rotate-[-6deg] pointer-events-none select-none drop-shadow-md">
                 <img 
-                  src={IMAGES.sketchIglesia} 
-                  alt="Templo de San Pedro Apóstol" 
-                  className="w-full h-auto object-contain mix-blend-multiply opacity-90"
+                  src={IMAGES.selloCera} 
+                  alt="Sello J&A" 
+                  className="w-full h-full object-contain"
                 />
               </div>
+              {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
+              <img 
+                src={IMAGES.papel4} 
+                alt="Papel artesanal Ceremonia" 
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+              />
 
-              {/* Hora en números romanos con estilo editorial */}
-              <p className="font-serif text-lg sm:text-xl font-normal text-[#384632] tracking-wide mb-1">
-                {config.lugares.ceremonia.hora}
-              </p>
+              {/* Contenido sobre el papel siguiendo la proporción y tipografía de referencia */}
+              <div className="relative z-10 px-7 pt-10 pb-11 sm:px-9 sm:pt-12 sm:pb-12 text-center flex flex-col items-center">
+                {/* Título: CEREMONIA RELIGIOSA en serifa clásica espaciada */}
+                <h3 className="font-serif text-[#4F5E46] tracking-[0.24em] text-base sm:text-[17px] uppercase font-light leading-snug">
+                  CEREMONIA<br />RELIGIOSA
+                </h3>
 
-              {/* Nombre de la iglesia y localidad en caligrafía cursiva fluida */}
-              <div className="mb-6 space-y-0.5">
-                <p className="font-script text-2xl sm:text-[27px] text-[#2C3827] leading-tight">
-                  {config.lugares.ceremonia.nombre}
+                {/* Grabado arquitectónico auténtico del Templo */}
+                <div className="w-full max-w-[240px] sm:max-w-[260px] my-5 flex justify-center">
+                  <img 
+                    src={IMAGES.sketchIglesia} 
+                    alt="Templo de San Pedro Apóstol" 
+                    className="w-full h-auto object-contain mix-blend-multiply opacity-90"
+                  />
+                </div>
+
+                {/* Hora en números romanos con estilo editorial */}
+                <p className="font-serif text-lg sm:text-xl font-normal text-[#384632] tracking-wide mb-1">
+                  {config.lugares.ceremonia.hora}
                 </p>
-                <p className="font-script text-xl sm:text-2xl text-[#3E4E39] leading-tight">
-                  – Urubamba – Cusco
-                </p>
+
+                {/* Nombre de la iglesia y localidad en caligrafía cursiva fluida */}
+                <div className="mb-6 space-y-0.5">
+                  <p className="font-script text-2xl sm:text-[27px] text-[#2C3827] leading-tight">
+                    {config.lugares.ceremonia.nombre}
+                  </p>
+                  <p className="font-script text-xl sm:text-2xl text-[#3E4E39] leading-tight">
+                    – Urubamba – Cusco
+                  </p>
+                </div>
+
+                {/* Botón verde oliva redondeado para Ver Ubicación */}
+                <button 
+                  onClick={() => setActiveMapModal({
+                    title: config.lugares.ceremonia.nombre,
+                    embedUrl: config.lugares.ceremonia.embedUrl,
+                    mapsUrl: config.lugares.ceremonia.mapsUrl
+                  })}
+                  className="btn-tactile bg-[#4E6136] hover:bg-[#41522D] text-white font-serif text-[13px] sm:text-[14px] tracking-wider px-7 py-2.5 sm:px-8 sm:py-2.5 rounded-[9px] shadow-[0_4px_12px_rgba(78,97,54,0.35)] hover:shadow-[0_6px_16px_rgba(78,97,54,0.45)] transition-all duration-300 cursor-pointer inline-flex items-center justify-center underline underline-offset-3 decoration-white/75"
+                >
+                  Ver ubicación
+                </button>
               </div>
-
-              {/* Botón verde oliva redondeado para Ver Ubicación */}
-              <button 
-                onClick={() => setActiveMapModal({
-                  title: config.lugares.ceremonia.nombre,
-                  embedUrl: config.lugares.ceremonia.embedUrl,
-                  mapsUrl: config.lugares.ceremonia.mapsUrl
-                })}
-                className="btn-tactile bg-[#4E6136] hover:bg-[#41522D] text-white font-serif text-[13px] sm:text-[14px] tracking-wider px-7 py-2.5 sm:px-8 sm:py-2.5 rounded-[9px] shadow-[0_4px_12px_rgba(78,97,54,0.35)] hover:shadow-[0_6px_16px_rgba(78,97,54,0.45)] transition-all duration-300 cursor-pointer inline-flex items-center justify-center underline underline-offset-3 decoration-white/75"
-              >
-                Ver ubicación
-              </button>
             </div>
           </div>
 
           {/* Tarjeta 2: LA RECEPCIÓN */}
-          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
+          <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative z-10 drop-shadow-[0_16px_32px_rgba(0,0,0,0.22)]">
             {/* Imagen del Papel Artesanal (papel4_97b148ae.png) como fondo del contenedor */}
             <img 
               src={IMAGES.papel4} 
@@ -1313,9 +1334,25 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 6: ITINERARIO EN LÍNEA DE TIEMPO VERTICAL (papel3_clean)
              ================================================================= */}
-        <section className="relative px-5 py-6 reveal-item">
+        <section className="relative z-20 px-5 py-6 reveal-item">
           <div className="w-full max-w-[360px] sm:max-w-[385px] mx-auto relative">
             
+            {/* Papel de estampilla caligráfica (papel_decoracion_2) detrás del Itinerario asomando a ambos lados (Ref 3) */}
+            <img
+              src={IMAGES.papelDecoracion1}
+              alt=""
+              aria-hidden="true"
+              className="absolute -top-50 left-1/2  w-[50%] max-w-[420px] h-auto object-contain pointer-events-none select-none z-0 opacity-95"
+            />
+
+            {/* Flor prensada asomando detrás de la esquina inferior derecha del Itinerario (Ref 3) */}
+            <img
+              src={IMAGES.florPrensada}
+              alt=""
+              aria-hidden="true"
+              className="absolute bottom-8 -right-4 sm:-right-5 w-24 sm:w-28 h-auto object-contain pointer-events-none select-none z-0 rotate-[18deg] opacity-95 drop-shadow-sm"
+            />
+
             {/* Sello de cera verde superior fijando la hoja de itinerario */}
             <div className="w-20 h-20 mx-auto -mb-15 relative z-30">
               <img 
@@ -1326,7 +1363,7 @@ export default function App() {
             </div>
 
             {/* Hoja de Itinerario en papel artesanal real vertical (papel3_clean.png) */}
-            <div className="relative z-10 drop-shadow-[0_16px_32px_rgba(20,24,18,0.22)]">
+            <div className="w-[88%] sm:w-[86%] mx-auto relative z-10 drop-shadow-[0_16px_32px_rgba(20,24,18,0.22)]">
               {/* Imagen de fondo papel3_clean vertical */}
               <img 
                 src={IMAGES.papel3Clean} 
@@ -1335,7 +1372,7 @@ export default function App() {
               />
 
               {/* Contenido sobre el papel */}
-              <div className="relative z-10 px-6 pt-14 pb-12 sm:px-8 sm:pt-16 sm:pb-14">
+              <div className="relative z-10 px-4 pt-14 pb-12 sm:px-6 sm:pt-16 sm:pb-14">
                 
                 {/* Título: ITINERARIO */}
                 <h3 className="font-serif tracking-[0.26em] text-base sm:text-[17px] uppercase font-normal text-[#384831] text-center mb-7 sm:mb-8">
@@ -1562,178 +1599,197 @@ export default function App() {
              SECCIÓN 8: SUGERENCIA DE REGALOS & LUNA DE MIEL
              ================================================================= */}
         <section className="relative z-10 px-5 pt-4 pb-2 -mt-30 reveal-item">
-          <div className="w-full max-w-[360px] sm:max-w-[390px] mx-auto relative filter drop-shadow-[0_16px_32px_rgba(20,24,18,0.24)] transform -rotate-0.5">
-            
-            {/* Imagen del Papel Artesanal Real (papel1_14fb074a_limpio.png) como contenedor */}
-            <img 
-              src={IMAGES.papel1Limpio} 
-              alt="Contenedor de papel artesanal regalos" 
-              className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+          <div className="w-full max-w-[360px] sm:max-w-[390px] mx-auto relative">
+
+            {/* Papel manuscrito decorativo detrás del camafeo de vestimenta y sobre la tarjeta de regalos (Ref 4) */}
+            <img
+              src={IMAGES.papelDecoracion1}
+              alt=""
+              aria-hidden="true"
+              className="absolute -top-52 right-1 sm:right-2 w-48 sm:w-52 h-auto object-contain pointer-events-none select-none z-0 rotate-[1deg] opacity-95"
             />
 
-            {/* Contenido sobre el papel artesanal - Estilo Tarjeta Impresa Física */}
-            <div className="relative z-10 px-6 sm:px-8 pt-8 pb-9 text-center flex flex-col items-center w-full">
+            {/* Flor prensada decorativa asomando en la parte inferior izquierda conectando con Álbum Compartido */}
+            <img
+              src={IMAGES.florPrensada}
+              alt=""
+              aria-hidden="true"
+              className="absolute -bottom-12 -left-4 sm:-left-5 w-22 sm:w-26 h-auto object-contain pointer-events-none select-none z-0 -rotate-[22deg] opacity-90 drop-shadow-sm"
+            />
+
+            <div className="w-full relative z-10 filter drop-shadow-[0_16px_32px_rgba(20,24,18,0.24)] transform -rotate-0.5">
               
-              {/* Título en tipografía clásica de imprenta fina */}
-              <h3 className="font-serif text-[18px] sm:text-[20px] tracking-[0.24em] text-[#3A4436] uppercase font-normal leading-snug">
-                Sugerencia de<br />
-                <span className="text-[20px] sm:text-[22px] tracking-[0.28em] font-medium">Regalos</span>
-              </h3>
+              {/* Imagen del Papel Artesanal Real (papel1_14fb074a_limpio.png) como contenedor */}
+              <img 
+                src={IMAGES.papel1Limpio} 
+                alt="Contenedor de papel artesanal regalos" 
+                className="absolute inset-0 w-full h-full object-fill pointer-events-none select-none z-0"
+              />
 
-              {/* Ilustración de Regalo estilo Boceto a Tinta Clásico */}
-              <div className="my-3 flex justify-center items-center">
-                <svg className="w-14 h-14 text-[#3A4436]/75" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                  {/* Moño / Lazo */}
-                  <path d="M 50 33 C 43 21, 30 21, 32 30 C 33 37, 46 36, 50 36 Z" />
-                  <path d="M 50 33 C 57 21, 70 21, 68 30 C 67 37, 54 36, 50 36 Z" />
-                  <circle cx="50" cy="34" r="2.2" />
-                  {/* Tapa de la caja */}
-                  <path d="M 28 36 L 72 36 L 70 44 L 30 44 Z" />
-                  {/* Cinta en la tapa */}
-                  <path d="M 47 36 L 47 44" />
-                  <path d="M 53 36 L 53 44" />
-                  {/* Cuerpo de la caja */}
-                  <path d="M 32 44 L 34 75 C 34 76.5, 35.5 77.5, 37.5 77.5 L 62.5 77.5 C 64.5 77.5, 66 76.5, 66 75 L 68 44" />
-                  {/* Cinta en el cuerpo */}
-                  <path d="M 47 44 L 47 77.5" />
-                  <path d="M 53 44 L 53 77.5" />
-                  {/* Trazos sutiles de sombreado a mano */}
-                  <path d="M 36 49 L 43 47" strokeWidth="0.8" opacity="0.5" />
-                  <path d="M 36 57 L 43 55" strokeWidth="0.8" opacity="0.5" />
-                  <path d="M 36 65 L 43 63" strokeWidth="0.8" opacity="0.5" />
-                </svg>
-              </div>
-
-              {/* Mensaje cálido impreso */}
-              <p className="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#2C2C2A]/85 leading-relaxed max-w-[270px] mx-auto mb-4">
-                El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.
-              </p>
-
-              {/* Marco de tarjeta impresa (sin fondo plano, dejando ver el papel artesanal) */}
-              <div className="w-full border border-[#3A4436]/30 rounded-2xl p-4 sm:p-5 space-y-4">
+              {/* Contenido sobre el papel artesanal - Estilo Tarjeta Impresa Física */}
+              <div className="relative z-10 px-6 sm:px-8 pt-8 pb-9 text-center flex flex-col items-center w-full">
                 
-                {/* Banco de Crédito del Perú (BCP) */}
-                <div className="text-center pb-3 border-b border-[#3A4436]/15">
-                  <h4 className="font-serif uppercase tracking-[0.16em] text-[12.5px] sm:text-[13.5px] text-[#2C3328] font-semibold mb-2.5">
-                    Banco de Crédito del Perú (BCP)
-                  </h4>
+                {/* Título en tipografía clásica de imprenta fina */}
+                <h3 className="font-serif text-[18px] sm:text-[20px] tracking-[0.24em] text-[#3A4436] uppercase font-normal leading-snug">
+                  Sugerencia de<br />
+                  <span className="text-[20px] sm:text-[22px] tracking-[0.28em] font-medium">Regalos</span>
+                </h3>
 
-                  {/* Número de cuenta */}
-                  <div className="mb-2.5">
-                    <span className="font-serif italic text-[11px] text-[#5C6B57] block">
-                      Número de cuenta
-                    </span>
-                    <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
-                      Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularAdriana}</span>
-                    </p>
-                    <p className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all my-0.5">
-                      {config.banco.bcp}
-                    </p>
-                    <button
-                      onClick={() => handleCopyField(config.banco.bcp, "Número de cuenta BCP", "bcp")}
-                      className="mt-0.5 inline-flex items-center gap-1 px-3 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[9px] tracking-[0.14em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
-                    >
-                      {copiedField === 'bcp' ? (
-                        <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
-                      ) : (
-                        <span>Copiar cuenta</span>
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Número de cuenta interbancaria (CCI) */}
-                  <div>
-                    <span className="font-serif italic text-[11px] text-[#5C6B57] block">
-                      Número de cuenta interbancaria (CCI)
-                    </span>
-                    <p className="font-serif text-[13px] sm:text-[14px] font-medium tracking-wider text-[#2C2C2A] select-all break-all my-0.5">
-                      {config.banco.cci}
-                    </p>
-                    <button
-                      onClick={() => handleCopyField(config.banco.cci, "Cuenta interbancaria (CCI)", "cci")}
-                      className="mt-0.5 inline-flex items-center gap-1 px-3 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[9px] tracking-[0.14em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
-                    >
-                      {copiedField === 'cci' ? (
-                        <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
-                      ) : (
-                        <span>Copiar CCI</span>
-                      )}
-                    </button>
-                  </div>
+                {/* Ilustración de Regalo estilo Boceto a Tinta Clásico */}
+                <div className="my-3 flex justify-center items-center">
+                  <svg className="w-14 h-14 text-[#3A4436]/75" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                    {/* Moño / Lazo */}
+                    <path d="M 50 33 C 43 21, 30 21, 32 30 C 33 37, 46 36, 50 36 Z" />
+                    <path d="M 50 33 C 57 21, 70 21, 68 30 C 67 37, 54 36, 50 36 Z" />
+                    <circle cx="50" cy="34" r="2.2" />
+                    {/* Tapa de la caja */}
+                    <path d="M 28 36 L 72 36 L 70 44 L 30 44 Z" />
+                    {/* Cinta en la tapa */}
+                    <path d="M 47 36 L 47 44" />
+                    <path d="M 53 36 L 53 44" />
+                    {/* Cuerpo de la caja */}
+                    <path d="M 32 44 L 34 75 C 34 76.5, 35.5 77.5, 37.5 77.5 L 62.5 77.5 C 64.5 77.5, 66 76.5, 66 75 L 68 44" />
+                    {/* Cinta en el cuerpo */}
+                    <path d="M 47 44 L 47 77.5" />
+                    <path d="M 53 44 L 53 77.5" />
+                    {/* Trazos sutiles de sombreado a mano */}
+                    <path d="M 36 49 L 43 47" strokeWidth="0.8" opacity="0.5" />
+                    <path d="M 36 57 L 43 55" strokeWidth="0.8" opacity="0.5" />
+                    <path d="M 36 65 L 43 63" strokeWidth="0.8" opacity="0.5" />
+                  </svg>
                 </div>
 
-                {/* Sección YAPE / PLIN */}
-                <div className="text-center pt-0.5">
-                  <h4 className="font-serif uppercase tracking-[0.2em] text-[12px] sm:text-[13px] text-[#2C3328] font-semibold mb-2.5">
-                    Yape / Plin
-                  </h4>
+                {/* Mensaje cálido impreso */}
+                <p className="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#2C2C2A]/85 leading-relaxed max-w-[270px] mx-auto mb-4">
+                  El mejor regalo es tu presencia, pero si desean acompañarnos también con un detalle, podrán hacerlo a través de las siguientes cuentas bancarias. Cada aporte será parte de los sueños que seguiremos construyendo juntos.
+                </p>
 
-                  <div className="space-y-3">
-                    {/* Adriana Valencia León */}
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all">
-                          {config.banco.yapeAdriana}
-                        </span>
-                        <button
-                          onClick={() => handleCopyField(config.banco.yapeAdriana, "Número Yape/Plin (Adriana)", "yapeAdriana")}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[8.5px] tracking-[0.12em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
-                        >
-                          {copiedField === 'yapeAdriana' ? (
-                            <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
-                          ) : (
-                            <span>Copiar</span>
-                          )}
-                        </button>
-                      </div>
+                {/* Marco de tarjeta impresa (sin fondo plano, dejando ver el papel artesanal) */}
+                <div className="w-full border border-[#3A4436]/30 rounded-2xl p-4 sm:p-5 space-y-4">
+                  
+                  {/* Banco de Crédito del Perú (BCP) */}
+                  <div className="text-center pb-3 border-b border-[#3A4436]/15">
+                    <h4 className="font-serif uppercase tracking-[0.16em] text-[12.5px] sm:text-[13.5px] text-[#2C3328] font-semibold mb-2.5">
+                      Banco de Crédito del Perú (BCP)
+                    </h4>
+
+                    {/* Número de cuenta */}
+                    <div className="mb-2.5">
+                      <span className="font-serif italic text-[11px] text-[#5C6B57] block">
+                        Número de cuenta
+                      </span>
                       <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
                         Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularAdriana}</span>
                       </p>
+                      <p className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all my-0.5">
+                        {config.banco.bcp}
+                      </p>
+                      <button
+                        onClick={() => handleCopyField(config.banco.bcp, "Número de cuenta BCP", "bcp")}
+                        className="mt-0.5 inline-flex items-center gap-1 px-3 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[9px] tracking-[0.14em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
+                      >
+                        {copiedField === 'bcp' ? (
+                          <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
+                        ) : (
+                          <span>Copiar cuenta</span>
+                        )}
+                      </button>
                     </div>
 
-                    {/* Jorge Cerón Ruiz */}
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all">
-                          {config.banco.yapeJorge}
-                        </span>
-                        <button
-                          onClick={() => handleCopyField(config.banco.yapeJorge, "Número Yape/Plin (Jorge)", "yapeJorge")}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[8.5px] tracking-[0.12em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
-                        >
-                          {copiedField === 'yapeJorge' ? (
-                            <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
-                          ) : (
-                            <span>Copiar</span>
-                          )}
-                        </button>
-                      </div>
-                      <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
-                        Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularJorge}</span>
+                    {/* Número de cuenta interbancaria (CCI) */}
+                    <div>
+                      <span className="font-serif italic text-[11px] text-[#5C6B57] block">
+                        Número de cuenta interbancaria (CCI)
+                      </span>
+                      <p className="font-serif text-[13px] sm:text-[14px] font-medium tracking-wider text-[#2C2C2A] select-all break-all my-0.5">
+                        {config.banco.cci}
                       </p>
+                      <button
+                        onClick={() => handleCopyField(config.banco.cci, "Cuenta interbancaria (CCI)", "cci")}
+                        className="mt-0.5 inline-flex items-center gap-1 px-3 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[9px] tracking-[0.14em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
+                      >
+                        {copiedField === 'cci' ? (
+                          <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
+                        ) : (
+                          <span>Copiar CCI</span>
+                        )}
+                      </button>
                     </div>
                   </div>
+
+                  {/* Sección YAPE / PLIN */}
+                  <div className="text-center pt-0.5">
+                    <h4 className="font-serif uppercase tracking-[0.2em] text-[12px] sm:text-[13px] text-[#2C3328] font-semibold mb-2.5">
+                      Yape / Plin
+                    </h4>
+
+                    <div className="space-y-3">
+                      {/* Adriana Valencia León */}
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all">
+                            {config.banco.yapeAdriana}
+                          </span>
+                          <button
+                            onClick={() => handleCopyField(config.banco.yapeAdriana, "Número Yape/Plin (Adriana)", "yapeAdriana")}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[8.5px] tracking-[0.12em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
+                          >
+                            {copiedField === 'yapeAdriana' ? (
+                              <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
+                            ) : (
+                              <span>Copiar</span>
+                            )}
+                          </button>
+                        </div>
+                        <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
+                          Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularAdriana}</span>
+                        </p>
+                      </div>
+
+                      {/* Jorge Cerón Ruiz */}
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="font-serif text-[15px] sm:text-base font-medium tracking-wider text-[#2C2C2A] select-all">
+                            {config.banco.yapeJorge}
+                          </span>
+                          <button
+                            onClick={() => handleCopyField(config.banco.yapeJorge, "Número Yape/Plin (Jorge)", "yapeJorge")}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-[#3A4436]/25 hover:border-[#3A4436]/60 text-[8.5px] tracking-[0.12em] font-serif uppercase text-[#3A4436]/80 hover:text-[#3A4436] transition-all bg-transparent cursor-pointer active:scale-95"
+                          >
+                            {copiedField === 'yapeJorge' ? (
+                              <span className="text-[#5A1E28] font-semibold italic">✓ Copiado</span>
+                            ) : (
+                              <span>Copiar</span>
+                            )}
+                          </button>
+                        </div>
+                        <p className="font-serif italic text-[11px] text-[#5C6B57] mt-0.5">
+                          Titular: <span className="not-italic text-[#2C2C2A] font-medium">{config.banco.titularJorge}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+
+                {/* Frase final de agradecimiento estilo editorial */}
+                <p className="font-serif italic text-[12px] sm:text-[13px] text-[#3A4436]/80 mt-4 tracking-wide">
+                  Gracias por acompañarnos en el comienzo de esta nueva etapa.
+                </p>
 
               </div>
 
-              {/* Frase final de agradecimiento estilo editorial */}
-              <p className="font-serif italic text-[12px] sm:text-[13px] text-[#3A4436]/80 mt-4 tracking-wide">
-                Gracias por acompañarnos en el comienzo de esta nueva etapa.
-              </p>
-
             </div>
-
           </div>
         </section>
 
         {/* =================================================================
              SECCIÓN 9: QR PARA SUBIR FOTOS
              ================================================================= */}
-        <section className="relative px-5 py-8 reveal-item">
+        <section className="relative z-20 px-5 py-8 reveal-item">
           <div className="max-w-[400px] mx-auto relative flex flex-col items-center">
             {/* Tarjeta con Código QR de Álbum de Fotos */}
-            <div className="relative w-full shadow-torn-paper">
+            <div className="relative z-10 w-full shadow-torn-paper">
               <div className="px-6 pt-8 pb-8 text-center">
                 {/* Imagen de fondo de papel real */}
                 <img
@@ -1780,9 +1836,23 @@ export default function App() {
         {/* =================================================================
              SECCIÓN 10: CONFIRMAR ASISTENCIA (RSVP) & SOBRE DE CIERRE
              ================================================================= */}
-        <section className="relative px-5 pt-8 pb-12 reveal-item">
+        <section className="relative z-10 px-5 pt-10 pb-16 reveal-item">
           <div className="max-w-[400px] mx-auto relative">
             
+            {/* Papel manuscrito decorativo invertido asomando por encima y por debajo de la sección de confirmación (Ref 5) */}
+            <img
+              src={IMAGES.papelDecoracion1}
+              alt=""
+              aria-hidden="true"
+              className="absolute -top-14 left-1/2 -translate-x-1/2 w-60 sm:w-64 h-auto object-contain pointer-events-none select-none z-0 rotate-180 opacity-95"
+            />
+            <img
+              src={IMAGES.papelDecoracion1}
+              alt=""
+              aria-hidden="true"
+              className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-56 sm:w-60 h-auto object-contain pointer-events-none select-none z-0 rotate-180 opacity-90"
+            />
+
             {/* Tarjeta de Confirmación ingresando en el sobre inferior */}
             <div className="shadow-torn-paper mx-2 relative z-20">
               <div className="px-6 sm:px-8 pt-8 pb-16 text-center">
@@ -1898,6 +1968,8 @@ export default function App() {
             Lima, Perú
           </p>
         </footer>
+
+        </div>
 
       </main>
       )}
