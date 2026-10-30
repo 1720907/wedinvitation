@@ -22,6 +22,100 @@
   }
 }
 
+/* =================================================================
+   ANTI-GHOSTING & SELECCIÓN:
+   Nada es arrastrable ni seleccionable, EXCEPTO el texto de lectura
+   ================================================================= */
+*,
+*::before,
+*::after {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* Deshabilitar arrastre y selección en imágenes, videos, SVGs y decoraciones */
+img,
+svg,
+picture,
+video,
+canvas,
+a img {
+  -webkit-user-drag: none !important;
+  -khtml-user-drag: none !important;
+  -moz-user-drag: none !important;
+  -o-user-drag: none !important;
+  user-drag: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Por defecto, los contenedores estructurales y botones no son seleccionables */
+html,
+body,
+div,
+section,
+header,
+footer,
+main,
+nav,
+button,
+label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* El texto de lectura e informativo (párrafos, títulos, mensajes, dedicatorias) SÍ es seleccionable */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span.font-serif,
+span.font-display,
+span.font-sans,
+span.font-script,
+blockquote,
+input,
+textarea,
+p *,
+h1 *,
+h2 *,
+h3 *,
+h4 *,
+h5 *,
+h6 * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Selección rápida de cuentas bancarias */
+.select-all {
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-user-select: all !important;
+  user-select: all !important;
+}
+
+/* Botones nunca deben seleccionar texto al hacer clic/tap */
+button,
+button *,
+.btn-tactile,
+.btn-tactile * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
 
 /* Regla explícita para navegadores con tema oscuro (Samsung Internet, Chrome Android, etc.):
    Al declarar soporte para tema oscuro nativo, el navegador NO activa su filtro heurístico de inversión de colores */

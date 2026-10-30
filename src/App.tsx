@@ -117,7 +117,7 @@ const DEFAULT_CONFIG: WeddingConfig = {
 // =================================================================
 export const IMAGES = {
   // Fondos y Texturas Artesanales
-  fondoContinuo: './assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
+  fondoContinuo: '/assets/aistudio/imagen_fondo.jpg_a5ae7893.png',
   papel1Limpio: './assets/aistudio/papel1_14fb074a_limpio.png',
   papel3Clean: './assets/aistudio/papel3_clean.png',
   papel3CleanRotated: './assets/aistudio/papel3_clean_rotated.png',
@@ -376,6 +376,18 @@ export default function App() {
     return () => {
       window.removeEventListener('resize', handleResize);
       clearTimeout(timer);
+    };
+  }, []);
+
+  // Bloquear arrastre nativo de imágenes en cualquier navegador para evitar copias fantasma (ghosting)
+  useEffect(() => {
+    const handleDragStart = (e: DragEvent) => {
+      e.preventDefault();
+      return false;
+    };
+    window.addEventListener('dragstart', handleDragStart, { capture: true });
+    return () => {
+      window.removeEventListener('dragstart', handleDragStart, { capture: true });
     };
   }, []);
 
@@ -788,7 +800,8 @@ export default function App() {
             <img 
               src={IMAGES.heroCover} 
               alt="Cubierta de invitación fina con marco barroco verde" 
-              className="absolute inset-0 w-full h-full object-cover z-0"
+              draggable={false}
+              className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none"
             />
 
           {/* Oval Cutout Area inside the Ornate Baroque Green Frame */}
@@ -808,8 +821,9 @@ export default function App() {
               <img 
                 src={IMAGES.heroFotoPareja}
                 alt="Foto de la pareja" 
+                draggable={false}
                 onLoad={() => setHeroAnimated(true)}
-                className={`w-full h-full object-cover object-center ${
+                className={`w-full h-full object-cover object-center select-none ${
                   heroAnimated ? 'animate-zoom-out-appear' : 'scale-125 opacity-0'
                 }`}
               />
@@ -1163,7 +1177,8 @@ export default function App() {
                           key={isActive ? `polaroid-active-${idx}` : `polaroid-idle-${idx}`}
                           src={photo.src}
                           alt={photo.alt}
-                          className={`w-full h-full object-cover object-top ${isActive ? 'animate-polaroid-zoomout' : 'scale-100'
+                          draggable={false}
+                          className={`w-full h-full object-cover object-top select-none pointer-events-none ${isActive ? 'animate-polaroid-zoomout' : 'scale-100'
                             }`}
                           loading="eager"
                         />
