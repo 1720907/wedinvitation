@@ -147,11 +147,103 @@ const POLAROID_CAROUSEL_PHOTOS = [
 ];
 
 const GUEST_API_URL = "https://script.google.com/macros/s/AKfycbxIdCqpiRMw-1J7xlhokVYA_chDmzmEJlnFjpfjeO9TGR6EZHVrcULyl6RYmEzEeFn1/exec";
+const SESSION_STORAGE_KEY = "sesionBodaJA";
+const SESSION_EXPIRATION_MS = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
 
 interface GuestData {
   codigo: string;
   invitado: string;
   pases: number;
+}
+
+interface StoredSessionData {
+  codigo: string;
+  invitado?: string;
+  pases?: number;
+  timestamp: number;
+}
+
+// Sanitización estricta contra XSS: elimina etiquetas o caracteres peligrosos y valida formato
+function sanitizePlainText(input: unknown, maxLen = 120): string {
+  if (typeof input !== 'string') return '';
+  return input.replace(/[<>]/g, '').trim().slice(0, maxLen);
+}
+
+function sanitizeGuestCode(input: unknown): string {
+  if (typeof input !== 'string') return '';
+  return input.replace(/[^A-Za-z0-9_-]/g, '').toUpperCase().slice(0, 14);
+}
+
+// Lectura segura de localStorage con validación de esquema y expiración de 24h
+function getValidStoredSession(): StoredSessionData | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+
+    const record = parsed as Record<string, unknown>;
+    const cleanCode = sanitizeGuestCode(record.codigo);
+    const timestamp = typeof record.timestamp === 'number' ? record.timestamp : Number(record.timestamp);
+
+    if (!cleanCode || !Number.isFinite(timestamp)) {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+
+    const now = Date.now();
+    if (now - timestamp < SESSION_EXPIRATION_MS && timestamp <= now + 60000) {
+      const cleanInvitado = sanitizePlainText(record.invitado, 100);
+      const rawPases = typeof record.pases === 'number' ? record.pases : parseInt(String(record.pases ?? ''), 10);
+      const cleanPases = Number.isFinite(rawPases) && rawPases > 0 && rawPases <= 20 ? rawPases : undefined;
+
+      return {
+        codigo: cleanCode,
+        invitado: cleanInvitado || undefined,
+        pases: cleanPases,
+        timestamp
+      };
+    } else {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+  } catch {
+    try {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+    } catch {
+      // Ignorar errores de almacenamiento restringido
+    }
+    return null;
+  }
+}
+
+function saveStoredSession(data: GuestData): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const payload: StoredSessionData = {
+      codigo: sanitizeGuestCode(data.codigo),
+      invitado: sanitizePlainText(data.invitado, 100),
+      pases: Math.max(1, Math.min(20, Math.floor(Number(data.pases) || 1))),
+      timestamp: Date.now()
+    };
+    window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    // Ignorar errores de cuota o modo privado
+  }
+}
+
+function clearStoredSession(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(SESSION_STORAGE_KEY);
+  } catch {
+    // Ignorar errores
+  }
 }
 
 export default function App() {
@@ -167,17 +259,28 @@ export default function App() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const synthIntervalRef = useRef<number | null>(null);
 
+  // Inicialización síncrona desde localStorage válido (< 24h) para mostrar de frente la invitación sin mostrar la vista flotante
+  const [initialSession] = useState<StoredSessionData | null>(() => getValidStoredSession());
+
   // Guest Access / Validation state (Google Apps Script API)
-  const [accessCode, setAccessCode] = useState<string>('');
+  const [accessCode, setAccessCode] = useState<string>(() => initialSession?.codigo ?? '');
   const [isAccessLoading, setIsAccessLoading] = useState<boolean>(false);
   const [accessError, setAccessError] = useState<string | null>(null);
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
-  const [guestData, setGuestData] = useState<GuestData | null>(null);
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => Boolean(initialSession));
+  const [guestData, setGuestData] = useState<GuestData | null>(() =>
+    initialSession
+      ? {
+          codigo: initialSession.codigo,
+          invitado: initialSession.invitado || 'Cargando...',
+          pases: initialSession.pases || 1
+        }
+      : null
+  );
 
   // RSVP Form state (Google Apps Script API)
   const [isRsvpModalOpen, setIsRsvpModalOpen] = useState<boolean>(false);
   const [rsvpAttendance, setRsvpAttendance] = useState<'si' | 'no'>('si');
-  const [rsvpConfirmedCount, setRsvpConfirmedCount] = useState<number>(1);
+  const [rsvpConfirmedCount, setRsvpConfirmedCount] = useState<number>(() => initialSession?.pases || 1);
   const [rsvpMessage, setRsvpMessage] = useState<string>('');
   const [isRsvpSubmitting, setIsRsvpSubmitting] = useState<boolean>(false);
   const [rsvpFeedback, setRsvpFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -397,37 +500,67 @@ export default function App() {
     setTimeout(() => setCopyToast(null), 2500);
   };
 
-  // Guest Code Validation (Google Apps Script API)
-  const handleValidateCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanCode = accessCode.trim().toUpperCase();
+  // Función centralizada y segura para consultar el Apps Script y sincronizar localStorage (24h)
+  const consultarCodigo = async (rawCode: string, isAutoRestore = false) => {
+    const cleanCode = sanitizeGuestCode(rawCode);
     if (!cleanCode) return;
 
-    setIsAccessLoading(true);
-    setAccessError(null);
+    if (!isAutoRestore) {
+      setIsAccessLoading(true);
+      setAccessError(null);
+    }
 
     try {
       const res = await fetch(`${GUEST_API_URL}?id=${encodeURIComponent(cleanCode)}`);
       const data = await res.json();
-      if (data.encontrado) {
-        const pasesCount = parseInt(data.pases, 10) || 1;
-        setGuestData({
+      if (data && data.encontrado) {
+        const rawPases = parseInt(String(data.pases ?? '1'), 10);
+        const pasesCount = Number.isFinite(rawPases) && rawPases > 0 && rawPases <= 20 ? rawPases : 1;
+        const safeInvitado = sanitizePlainText(data.invitado, 100) || 'Invitado Especial';
+
+        const verifiedGuest: GuestData = {
           codigo: cleanCode,
-          invitado: data.invitado || 'Invitado Especial',
+          invitado: safeInvitado,
           pases: pasesCount
-        });
+        };
+
+        // Guardar en localStorage con el timestamp actual (24h de validez)
+        saveStoredSession(verifiedGuest);
+
+        setGuestData(verifiedGuest);
         setRsvpAttendance('si');
         setRsvpConfirmedCount(pasesCount);
         setIsUnlocked(true);
       } else {
+        // Limpiar por seguridad si el código ingresado o almacenado fue revocado
+        clearStoredSession();
+        setIsUnlocked(false);
+        setGuestData(null);
         setAccessError('Código no encontrado');
       }
     } catch (err) {
       console.error('Error al consultar código:', err);
-      setAccessError('Hubo un inconveniente al consultar el código. Intenta de nuevo.');
+      if (!isAutoRestore) {
+        setAccessError('Hubo un inconveniente al consultar el código. Intenta de nuevo.');
+      }
     } finally {
-      setIsAccessLoading(false);
+      if (!isAutoRestore) {
+        setIsAccessLoading(false);
+      }
     }
+  };
+
+  // Verificar y refrescar automáticamente los pases si hay una sesión válida (< 24h) al cargar la página
+  useEffect(() => {
+    if (initialSession?.codigo) {
+      consultarCodigo(initialSession.codigo, true);
+    }
+  }, [initialSession]);
+
+  // Evento del formulario de acceso manual
+  const handleValidateCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await consultarCodigo(accessCode, false);
   };
 
   // Google Sheets RSVP Submission (Google Apps Script API)
@@ -443,10 +576,10 @@ export default function App() {
       : 0;
 
     const datosAEnviar = {
-      codigo: guestData.codigo,
+      codigo: sanitizeGuestCode(guestData.codigo),
       estado: rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado',
       confirmados: confirmados,
-      mensaje: rsvpMessage.trim()
+      mensaje: sanitizePlainText(rsvpMessage, 400)
     };
 
     try {
