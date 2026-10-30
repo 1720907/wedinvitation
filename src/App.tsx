@@ -286,7 +286,7 @@ export const DEFAULT_CONFIG: WeddingConfig = {
     instruccion: "¡Comparte tus recuerdos! Escanea el código QR o pulsa el botón para subir las fotos y videos que captures durante nuestra boda."
   },
   rsvp: {
-    apiUrl: "https://script.google.com/macros/s/AKfycbxIdCqpiRMw-1J7xlhokVYA_chDmzmEJlnFjpfjeO9TGR6EZHVrcULyl6RYmEzEeFn1/exec",
+    apiUrl: "https://script.google.com/macros/s/AKfycbyLBlQM7OXE2e5cINtifX4U617kQuSHyLjg6DNAX1z2fuWn5lHGCwaA9_s2JsAxIOUT/exec",
     storageKey: "sesionBodaJA",
     sessionExpirationMs: 24 * 60 * 60 * 1000, // 24 horas en milisegundos
     codigoEjemploPlaceholder: "Ej: K9X2P",
@@ -724,12 +724,21 @@ export default function App() {
     }
 
     try {
-      const res = await fetch(`${GUEST_API_URL}?id=${encodeURIComponent(cleanCode)}`);
+      const res = await fetch(GUEST_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8' // Clave para evitar problemas de CORS
+        },
+        body: JSON.stringify({
+          accion: 'consultar',
+          codigo: cleanCode
+        })
+      });
       const data = await res.json();
       if (data && data.encontrado) {
         const rawPases = parseInt(String(data.pases ?? '1'), 10);
         const pasesCount = Number.isFinite(rawPases) && rawPases > 0 && rawPases <= 20 ? rawPases : 1;
-        const safeInvitado = sanitizePlainText(data.invitado, 100) || 'Invitado Especial';
+        const safeInvitado = sanitizePlainText(data.invitado || data.nombre, 100) || 'Invitado Especial';
 
         const verifiedGuest: GuestData = {
           codigo: cleanCode,
@@ -749,7 +758,7 @@ export default function App() {
         clearStoredSession();
         setIsUnlocked(false);
         setGuestData(null);
-        setAccessError('Código no encontrado');
+        setAccessError(data?.error || 'Código no encontrado');
       }
     } catch (err) {
       console.error('Error al consultar código:', err);
@@ -789,6 +798,7 @@ export default function App() {
       : 0;
 
     const datosAEnviar = {
+      accion: 'guardar',
       codigo: sanitizeGuestCode(guestData.codigo),
       estado: rsvpAttendance === 'si' ? 'Confirmado' : 'Declinado',
       confirmados: confirmados,
